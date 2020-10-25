@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>程序员的自我修养——动态链接 - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="动态链接的步骤和实现动态链接基本上分为3步：先是启动动态链接器本身，然后装载所需要的共享对象，最后是重定位和初始化。"><meta property="og:type" content="blog"><meta property="og:title" content="程序员的自我修养——动态链接"><meta property="og:url" content="http://cyx0706.github.io/2020/08/23/Linkers-Loaders-9/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="动态链接的步骤和实现动态链接基本上分为3步：先是启动动态链接器本身，然后装载所需要的共享对象，最后是重定位和初始化。"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"><meta property="article:published_time" content="2020-08-23T03:14:35.000Z"><meta property="article:modified_time" content="2020-10-25T01:49:08.430Z"><meta property="article:author" content="John Doe"><meta property="article:tag" content="Linkers&amp;Loaders"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/self-culture.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2020/08/23/Linkers-Loaders-9/"},"headline":"Hexo","image":["http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"],"datePublished":"2020-08-23T03:14:35.000Z","dateModified":"2020-10-25T01:49:08.430Z","author":{"@type":"Person","name":"John Doe"},"description":"动态链接的步骤和实现动态链接基本上分为3步：先是启动动态链接器本身，然后装载所需要的共享对象，最后是重定位和初始化。"}</script><link rel="canonical" href="http://cyx0706.github.io/2020/08/23/Linkers-Loaders-9/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/self-culture.jpg" alt="程序员的自我修养——动态链接"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-08-23T03:14:35.000Z" title="2020-08-23T03:14:35.000Z">2020-08-23</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:49:08.430Z" title="2020-10-25T01:49:08.430Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/ComputerOrganization/">ComputerOrganization</a></span></div></div><h1 class="title is-3 is-size-4-mobile">程序员的自我修养——动态链接</h1><div class="content"><h1 id="动态链接的步骤和实现"><a href="#动态链接的步骤和实现" class="headerlink" title="动态链接的步骤和实现"></a>动态链接的步骤和实现</h1><p>动态链接基本上分为3步：先是启动动态链接器本身，然后装载所需要的共享对象，最后是重定位和初始化。<br><a id="more"></a></p>
+<h2 id="自举"><a href="#自举" class="headerlink" title="自举"></a>自举</h2><p>动态链接器本身也是一个共享对象，但实际上对于普通共享对象文件来说，它的重定位工作有动态链接器来完成；它也可以依赖别的共享对象，其中被依赖的共享对象又由动态链接器来负责装载和链接。那对于动态链接器本身的重定位工作由谁来完成？它是否可以依赖于别的共享对象。</p>
+<p>很明显，动态链接器由于特殊性，它本身<strong>不可以依赖任何其他共享对象</strong>，其次是动态链接器本身所需要的全局和静态变量的重定位工作由它自己来完成，这就使得动态链接器在启动的时候必须要有一段非常精巧的代码来完成这项工作，同时不使用全局变量和静态变量，这种具有一定的限制条件的启动代码往往被称为<strong>自举（Bootstrap）</strong></p>
+<p>动态链接器入口地址即是自举代码的入口，当操作系统将进程交给动态链接器的时候，动态链接器的自举代码开始执行。自举代码首先找到自己的GOT，而GOT的第一个入口保存的即是<code>.dynamic</code>段的偏移地址，因此找到动态链接器本身的<code>.dynamic</code>段，通过其中的信息自举代码便可以获得动态链接器本身的重定位表和符号表，从而得到动态链接器本身的重定位入口，先将它们全部重定位，从这一步开始，动态链接器中的代码才可以开始使用自己的全局变量和静态变量。</p>
+<p>自举代码也不能使用自己的函数，因为使用PIC（地址无关代码）模式编译的时候，对于模块内部的函数调用也是采用模块外部函数调用一样的处理方式（GOT/PLT），所以在GOT/PLT没有被重定位之前，自举代码不能使用任何全局变量，也不能调用任何函数。</p>
+<h2 id="装载共享对象"><a href="#装载共享对象" class="headerlink" title="装载共享对象"></a>装载共享对象</h2><p>完成自举后，动态链接器将可执行文件和链接器本身的符号全部合并到一个符号表中，我们可以称它为<strong>全局符号表（Global Symbol Table）</strong>，然后链接器开始寻找可执行文件所依赖的共享对象（通过DT_NEEDED），链接器将这些共享对象的名字放到一个装载集合当中，一个一个打开文件从中读取相应的 ELF 文件头和 <code>.dynamic</code> 段，然后将它相应的代码段和数据段映射到进程空间中。如果这个ELF文件也依赖于其他的共享对象，那么往往采用广度优先的装载顺序。当所有的共享对象都被装载进来的时候，全局符号表里面就包含了进程的所有的动态链接所需要的符号。</p>
+<h3 id="符号优先级"><a href="#符号优先级" class="headerlink" title="符号优先级"></a>符号优先级</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* a1.c */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a1.c\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* a2.c */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a2.c\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* b1.c */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">b1</span><span class="params">()</span></span>&#123;</span><br><span class="line">    a();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* b2.c */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">b2</span><span class="params">()</span></span>&#123;</span><br><span class="line">    a();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们在编译时指定依赖关系：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -fPIC -shared a1.c -o a1.so</span><br><span class="line">$ gcc -fPIC -shared a2.c -o a2.so</span><br><span class="line">$ gcc -fPIC -shared b1.c a1.so -o b1.so -Xlinker -rpath .&#x2F;</span><br><span class="line">$ gcc -fPIC -shared b2.c a2.so -o b2.so -Xlinker -rpath .&#x2F;</span><br><span class="line">$ ldd b1.so</span><br><span class="line">        linux-vdso.so.1 (0x00007ffffc2e8000)</span><br><span class="line">        a1.so &#x3D;&gt; .&#x2F;a1.so (0x00007fd9767f0000)</span><br><span class="line">        libc.so.6 &#x3D;&gt; &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;libc.so.6 (0x00007fd9763f0000)</span><br><span class="line">        &#x2F;lib64&#x2F;ld-linux-x86-64.so.2 (0x00007fd976e00000)</span><br><span class="line">$ ldd b2.so</span><br><span class="line">        linux-vdso.so.1 (0x00007fffcbe7c000)</span><br><span class="line">        a2.so &#x3D;&gt; .&#x2F;a2.so (0x00007f3f94550000)</span><br><span class="line">        libc.so.6 &#x3D;&gt; &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;libc.so.6 (0x00007f3f94150000)</span><br><span class="line">        &#x2F;lib64&#x2F;ld-linux-x86-64.so.2 (0x00007f3f94a00000)</span><br></pre></td></tr></table></figure>
+<p>当有程序同时使用 b1.c 和 b2.c 中的函数时会怎么样？</p>
+<p>注：这里也需要<code>-Xlinker -rpath ./</code> 否则 <code>a1.so</code> 那里显示的是未找到（not found），这会导致后面的链接无法执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">b1</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">b2</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    b1();</span><br><span class="line">    b2();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>指定共享对象进行编译链接: <code>gcc main.c b1.so b2.so -o main -Xlinker -rpath ./</code></p>
+<p>运行发现竟然打印了两个 a1.c，这四个共享对象应该都被装载进来了，但为什么 a2.so 中的 a 函数被忽略了。这种一个共享对象里面的全局符号被另一个共享对象的同名全局符号覆盖的现象又被称为<strong>共享对象全局符号介入（Global Symbol Interpose）</strong>。</p>
+<p>在 Linux 下动态链接器针对全局符号介入的处理方式是：如果符号名相同并且已经存在，后入的符号被忽略。安照广度优先的顺序进行装载，首先是 main，然后是 b1.so b2.so a1.so 最后是a2.so，所以后面的被忽略了。当程序使用大量的共享对象的时候应当非常小心符号的重名问题。</p>
+<h2 id="重定位和初始化"><a href="#重定位和初始化" class="headerlink" title="重定位和初始化"></a>重定位和初始化</h2><p>当上面的步骤都完成的时候，链接器开始重新遍历可执行文件和每个共享对象的重定位表，将它们的 GOT/PLT 中每个需要重定位的位置进行修正。因为此时动态链接器已经有了进程的全局符号表，所以修正过程相对容易。重定位完成后，如果某个共享对象有 <code>.init</code> 段，那么动态链接器会执行 <code>.init</code> 段的代码，用以实现共享对象特有的初始化过程。比如最常见的，共享对象中的 C++ 的全局/静态对象的构造就需要通过 <code>.init</code> 来初始化。相应的，共享对象中还可能有 <code>.finit</code> 段，当程序退出时会执行 <code>.finit</code> 段中的代码，可以用来实现 C++ 全局对象析构之类的操作。</p>
+<h2 id="Linux-动态链接器的实现"><a href="#Linux-动态链接器的实现" class="headerlink" title="Linux 动态链接器的实现"></a>Linux 动态链接器的实现</h2><p>内核在装载完 ELF 可执行文件之后就返回用户空间，将控制权交给程序的入口。对于不同链接形式的 ELF 可执行文件来说，程序的入口存在区别。对于静态可执行文件来说，程序的入口就是 ELF 文件头中 e_entry 指定的入口，对于动态链接，这个入口是不行的，因为可执行文件所依赖的共享库还没有被装载，也没有进行动态链接。对于动态链接的可执行文件，内核会分析它的动态链接器地址（在 <code>.interp</code> 段），将动态链接器映射至进程地址空间，然后把控制权交给动态链接器。</p>
+<p>Linux 的动态链接器本身是一个共享对象，它的路径 <code>/lib/ld-linux.so.2</code> 指向 <code>/lib/ld-x.y.z.so</code> 这个才是真正的动态连接器文件。共享对象也是一个 ELF 文件，它也有跟可执行文件一样的 ELF 文件头。动态链接器不仅是一个共享对象，也可以执行。</p>
+<blockquote>
+<p>$ /lib/ld-linux.so.2<br>Usage: ld.so [OPTION]… EXECUTABLE-FILE [ARGS-FOR-PROGRAM…]<br>You have invoked <code>ld.so&#39;, the helper program for shared library executables.
+This program usually lives in the file</code>/lib/ld.so’, and special directives<br>in executable files using ELF shared libraries tell the system’s program<br>loader to load the helper program from this file.<br>……</p>
+</blockquote>
+<p>Linux 的内核在执行 execve() 时不关心目标 ELF 文件是否可执行（文件头 e_type 是 ET_EXEC 还是 ET_DNY），它只是简单按照程序头表里面的描述对文件进行装载然后把控制权转交给 ELF 入口地址，这点也能看出共享库和可执行文件实际上没有什么区别，除了文件头的标志位和扩展名有所不同。</p>
+<p>几点问题：</p>
+<ul>
+<li>动态链接器本身是动态链接还是静态链接？<ul>
+<li>动态链接本身是静态链接，它不能依赖于其他共享对象，动态链接器本身是用于帮助其他 ELF 文件解决共享对象的依赖问题。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>$ ldd /lib/ld-linux.so.2<br>       statically linked</p>
+</blockquote>
+<ul>
+<li><p>动态链接器本身必须是 PIC 的吗？</p>
+<ul>
+<li>是不是 PIC 对于动态链接器本身来说并不关键，动态链接器可以是也可以不是 PIC，但往往使用 PIC 会更加简单一些。如果不是 PIC 的话，会使得代码段无法共享，浪费内存，另一方面也使得 ld.so 本身初始化更加复杂。因为自举时要对代码进行重定位。实际上 ld-linux.so.2 是 PIC 的。</li>
+</ul>
+</li>
+<li><p>动态链接器本身可以被当做可执行文件运行，那么它的装载地址应该是多少？</p>
+<ul>
+<li>ld.so 的装载地址跟一般的共享对象没区别，即为 0x00000000。这个装载地址是一个无效的装载地址，作为一个共享库，内核在装载它时会为其选择一个合适的装载地址。</li>
+</ul>
+</li>
+</ul>
+<h1 id="显示运行时链接"><a href="#显示运行时链接" class="headerlink" title="显示运行时链接"></a>显示运行时链接</h1><p>支持动态链接的系统往往都支持一种更加灵活的模块加载方式，叫做<strong>显示运行时链接（Explicit Run-time Linking）</strong>，有时也叫做<strong>运行时加载</strong>。也就是让程序自己在运行时控制加载指定的模块，并且在不需要该模块的时候将其卸载。这种共享对象往往被叫做<strong>动态装载库（Dynamic Loading Library）</strong>。</p>
+<p>最常见的例子是 WEB 服务器程序。对于 WEB 服务器程序来说，它需要根据配置来选择不同的脚本解释器，数据库链接驱动等，对于不同的脚本解释器分别做成一个独立的模块，当 WEB 服务器需要某种脚本解释器的时候就将其加载进来，这对于数据库连接的驱动程序也是一样的原理。</p>
+<p>动态装载库通过一系列动态链接器提供的 API 来实现装载，这些 API 的实现在 libdl.so.2 里面。</p>
+<h2 id="dlopen"><a href="#dlopen" class="headerlink" title="dlopen()"></a>dlopen()</h2><p><code>void *dlopen(const char *filename, int flag)</code></p>
+<ul>
+<li>第一个参数是被加载的动态库路径，如果这个路径是绝对路径，该函数会尝试直接打开该库，否则会尝试以一定的顺序查找该动态库文件。</li>
+<li>flag 表示函数符号的解析方式，有RTLD_LAZY(延迟绑定), RTLD_NOW(模块被加载时立即完成绑定)</li>
+</ul>
+<p>dlopen() 返回被加载模块的句柄，如果被加载过了会返回同一个句柄，加载失败返回 NULL，若存在依赖关系则需要手动加载被依赖模块。</p>
+<h2 id="dlsym"><a href="#dlsym" class="headerlink" title="dlsym()"></a>dlsym()</h2><p><code>void *dlsym(void *handle, char *symbol)</code></p>
+<ul>
+<li>第一个参数 handle 就是 dlopen() 返回的动态库的句柄，第二个参数即要查找的符号的名称，一个以 <code>&#39;\0&#39;</code> 结尾的 C 字符串。如果没找到，返回 NULL，查找函数，返回函数的地址，查找变量，返回变量的地址，查找常量，返回常量的值。需要注意的是如果 dlerror() 返回NULL，说明找到符号了，否则返回响应的信息。</li>
+</ul>
+<h2 id="dlerror"><a href="#dlerror" class="headerlink" title="dlerror()"></a>dlerror()</h2><ul>
+<li>每次调用后都可以调用它来看看上一次调用是否成功，返回NULL表示成功，返回字符串表示上次调用的错误信息</li>
+</ul>
+<h2 id="dlclose"><a href="#dlclose" class="headerlink" title="dlclose()"></a>dlclose()</h2><ul>
+<li>卸载一个已经装载的模块。系统会维护一个加载引用计数器，每次加载一个新模块的时候相应的计数器 +1，卸载时 -1。只有当计数器的值减到0时模块才会真正的被卸载。卸载过程与加载相反，先执行 <code>.finit</code> 代码，然后将符号从符号表中去除，取消进程空间跟模块的映射关系，然后关闭该模块。</li>
+</ul>
+<h2 id="小例子"><a href="#小例子" class="headerlink" title="小例子"></a>小例子</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">void</span> *handle;</span><br><span class="line">    <span class="keyword">double</span> (*func)(<span class="keyword">double</span>);</span><br><span class="line">    <span class="keyword">char</span> *error;</span><br><span class="line">    </span><br><span class="line">    handle = dlopen(argv[<span class="number">1</span>], RTLD_NOW);</span><br><span class="line">    <span class="keyword">if</span> (handle == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Open library %s error: %s\n&quot;</span>, argv[<span class="number">1</span>], dlerror());</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    func = dlsym(handle, <span class="string">&quot;sin&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ((error = dlerror()) != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Symbol sin not found: %s\n&quot;</span>, error);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>, func(<span class="number">3.1415926</span>/<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    dlclose(handle);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<h1 id="include"><a href="#include" class="headerlink" title="include"></a>include<stdio.h></h1><h1 id="include-1"><a href="#include-1" class="headerlink" title="include"></a>include<dlfcn.h></h1></blockquote>
+<p>int main(int argc, char<em> argv[]){<br>    void </em>handle;<br>    double (<em>func)(double);<br>    char </em>error;</p>
+<pre><code>handle = dlopen(argv[1], RTLD_NOW);
+if (handle == NULL)&#123;
+    printf(&quot;Open library %s error: %s\n&quot;, argv[1], dlerror());
+    return -1;
+&#125;
+func = dlsym(handle, &quot;sin&quot;);
+if ((error = dlerror()) != NULL)&#123;
+    printf(&quot;Symbol sin not found: %s\n&quot;, error);
+&#125;
+else&#123;
+    printf(&quot;%f\n&quot;, func(3.1415926/2));
+&#125;
+dlclose(handle);
+</code></pre><p>}</p>
+<p>使用数学库模块用运行时加载的方式加载到进程中，然后获取 sin() 函数符号地址，调用 sin() 返回结果</p>
+<p><code>gcc -o simple_run simpe_run.c -ldl</code></p>
+<p><code>./simple_run /lib/x86_64-linux-gnu/libm-2.27.so</code></p>
+<p>ps：</p>
+<ul>
+<li>-ldl 表示使用 DL（Dynamic Loading） 库</li>
+<li>原书中适用于32位系统，当对于64位系统的时候，要正确的找到自己 libm 库的位置，若出现错误 <code>wrong ELF class: ELFCLASS32</code> 说明你使用的动态库是32位的。</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>程序员的自我修养——动态链接</p><p><a href="http://cyx0706.github.io/2020/08/23/Linkers-Loaders-9/">http://cyx0706.github.io/2020/08/23/Linkers-Loaders-9/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>John Doe</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-08-23</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linkers-Loaders/">Linkers&amp;Loaders</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/09/14/Linkers-Loaders-10/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">程序员的自我修养——Linux共享库</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/06/26/Linkers-Loaders-8/"><span class="level-item">程序员的自我修养——动态链接</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "9b7320bbd09938b3a1821bff30875008",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#动态链接的步骤和实现"><span class="level-left"><span class="level-item">1</span><span class="level-item">动态链接的步骤和实现</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#自举"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">自举</span></span></a></li><li><a class="level is-mobile" href="#装载共享对象"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">装载共享对象</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#符号优先级"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">符号优先级</span></span></a></li></ul></li><li><a class="level is-mobile" href="#重定位和初始化"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">重定位和初始化</span></span></a></li><li><a class="level is-mobile" href="#Linux-动态链接器的实现"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">Linux 动态链接器的实现</span></span></a></li></ul></li><li><a class="level is-mobile" href="#显示运行时链接"><span class="level-left"><span class="level-item">2</span><span class="level-item">显示运行时链接</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#dlopen"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">dlopen()</span></span></a></li><li><a class="level is-mobile" href="#dlsym"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">dlsym()</span></span></a></li><li><a class="level is-mobile" href="#dlerror"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">dlerror()</span></span></a></li><li><a class="level is-mobile" href="#dlclose"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">dlclose()</span></span></a></li><li><a class="level is-mobile" href="#小例子"><span class="level-left"><span class="level-item">2.5</span><span class="level-item">小例子</span></span></a></li></ul></li><li><a class="level is-mobile" href="#include"><span class="level-left"><span class="level-item">3</span><span class="level-item">include</span></span></a></li><li><a class="level is-mobile" href="#include-1"><span class="level-left"><span class="level-item">4</span><span class="level-item">include</span></span></a></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 John Doe</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

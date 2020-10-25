@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>程序员的自我修养——编译和链接 - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="编译和链接在一般的IDE中，编译和链接被合并在了一起，称为构建（build），往往一些本质的东西是无法了解到 被隐藏的过程在Linux下如果使用gcc编译一个c语言程序，只需最简单的命令：gcc hello.c.&amp;#x2F;a.out 事实上，上述的过程可以分为4个步骤：  预处理（Prepressing） 编译（Compilation） 汇编（Assembly） 链接（Linking）"><meta property="og:type" content="blog"><meta property="og:title" content="程序员的自我修养——编译和链接"><meta property="og:url" content="http://cyx0706.github.io/2019/10/20/Linkers-Loaders-2/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="编译和链接在一般的IDE中，编译和链接被合并在了一起，称为构建（build），往往一些本质的东西是无法了解到 被隐藏的过程在Linux下如果使用gcc编译一个c语言程序，只需最简单的命令：gcc hello.c.&amp;#x2F;a.out 事实上，上述的过程可以分为4个步骤：  预处理（Prepressing） 编译（Compilation） 汇编（Assembly） 链接（Linking）"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"><meta property="article:published_time" content="2019-10-20T07:06:53.000Z"><meta property="article:modified_time" content="2020-10-25T01:57:27.716Z"><meta property="article:author" content="John Doe"><meta property="article:tag" content="Linkers&amp;Loaders"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/self-culture.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2019/10/20/Linkers-Loaders-2/"},"headline":"Hexo","image":["http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"],"datePublished":"2019-10-20T07:06:53.000Z","dateModified":"2020-10-25T01:57:27.716Z","author":{"@type":"Person","name":"John Doe"},"description":"编译和链接在一般的IDE中，编译和链接被合并在了一起，称为构建（build），往往一些本质的东西是无法了解到 被隐藏的过程在Linux下如果使用gcc编译一个c语言程序，只需最简单的命令：gcc hello.c.&#x2F;a.out 事实上，上述的过程可以分为4个步骤：  预处理（Prepressing） 编译（Compilation） 汇编（Assembly） 链接（Linking）"}</script><link rel="canonical" href="http://cyx0706.github.io/2019/10/20/Linkers-Loaders-2/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/self-culture.jpg" alt="程序员的自我修养——编译和链接"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2019-10-20T07:06:53.000Z" title="2019-10-20T07:06:53.000Z">2019-10-20</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:57:27.716Z" title="2020-10-25T01:57:27.716Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/ComputerOrganization/">ComputerOrganization</a></span></div></div><h1 class="title is-3 is-size-4-mobile">程序员的自我修养——编译和链接</h1><div class="content"><h1 id="编译和链接"><a href="#编译和链接" class="headerlink" title="编译和链接"></a>编译和链接</h1><p>在一般的IDE中，编译和链接被合并在了一起，称为<strong>构建（build）</strong>，往往一些本质的东西是无法了解到</p>
+<h2 id="被隐藏的过程"><a href="#被隐藏的过程" class="headerlink" title="被隐藏的过程"></a>被隐藏的过程</h2><p>在Linux下如果使用gcc编译一个c语言程序，只需最简单的命令：<br><code>gcc hello.c</code><br><code>./a.out</code></p>
+<p>事实上，上述的过程可以分为4个步骤：</p>
+<ul>
+<li><strong>预处理（Prepressing）</strong></li>
+<li><strong>编译（Compilation）</strong></li>
+<li><strong>汇编（Assembly）</strong></li>
+<li><strong>链接（Linking）</strong></li>
+</ul>
+<p><img src="https://i.loli.net/2019/10/20/QcLRGhPsZitb2mn.png" alt="GCC编译过程"><br><a id="more"></a></p>
+<h3 id="预编译"><a href="#预编译" class="headerlink" title="预编译"></a>预编译</h3><p>首先是源代码文件hello.c和相关的头文件，如stdio.h等被预编器cpp预编译成一个.i文件。对于C++程序来说，它的源代码文件的扩展名可能是.cpp或.cxx，头文件的扩展名可能是.hpp，而预编译后的扩展文件名是.ii，第一步预编译的过程相当于如下命名：</p>
+<p><code>gcc -E hello.c -o hello.i</code></p>
+<p>其中-E表示只进行预编译</p>
+<p>或者：</p>
+<p><code>cpp hello.c &gt; hello.i</code></p>
+<p>预编译过程主要处理那些源代码中的<strong>以 “#” 开头</strong>的预编译指令，主要处理规则如下：</p>
+<ul>
+<li>将所有的”#define”删去，并且展开所有的宏定义</li>
+<li>处理所有的条件预编译指令，如 “#if”、”#ifdef” 等</li>
+<li>处理”#include”预编译指令，将被包含的文件插入到该预编译指令的位置</li>
+<li>删除所有的注释</li>
+<li>添加行号和文件名标识，比如#2”hello.c” 2，以便编译时产生调试用的行号信息，提示错误等等</li>
+<li>保留所有的”#pragma”编译指令，因为编译器需要使用它们</li>
+</ul>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>编译过程就是把预处理完成的文件进行一系列词法分析，语法分析，语义分析以及优化后生成相应的汇编代码文件。</p>
+<p><code>gcc -S hello.i -o hello.s</code></p>
+<p>得到编译输出的汇编文件hello.s</p>
+<h3 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h3><p>汇编器将汇编代码转变为机器可以执行的指令，每个汇编语句几乎对应一条机器指令。上面的汇编我们可以调用汇编器as来完成</p>
+<p><code>as hello.s -o hello.o</code></p>
+<p>也可以用gcc直接从c源码输出目标文件</p>
+<p><code>gcc -c hello.c -o hello.o</code></p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>我们需要把一大堆文件链接起来才能得到”a.out”，即最终的可执行文件，<br>链接过程会链接一些程序如：crt1.o、crti.o、crtbeginT.o、crtend.o、crtn.o</p>
+<h3 id="编译器做了什么"><a href="#编译器做了什么" class="headerlink" title="编译器做了什么"></a>编译器做了什么</h3><p>最直观的说，编译器将高级语言转化为机器语言。</p>
+<p>细一点说，就是上面提到的词法分析和语法分析那些。</p>
+<h4 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h4><p>首先，源代码程序被输入到<strong>扫描器（Scanner）</strong>中，扫描器的任务很简单，它只是简单的进行词法分析，运用一种类似于<strong>有限状态机（Finite State Machine）</strong>的算法可以轻松地将源代码的字符串分割为一系列的<strong>记号（Token）</strong>，有一个叫做lex的程序可以实现词法扫描。</p>
+<blockquote>
+<p>有限状态机</p>
+<blockquote>
+<p>有限状态自动机（FSM “finite state machine” 或者FSA “finite state automaton” ）是为研究有限内存的计算过程和某些语言类而抽象出的一种计算模型。有限状态自动机拥有有限数量的状态，每个状态可以迁移到零个或多个状态，输入字串决定执行哪个状态的迁移。有限状态自动机可以表示为一个有向图。有限状态自动机是自动机理论的研究对象(来源百度)</p>
+</blockquote>
+<p>Lex</p>
+<blockquote>
+<p>Lex 是一种生成扫描器的工具。扫描器是一种识别文本中的词汇模式的程序。 这些词汇模式（或者常规表达式）在一种特殊的句子结构中定义。<br>一种匹配的常规表达式可能会包含相关的动作。这一动作可能还包括返回一个标记。 当 Lex 接收到文件或文本形式的输入时，它试图将文本与常规表达式进行匹配。 它一次读入一个输入字符，直到找到一个匹配的模式。 如果能够找到一个匹配的模式，Lex 就执行相关的动作（可能包括返回一个标记）。 另一方面，如果没有可以匹配的常规表达式，将会停止进一步的处理，Lex 将显示一个错误消息。<br>Lex 和 C 是强耦合的。一个 .lex 文件（Lex 文件具有 .lex 的扩展名）通过 lex 公用程序来传递，并生成 C 的输出文件。这些文件被编译为词法分析器的可执行版本。</p>
+</blockquote>
+</blockquote>
+<p>词法分析产生的记号可以分为如下几类：关键字，标识符，字面量（含数字，字符串）和特殊符号（加号，等号）</p>
+<p>如：<br><code>array[index] = (index + 4) * 2</code></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>记号</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>array</td>
+<td>标识符</td>
+</tr>
+<tr>
+<td>[</td>
+<td>左方括号</td>
+</tr>
+<tr>
+<td>index</td>
+<td>标识符</td>
+</tr>
+<tr>
+<td>]</td>
+<td>右花括号</td>
+</tr>
+<tr>
+<td>=</td>
+<td>赋值</td>
+</tr>
+<tr>
+<td>(</td>
+<td>左圆括号</td>
+</tr>
+<tr>
+<td>index</td>
+<td>标识符</td>
+</tr>
+<tr>
+<td>+</td>
+<td>加号</td>
+</tr>
+<tr>
+<td>4</td>
+<td>数字</td>
+</tr>
+<tr>
+<td>)</td>
+<td>右圆括号</td>
+</tr>
+<tr>
+<td>*</td>
+<td>乘号</td>
+</tr>
+<tr>
+<td>2</td>
+<td>数字</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h3><p>接下来<strong>语法分析器（Grammar Parser）</strong>将对扫描器产生的记号进行语法分析，从而产生<strong>语法树（Syntax Tree）</strong>。整个分析采取<strong>上下文无关语法（Context-free Grammar）</strong>的分析手段</p>
+<blockquote>
+<p>上下文无关语法分析手段</p>
+</blockquote>
+<p>由语法分析器生成的语法树就是以<strong>表达式（Expression）</strong>为节点的树。我们知道，C语言的一个语句是一个表达式，而复杂的语句是多个表达式的组合。<br>以书上的语法树的样子作为一个例子：</p>
+<p><img src="https://i.loli.net/2019/10/21/Lv9Q1UPmaye8EAl.png" alt="语法树"></p>
+<p>这个例子中，整个语句被当做一个赋值表达式，在语法分析的同时，很多的运算符号的优先级和含义也被确定下来了。</p>
+<p>语法分析也有一个现成的工具yacc（Yet Another Compiler Compiler）。对于不同的编程语言，编译器的开发者只需要改变语法规则，而无需为每个编译器写一个语法分析器，所以它又被称为<strong>“编译器编译器（Compiler Compiler）”</strong></p>
+<blockquote>
+<p>yacc<br>我们看到 Lex 从输入序列中识别标记。 如果你在查看标记序列，你可能想在这一序列出现时执行某一动作。这种情况下有效序列的规范称为语法。Yacc 语法文件包括这一语法规范。它还包含了序列匹配时你想要做的事。<br>为了更加说清这一概念，让我们以英语为例。 这一套标记可能是：名词, 动词, 形容词等等。为了使用这些标记造一个语法正确的句子，你的结构必须符合一定的规则。 一个简单的句子可能是名词+动词或者名词+动词+名词。(如 I care. See spot run.)</p>
+<p>用 Yacc 来创建一个编译器包括四个步骤：<br>通过在语法文件上运行 Yacc 生成一个解析器。<br>说明语法：<br>编写一个 .y 的语法文件（同时说明 C 在这里要进行的动作）。<br>编写一个词法分析器来处理输入并将标记传递给解析器。 这可以使用 Lex 来完成。<br>编写一个函数，通过调用 yyparse() 来开始解析。<br>编写错误处理例程（如 yyerror()）。<br>编译 Yacc 生成的代码以及其他相关的源文件。<br>将目标文件链接到适当的可执行解析器库。</p>
+</blockquote>
+<h3 id="语义分析"><a href="#语义分析" class="headerlink" title="语义分析"></a>语义分析</h3><p>语义分析由<strong>语义分析器（Semantic Analyzer）</strong>来完成，语法分析仅仅只是表面的上的分析，但他并不明白这个语句真正有没有含义。编译器能分析的语义是<strong>静态语义（Static Semantic）</strong>，在编译期间可以确定的语义，而对应的<strong>动态语义（Dynamic Semantic）</strong>就只有在运行中才可以确定。</p>
+<ul>
+<li><p>静态语义通常包括声明和类型匹配，类型转换。如：浮点数赋值给了一个整型，隐含一个转换，就需要静态语义的分析。</p>
+</li>
+<li><p>动态语义就是分析运行时的语义问题，如：0不能做除数，需要抛出错误异常等，需要动态语义分析</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/10/20/zXhJDdEtBSbjAM9.png" alt="标识语义的语法树"></p>
+<h3 id="中间语言生成"><a href="#中间语言生成" class="headerlink" title="中间语言生成"></a>中间语言生成</h3><p>现代的编译器有很多层的优化，往往在源代码级别会有一个优化过程，称为<strong>源码级优化器（Source Code Optimizer）</strong></p>
+<p>源码优化器往往会将整个语法树转换为<strong>中间代码（Intermediate Code）</strong>，中间代码很接近目标代码了，只是其与运行的机器的环境无关，如：不包含数据的尺寸，变量地址，寄存器名称。中间代码有很多的类型，比较常见的是<strong>三地址码（Three-address Code）</strong>和<strong>P-代码（P-Code）</strong></p>
+<p>最基本的三地址码是这样的：</p>
+<p><code>x = y op z</code></p>
+<p>一般为了使所有的操作都符号三地址码，往往需要添加中间变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">array[index] &#x3D; (index + 4) * 2</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 三地址码</span><br><span class="line"></span><br><span class="line">t1 &#x3D; index + 4</span><br><span class="line">t1 &#x3D; t1 * 2</span><br><span class="line">array[index] &#x3D; t1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="目标代码的生成"><a href="#目标代码的生成" class="headerlink" title="目标代码的生成"></a>目标代码的生成</h3><p><strong>代码生成器（Code Generator）</strong>将中间代码转换为目标机器代码。</p>
+<p>生成目标代码后会进一步的优化，如选择合适的寻址方式，使用移位来代替乘法，删除多余的指令等。</p>
+<p>经过扫描，语法语义分析，源代码优化，代码生成和目标代码的优化，源代码被编译为目标代码，但如果想要使用汇编编译成真正能够在机器上执行的指令，还需要考虑一些别的问题：</p>
+<p><strong>上述代码中index和array的地址怎么获得</strong></p>
+<p>如果只是在一个文件里，直接分配空间就可以确定地址，但如果在别的程序模块里呢？</p>
+<h3 id="链接器"><a href="#链接器" class="headerlink" title="链接器"></a>链接器</h3><p>当程序设计模块化时，各个模块直接通信依赖的就是<strong>链接（Linking）</strong>，链接又分2种，<strong>静态链接</strong>和<strong>动态链接</strong></p>
+<p>链接的主要作用就是把各个模块之间的符号引用部分处理好。它所做的工作就是调地址，修正一些引用。链接的过程主要包括：<strong>地址空间分配（Address and Storage Allocation）</strong>，<strong>符号决议（Symbol Resolution）</strong>，<strong>重定位（Relocation）</strong></p>
+<p>以c语言为例，当我们在main里引用了再func.c里声明的函数foo()，那么在编译main.c时。编译器并不知道foo函数的地址，所以它就先搁置，等链接时去修正，链接器会把待修正的地址根据在引用的目标文件里查找来修正，这个修正的过程叫<strong>重定位</strong>，每个修正的地方叫<strong>重定位入口（Entry）</strong></p>
+<h4 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h4><p>最基本的静态链接就是把库和目标文件链在一起，最常见的就是<strong>运行时库（Runtime Library）</strong>，库就是一组目标文件的包，把一些常用的代码编译成目标文件然后打包存放起来。</p>
+<h4 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h4><p>为了节省内存，在运行时只装载一部分的文件进入内存，同时保障程序正常运行。常见的.dll文件就是动态链接库</p>
+<h2 id="后记——实验环境"><a href="#后记——实验环境" class="headerlink" title="后记——实验环境"></a>后记——实验环境</h2><p>我的Linux机又又又炸了，忍无可忍，在windows下用wsl</p>
+<h3 id="windows装wsl"><a href="#windows装wsl" class="headerlink" title="windows装wsl"></a>windows装wsl</h3><p>在应用商店里搜索Ubuntu，安装应用即可</p>
+<p>安装完后按下面的步骤启动Windows对Linux子系统的支持：</p>
+<ul>
+<li>我的电脑 &gt; 属性 &gt; 控制面板 &gt; 程序 &gt; 启用或关闭Windows的功能，找到适用于Linux的Windows子系统，勾选然后重启。</li>
+</ul>
+<p>不行的话 </p>
+<ul>
+<li><code>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</code></li>
+</ul>
+<p>然后按提示重启</p>
+<p>然后换源，升级apt，后续的就按你自己的喜好来吧</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>程序员的自我修养——编译和链接</p><p><a href="http://cyx0706.github.io/2019/10/20/Linkers-Loaders-2/">http://cyx0706.github.io/2019/10/20/Linkers-Loaders-2/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>John Doe</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2019-10-20</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linkers-Loaders/">Linkers&amp;Loaders</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2019/10/26/Django-fresher-2/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Django入门——视图函数</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2019/10/15/Django-fresher-1/"><span class="level-item">Django入门——URL调度器</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "e443fe4f739c477f6850826ae90d6a30",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#编译和链接"><span class="level-left"><span class="level-item">1</span><span class="level-item">编译和链接</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#被隐藏的过程"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">被隐藏的过程</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#预编译"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">预编译</span></span></a></li><li><a class="level is-mobile" href="#编译"><span class="level-left"><span class="level-item">1.1.2</span><span class="level-item">编译</span></span></a></li><li><a class="level is-mobile" href="#汇编"><span class="level-left"><span class="level-item">1.1.3</span><span class="level-item">汇编</span></span></a></li><li><a class="level is-mobile" href="#链接"><span class="level-left"><span class="level-item">1.1.4</span><span class="level-item">链接</span></span></a></li><li><a class="level is-mobile" href="#编译器做了什么"><span class="level-left"><span class="level-item">1.1.5</span><span class="level-item">编译器做了什么</span></span></a></li><li><a class="level is-mobile" href="#语法分析"><span class="level-left"><span class="level-item">1.1.6</span><span class="level-item">语法分析</span></span></a></li><li><a class="level is-mobile" href="#语义分析"><span class="level-left"><span class="level-item">1.1.7</span><span class="level-item">语义分析</span></span></a></li><li><a class="level is-mobile" href="#中间语言生成"><span class="level-left"><span class="level-item">1.1.8</span><span class="level-item">中间语言生成</span></span></a></li><li><a class="level is-mobile" href="#目标代码的生成"><span class="level-left"><span class="level-item">1.1.9</span><span class="level-item">目标代码的生成</span></span></a></li><li><a class="level is-mobile" href="#链接器"><span class="level-left"><span class="level-item">1.1.10</span><span class="level-item">链接器</span></span></a></li></ul></li><li><a class="level is-mobile" href="#后记——实验环境"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">后记——实验环境</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#windows装wsl"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">windows装wsl</span></span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 John Doe</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

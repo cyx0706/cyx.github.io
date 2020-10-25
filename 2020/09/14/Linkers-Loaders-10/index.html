@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>程序员的自我修养——Linux共享库 - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="Linux 共享库共享库（Shared Library）其实在文件结构上和共享对象没有什么区别，Linux 下的共享库就是普通的 ELF 共享文件。由于共享对象可以被各个程序使用，所以它就成了库的很好的存在形式。"><meta property="og:type" content="blog"><meta property="og:title" content="程序员的自我修养——Linux共享库"><meta property="og:url" content="http://cyx0706.github.io/2020/09/14/Linkers-Loaders-10/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="Linux 共享库共享库（Shared Library）其实在文件结构上和共享对象没有什么区别，Linux 下的共享库就是普通的 ELF 共享文件。由于共享对象可以被各个程序使用，所以它就成了库的很好的存在形式。"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"><meta property="article:published_time" content="2020-09-14T09:19:12.000Z"><meta property="article:modified_time" content="2020-10-25T01:49:34.467Z"><meta property="article:author" content="John Doe"><meta property="article:tag" content="Linkers&amp;Loaders"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/self-culture.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2020/09/14/Linkers-Loaders-10/"},"headline":"Hexo","image":["http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"],"datePublished":"2020-09-14T09:19:12.000Z","dateModified":"2020-10-25T01:49:34.467Z","author":{"@type":"Person","name":"John Doe"},"description":"Linux 共享库共享库（Shared Library）其实在文件结构上和共享对象没有什么区别，Linux 下的共享库就是普通的 ELF 共享文件。由于共享对象可以被各个程序使用，所以它就成了库的很好的存在形式。"}</script><link rel="canonical" href="http://cyx0706.github.io/2020/09/14/Linkers-Loaders-10/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/self-culture.jpg" alt="程序员的自我修养——Linux共享库"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-09-14T09:19:12.000Z" title="2020-09-14T09:19:12.000Z">2020-09-14</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:49:34.467Z" title="2020-10-25T01:49:34.467Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/ComputerOrganization/">ComputerOrganization</a></span></div></div><h1 class="title is-3 is-size-4-mobile">程序员的自我修养——Linux共享库</h1><div class="content"><h1 id="Linux-共享库"><a href="#Linux-共享库" class="headerlink" title="Linux 共享库"></a>Linux 共享库</h1><p>共享库（Shared Library）其实在文件结构上和共享对象没有什么区别，Linux 下的共享库就是普通的 ELF 共享文件。由于共享对象可以被各个程序使用，所以它就成了库的很好的存在形式。</p>
+<a id="more"></a>
+<h2 id="共享库的命名"><a href="#共享库的命名" class="headerlink" title="共享库的命名"></a>共享库的命名</h2><p>有必要了解一下你的 Linux 里面那群 xxx.so.1… 表示啥含义的</p>
+<ul>
+<li><p>共享库的命名模板为: <code>libname.so.x.y.z</code></p>
+<ul>
+<li>其中最前面使用前缀 “lib”，中间的库名和 “.so” 后缀。最后面跟着的三个数字表示版本号。</li>
+<li>“x” 表示<strong>主版本号（Major Version Number）</strong>，表示库的重大升级，不同主版本号之间不兼容。</li>
+<li>“y” 表示<strong>次版本号（Minor Version Number）</strong>，表示库的增量升级，即增加一些新的接口符号，且保持原来的符号不变。</li>
+<li>“z” 表示<strong>发布版本号（Release Version Number）</strong>，表示库的一些错误的修正，性能改进，并不增加新的接口，也不对接口进行更改。</li>
+</ul>
+</li>
+</ul>
+<p>大体上按照这样的标准，但实际上有不少库的名字并不符合这个模板。</p>
+<h3 id="SO-NAME"><a href="#SO-NAME" class="headerlink" title="SO-NAME"></a>SO-NAME</h3><p>在 Linux 系统中，系统会为每个共享库在它的所在目录创建一个和 “SO-NAME” 相同的并且指向它的<strong>软链接（Symbol Link）</strong>。比如说系统中有一个共享库 <code>/lib/libfoo.so.2.6.1</code>，那么 Linux中的共享库管理程序就会为它产生一个软链接 <code>/lib/libfoo.so.2</code> 指向它。</p>
+<p>建立以 SO-NAME 为名字的软链接的目的是，使得所有依赖某个共享库的模块，在编译，链接和运行时，都使用共享库的 SO-NAME，而不使用详细的版本号。</p>
+<h2 id="共享库系统路径"><a href="#共享库系统路径" class="headerlink" title="共享库系统路径"></a>共享库系统路径</h2><p>目前大多数包括 Linux 在内的开源操作系统都遵循一个叫做<strong>FHS（File Hierarchy Standard）</strong>的标准。根据其规定，一个系统中主要有3个存放共享库的位置：</p>
+<ul>
+<li><code>/lib</code>: 这个位置主要放系统最关键和基础的共享库，比如说动态链接器，C 语言运行库，数学库</li>
+<li><code>/usr/lib</code>: 这个目录下主要保存的是一些非系统运行时所需要的关键性的共享库，主要是一些开发时用到的共享库，这些共享库一般不会被用户的程序或 Shell 脚本直接用到。这个目录下面还包含了一些开发时可能用到的静态库，目标文件。</li>
+<li><code>/usr/local/lib</code>: 这个目录用来放置一些跟操作系统本身并不相关的库，主要是一些第三方应用程序的库。比如说 python 语言的解释器。GNU 的标准推荐第三方的应用程序的库全部安装到 <code>usr/local/lib</code> 下。</li>
+</ul>
+<h2 id="共享库查找过程"><a href="#共享库查找过程" class="headerlink" title="共享库查找过程"></a>共享库查找过程</h2><p>在开源的系统中，包括所有的 Linux 系统在内的很多都是基于 Glibc 的。我们知道在这些系统里面，动态链接的 ELF 可执行文件在启动的同时会启动动态链接器。在 Linux 系统中，动态链接器是 <code>/lib/ld-linux.so.X(version)</code>。程序所依赖的共享对象全部由动态链接器负责装载和初始化。任何一个动态链接器的模块所依赖的模块路径保存在 “.dynamic” 里面，由 DT_NEED 类型的项来表示。如果保存的是绝对路径，则就会去按照这个路径寻找。如果是相对路径，那么动态链接器会在 <code>/lib</code>, <code>/usr/lib</code> 和 <code>/etc/ld.so.conf</code> 配置文件指定的目录中查找共享库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">/etc$</span><span class="bash"> cat ld.so.conf</span></span><br><span class="line">include /etc/ld.so.conf.d/*.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">/etc$</span><span class="bash"> <span class="built_in">cd</span> ld.so.conf.d</span></span><br><span class="line">/etc/ld.so.conf.d$ ls</span><br><span class="line">fakeroot-x86_64-linux-gnu.conf  libc.conf              zz_i386-biarch-compat.conf</span><br><span class="line">i386-linux-gnu.conf             x86_64-linux-gnu.conf  zz_x32-biarch-compat.conf</span><br></pre></td></tr></table></figure>
+<p>如果动态链接器每次都要去查找这些文件目录，将会非常耗时间。所以 Linux 系统中有一个叫做 ldcofig 的程序，这个程序的作用是为共享库目录下的各个共享库文件创建，删除，更新相应的 SO-NAME（符号链接），这个程序还会收集这些 SO-NAME，集中放到 <code>/etc/ld.so.cache</code> 里面查找。如果没有找到，还是需要遍历 <code>/lib</code>, <code>/usr/lib</code> 这两个目录去寻找，如果还是找不到就链接失败。</p>
+<p>理论上我们增加，删除，更新任意一个共享库或者我们修改了 <code>/etc/ld.so.conf</code> 的配置，都需要运行 idcofig 这个程序。很多软件包的安装程序往往在里面安装共享库以后都会调用 idcofig</p>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><h3 id="LD-LIBRARY-PATH"><a href="#LD-LIBRARY-PATH" class="headerlink" title="LD_LIBRARY_PATH"></a>LD_LIBRARY_PATH</h3><p>Linux 提供很多方法来改变动态链接装载共享库路径的方法，使用这些方法我们可以满足一些特殊的要求，比如共享库的调试和测试，应用程序级别的虚拟等。改变共享库查找路径最简单的方法是使用 <strong>LD_LIBRARY_PATH</strong> 环境变量，这个方法可以临时改变某个应用程序的共享库查找路径，而不会影响系统中的其他程序。</p>
+<p>总的来说，动态链接器会按照下列顺序依次装载或查找共享对象（目标文件）：</p>
+<ul>
+<li>由环境变量 <strong>LD_LIBRARY_PATH</strong> 指定的路径</li>
+<li>由路径缓存文件 <code>/etc/ld.so.cache</code> 指定的路径</li>
+<li>默认共享库目录，先 <code>/usr/lib</code> 再 <code>/lib</code></li>
+</ul>
+<h3 id="LD-PRELOAD"><a href="#LD-PRELOAD" class="headerlink" title="LD_PRELOAD"></a>LD_PRELOAD</h3><p>系统中另外还有一个环境变量叫做 <strong>LD_PRELOAD</strong>，这个文件中我们可以指定预先装载的一些共享库甚或是目标文件。在<strong>LD_PRELOAD</strong> 里面指定的文件会在动态链接器按照固定的规则搜素共享库之前装载，它比 <strong>LD_LIBRARY_PATH</strong> 里面所指定的目录中的共享库还要优先。无论程序是否依赖于它们，<strong>LD_PRELOAD</strong> 里面指定的共享库或目标文件都会被装载。</p>
+<p>由于全局符号介入这个机制的存在，<strong>LD_PRELOAD</strong> 里面指定的共享库或目标文件中的全局符号就会覆盖后面加载的同名全局符号，正常情况下应该避免使用 <strong>LD_PRELOAD</strong></p>
+<h3 id="LD-DEBUG"><a href="#LD-DEBUG" class="headerlink" title="LD_DEBUG"></a>LD_DEBUG</h3><p>这个变量可以打开动态链接器的调试功能，当我们设置这个变量是，动态链接器会在运行时打印各种有用的信息。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bindings</td>
+<td>显示动态链接的符号绑定过程</td>
+</tr>
+<tr>
+<td>libs</td>
+<td>显示共享库的查找过程</td>
+</tr>
+<tr>
+<td>versions</td>
+<td>显示符号的版本依赖关系</td>
+</tr>
+<tr>
+<td>reloc</td>
+<td>显示重定位过程</td>
+</tr>
+<tr>
+<td>symbols</td>
+<td>显示符号表查找过程</td>
+</tr>
+<tr>
+<td>statistics</td>
+<td>显示动态链接过程中的各种统计信息</td>
+</tr>
+<tr>
+<td>all</td>
+<td>显示以上全部信息</td>
+</tr>
+<tr>
+<td>help</td>
+<td>显示上面的各种可选值和帮助信息</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们运行一个简单的动态链接程序</p>
+<figure class="highlight c"><figcaption><span>hello.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用 gcc 编译然后设置 <strong>LD_DEBUG</strong> 值执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> LD_DEBUG=libs ./hello</span></span><br><span class="line">        57:     find library=libc.so.6 [0]; searching</span><br><span class="line">        57:      search cache=/etc/ld.so.cache</span><br><span class="line">        57:       trying file=/lib/x86_64-linux-gnu/libc.so.6</span><br><span class="line">        57:</span><br><span class="line">        57:</span><br><span class="line">        57:     calling init: /lib/x86_64-linux-gnu/libc.so.6</span><br><span class="line">        57:</span><br><span class="line">        57:</span><br><span class="line">        57:     initialize program: ./hello</span><br><span class="line">        57:</span><br><span class="line">        57:</span><br><span class="line">        57:     transferring control: ./hello</span><br><span class="line">        57:</span><br><span class="line">        57:</span><br><span class="line">        57:     calling fini: ./hello [0]</span><br><span class="line">        57:</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure>
+<h2 id="共享库的创建"><a href="#共享库的创建" class="headerlink" title="共享库的创建"></a>共享库的创建</h2><p>创建共享库的过程和创建一般的共享对象的过程基本一致，最关键的是使用 GCC 的两个参数，即 “-shared” 和 “-fPIC”。”-shared” 表示输出结果是共享库类型的， “-fPIC” 表示使用地址无关代码的技术来生成输出文件。另外还有参数是 “-WI”，这个参数可以将指定的参数传递给链接器，比如当我们使用 “-Wl, -soname, my_soname” 时，GCC 会将 “-soname my_soname” 传递给链接器来指定输出共享库的 SO-NAME。</p>
+<p>我们可以使用下面的命令来生成一个共享库</p>
+<p><code>$gcc -shared -Wl, -soname, my_soname -o library_name source_files...</code></p>
+<ul>
+<li>!如果我们不使用 -soname来指定，那么该共享库默认没有 SO-NAME，使用 idconfig 更新软链接时对该共享库是无效的</li>
+</ul>
+<p>例如我们有源码 “libfoo1.c” 和 “libfoo2.c”，我们希望产生一个 “libfoo.so.1.0.0” 的共享库，这个共享库依赖于 “bar1.so” 和 “bar2.so”，这样你就可以使用下面命令:</p>
+<p><code>$gcc -shared -fPIC -Wl, -soname, libfoo.so.1 -o libfoo.so.1.0.0 libfoo1.c libfoo2.c -lbar1 -lbar2</code></p>
+<p>多步进行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">gcc -c -g -Wall -o libfoo1.o libfoo1.c</span></span><br><span class="line"><span class="meta">$</span><span class="bash">gcc -c -g -Wall -o libfoo2.o libfoo2.c</span></span><br><span class="line"><span class="meta">$</span><span class="bash">ld -shared -soname libfoo.so.1 -o libfoo.so.1.0.0 \</span></span><br><span class="line">libfoo1.o libfoo2.o -lbar1 -lbar2</span><br></pre></td></tr></table></figure>
+<h3 id="清除符号信息"><a href="#清除符号信息" class="headerlink" title="清除符号信息"></a>清除符号信息</h3><p>正常情况下编译出来的共享库或可执行文件里面带有符号信息和调试信息，这些信息在调试时很有用，但对于最终的发布版本意义不大。我们可以使用一个叫 “strip” 的工具清除掉共享库或可执行文件的所有符号和调试信息，这样可以减少文件的大小</p>
+<p><code>strip libfoo.so</code></p>
+<p>也可以使用 ld 的 “-s” 和 “-S” 参数，使得在生成输出文件时就不产生符号信息，前者消除所有的符号信息，后者消除调试符号信息。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>程序员的自我修养——Linux共享库</p><p><a href="http://cyx0706.github.io/2020/09/14/Linkers-Loaders-10/">http://cyx0706.github.io/2020/09/14/Linkers-Loaders-10/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>John Doe</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-09-14</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linkers-Loaders/">Linkers&amp;Loaders</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/09/21/python-web-1/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Python 网络编程</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/08/23/Linkers-Loaders-9/"><span class="level-item">程序员的自我修养——动态链接</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "b01fbbc58fbedcba9597958a1096fa13",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Linux-共享库"><span class="level-left"><span class="level-item">1</span><span class="level-item">Linux 共享库</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#共享库的命名"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">共享库的命名</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#SO-NAME"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">SO-NAME</span></span></a></li></ul></li><li><a class="level is-mobile" href="#共享库系统路径"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">共享库系统路径</span></span></a></li><li><a class="level is-mobile" href="#共享库查找过程"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">共享库查找过程</span></span></a></li><li><a class="level is-mobile" href="#环境变量"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">环境变量</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#LD-LIBRARY-PATH"><span class="level-left"><span class="level-item">1.4.1</span><span class="level-item">LD_LIBRARY_PATH</span></span></a></li><li><a class="level is-mobile" href="#LD-PRELOAD"><span class="level-left"><span class="level-item">1.4.2</span><span class="level-item">LD_PRELOAD</span></span></a></li><li><a class="level is-mobile" href="#LD-DEBUG"><span class="level-left"><span class="level-item">1.4.3</span><span class="level-item">LD_DEBUG</span></span></a></li></ul></li><li><a class="level is-mobile" href="#共享库的创建"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">共享库的创建</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#清除符号信息"><span class="level-left"><span class="level-item">1.5.1</span><span class="level-item">清除符号信息</span></span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 John Doe</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

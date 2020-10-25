@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>程序员的自我修养—目标文件里有什么 - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="第三章的后半部分 链接的接口 链接的本质是要把多个不同的目标文件之间相互”粘”在一起。为了使不同的目标文件可以相互粘合，这些目标文件之间必须有固定的格式。 在链接中，目标文件之间相互拼合实际上是目标文件之间对地址的引用，即对函数和变量的地址的引用。"><meta property="og:type" content="blog"><meta property="og:title" content="程序员的自我修养—目标文件里有什么"><meta property="og:url" content="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-4/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="第三章的后半部分 链接的接口 链接的本质是要把多个不同的目标文件之间相互”粘”在一起。为了使不同的目标文件可以相互粘合，这些目标文件之间必须有固定的格式。 在链接中，目标文件之间相互拼合实际上是目标文件之间对地址的引用，即对函数和变量的地址的引用。"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"><meta property="article:published_time" content="2020-02-02T13:37:23.000Z"><meta property="article:modified_time" content="2020-10-25T01:51:22.589Z"><meta property="article:author" content="John Doe"><meta property="article:tag" content="Linkers&amp;Loaders"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/self-culture.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2020/02/02/Linkers-Loaders-4/"},"headline":"Hexo","image":["http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"],"datePublished":"2020-02-02T13:37:23.000Z","dateModified":"2020-10-25T01:51:22.589Z","author":{"@type":"Person","name":"John Doe"},"description":"第三章的后半部分 链接的接口 链接的本质是要把多个不同的目标文件之间相互”粘”在一起。为了使不同的目标文件可以相互粘合，这些目标文件之间必须有固定的格式。 在链接中，目标文件之间相互拼合实际上是目标文件之间对地址的引用，即对函数和变量的地址的引用。"}</script><link rel="canonical" href="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-4/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/self-culture.jpg" alt="程序员的自我修养—目标文件里有什么"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-02-02T13:37:23.000Z" title="2020-02-02T13:37:23.000Z">2020-02-02</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:51:22.589Z" title="2020-10-25T01:51:22.589Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/ComputerOrganization/">ComputerOrganization</a></span></div></div><h1 class="title is-3 is-size-4-mobile">程序员的自我修养—目标文件里有什么</h1><div class="content"><p>第三章的后半部分</p>
+<h1 id="链接的接口"><a href="#链接的接口" class="headerlink" title="链接的接口"></a>链接的接口</h1><ul>
+<li>链接的本质是要把多个不同的目标文件之间相互”粘”在一起。为了使不同的目标文件可以相互粘合，这些目标文件之间必须有固定的格式。<ul>
+<li>在链接中，目标文件之间相互拼合实际上是目标文件之间对地址的引用，即对函数和变量的地址的引用。<a id="more"></a></li>
+</ul>
+</li>
+<li>我们可以将符号看作是链接中的粘合剂，整个链接过程中正是基于符号才能正确完成。链接过程中很关键的一部分就是符号的管理，每一个目标文件都会有一个相应的<strong>符号表（Symbol Table）</strong>，这里面记录了目标文件中所用到的所有符号。每个定义的符号有一个对应的值，叫做<strong>符号值（Symbol Value）</strong>，对于变量和函数来说，符号值就是他们的地址。首先对符号进行一定的分类：<ul>
+<li>定义在本目标文件的全局符号，可以被其他目标文件引用。</li>
+<li>在本目标文件中引用的全局符号，却没有定义在本目标文件，这一般被叫做<strong>外部符号（External Symbol）</strong>。</li>
+<li>段名，这种符号往往由编译器产生，它的值就是该段的起始地址。</li>
+<li>局部符号，这类符号只在编译单元内部可见。调试器可以使用这些符号来分析程序或崩溃时的核心转储文件。这些局部符号对于链接过程没有作用，链接器往往也忽略它们。</li>
+</ul>
+</li>
+</ul>
+<p>对于我们来说，最值得关注的是全局符号。使用 <code>nm xxx.o</code> 来查看符号表。</p>
+<p><img src="https://i.loli.net/2020/02/04/wkKuLEmpZHrVsWy.png" alt=""></p>
+<h2 id="ELF-符号表结构"><a href="#ELF-符号表结构" class="headerlink" title="ELF 符号表结构"></a>ELF 符号表结构</h2><p>ELF中的符号表往往是文件中的一个段，段名为 “.symtab”。符号表的结构很简单，它是一个 Elf32_Sym 结构（32位ELF文件）的数组，每个 Elf32_Sym 结构对应一个符号。这个数组的第一个元素是无效的未定义符号，结构定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  Elf32_Word	st_name;		<span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line">  Elf32_Addr	st_value;		<span class="comment">/* Symbol value */</span></span><br><span class="line">  Elf32_Word	st_size;		<span class="comment">/* Symbol size */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	st_info;		<span class="comment">/* Symbol type and binding */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	st_other;		<span class="comment">/* Symbol visibility */</span></span><br><span class="line">  Elf32_Section	st_shndx;		<span class="comment">/* Section index */</span></span><br><span class="line">&#125; Elf32_Sym;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>st_name</td>
+<td>符号名，这个成员包含了该符号在字符串表中的下标</td>
+</tr>
+<tr>
+<td>st_value</td>
+<td>符号相对应的值，这个值和符号有关</td>
+</tr>
+<tr>
+<td>st_size</td>
+<td>符号的大小，对于包含数据的符号，这个值是该数据类型的大小。如 double 8字节，但若为0，则表示符号大小为0或未知</td>
+</tr>
+<tr>
+<td>st_info</td>
+<td>符号类型和绑定信息</td>
+</tr>
+<tr>
+<td>st_other</td>
+<td>0，目前无意义</td>
+</tr>
+<tr>
+<td>st_index</td>
+<td>符号所在的段</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="符号类型和绑定信息"><a href="#符号类型和绑定信息" class="headerlink" title="符号类型和绑定信息"></a>符号类型和绑定信息</h4><ul>
+<li><p>低4位表示符号的类型（Symbol Type），高28位表示绑定信息（Symbol Binding）</p>
+</li>
+<li><p>符号绑定信息</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>宏定义名</th>
+<th>值</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STB_LOCAL</td>
+<td>0</td>
+<td style="text-align:right">局部符号</td>
+</tr>
+<tr>
+<td>STB_GLOBAL</td>
+<td>1</td>
+<td style="text-align:right">全局符号</td>
+</tr>
+<tr>
+<td>STB_WEAK</td>
+<td>2</td>
+<td style="text-align:right">弱引用</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>符号类型</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>宏定义名</th>
+<th>值</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STT_NOTYPE</td>
+<td>0</td>
+<td style="text-align:right">未知类型符号</td>
+</tr>
+<tr>
+<td>STT_OBJECT</td>
+<td>1</td>
+<td style="text-align:right">该符号是数据对象，如变量，数组</td>
+</tr>
+<tr>
+<td>STT_FUNC</td>
+<td>2</td>
+<td style="text-align:right">该符号是一个函数或其他可执行代码</td>
+</tr>
+<tr>
+<td>STT_SECTION</td>
+<td>3</td>
+<td style="text-align:right">该符号表示一个段</td>
+</tr>
+<tr>
+<td>STT_FILE</td>
+<td>4</td>
+<td style="text-align:right">该符号表示文件名，一般都是该目标文件对应的源文件名</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="符号所在段"><a href="#符号所在段" class="headerlink" title="符号所在段"></a>符号所在段</h4><ul>
+<li><p>如果符号定义在本目标文件中，那么这个成员表示符号所在的段在段表中的下标；但是如果符号不是定义在本目标文件中，或者对于有些特殊的符号，sh_shndx 的值会有些特殊</p>
+</li>
+<li><p>符号表所在段特殊常量</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>宏定义名</th>
+<th>值</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SHN_ABS</td>
+<td>0xfff1</td>
+<td style="text-align:right">表示该符号包含一个绝对的值</td>
+</tr>
+<tr>
+<td>SHN_COMMON</td>
+<td>0xfff2</td>
+<td style="text-align:right">表示该符号是一个 COMMON 块，一般来说，未初始化的全局符号定义就是这种类型</td>
+</tr>
+<tr>
+<td>SHN_UNDEF</td>
+<td>0</td>
+<td style="text-align:right">该符号未定义。这个符号表示该符号在本目标文件中被引用到但定义在其他目标文件中</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="符号值"><a href="#符号值" class="headerlink" title="符号值"></a>符号值</h4><ul>
+<li>在目标文件中，如果是符号的定义并且该符号不是 “COMMON” 块类型，则 st_value 表示该符号在段中的偏移。即符号所对应的函数或变量位于由 st_shndx 指定的段，偏移 st_value 的位置。这也是目标文件中定义全局变量的符号最常见的情况，如 main, global_init_var</li>
+<li>在目标文件中，如果符号是 “COMMON” 块，则 st_value 表示该符号的对齐属性，比如 simple_section.o 中的 global_uninit_var</li>
+<li>可执行文件中，st_value 表示符号的虚拟地址。这个虚拟地址对于动态链接器很有用</li>
+</ul>
+<p>可以使用 <code>readelf -s xxx.o</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">readelf -s simple_section.o</span><br><span class="line"></span><br><span class="line">Symbol table &#39;.symtab&#39; contains 20 entries:</span><br><span class="line">   Num:    Value  Size Type    Bind   Vis      Ndx Name</span><br><span class="line">     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND</span><br><span class="line">     1: 00000000     0 FILE    LOCAL  DEFAULT  ABS simple_section.c</span><br><span class="line">     2: 00000000     0 SECTION LOCAL  DEFAULT    2</span><br><span class="line">     3: 00000000     0 SECTION LOCAL  DEFAULT    4</span><br><span class="line">     4: 00000000     0 SECTION LOCAL  DEFAULT    5</span><br><span class="line">     5: 00000000     0 SECTION LOCAL  DEFAULT    6</span><br><span class="line">     6: 00000004     4 OBJECT  LOCAL  DEFAULT    4 static_var.1419</span><br><span class="line">     7: 00000000     4 OBJECT  LOCAL  DEFAULT    5 static_var2.1420</span><br><span class="line">     8: 00000000     0 SECTION LOCAL  DEFAULT    7</span><br><span class="line">     9: 00000000     0 SECTION LOCAL  DEFAULT    9</span><br><span class="line">    10: 00000000     0 SECTION LOCAL  DEFAULT   10</span><br><span class="line">    11: 00000000     0 SECTION LOCAL  DEFAULT    8</span><br><span class="line">    12: 00000000     0 SECTION LOCAL  DEFAULT    1</span><br><span class="line">    13: 00000000     4 OBJECT  GLOBAL DEFAULT    4 global_init_var</span><br><span class="line">    14: 00000004     4 OBJECT  GLOBAL DEFAULT  COM global_uninit_var</span><br><span class="line">    15: 00000000    46 FUNC    GLOBAL DEFAULT    2 func1</span><br><span class="line">    16: 00000000     0 FUNC    GLOBAL HIDDEN     7 __x86.get_pc_thunk.ax</span><br><span class="line">    17: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND _GLOBAL_OFFSET_TABLE_</span><br><span class="line">    18: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND printf</span><br><span class="line">    19: 0000002e    81 FUNC    GLOBAL DEFAULT    2 main</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>对于未显示的 STT_SECTION 类型的符号，它们表示下标为 Ndx 的段的段名，他的符号名就是段名，如 Ndx 为1应为 .text 段</li>
+<li>static_var 变成了 static_var.1419，这和符号修饰有关</li>
+<li>simple_section.c 表示编译单元的源文件名</li>
+</ul>
+<h2 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h2><ul>
+<li><p>当我们使用 ld 作为链接器来链接生成可执行文件时，它会为我们定义很多特殊的符号，这些符号并没有在你的程序中定义，但你可以直接声明并且引用它，我们称之为特殊符号。链接器会在将程序最终链接成可执行文件的时候将其解析为正确的值。只有用 ld 链接生产最终可执行文件的时候这些符号才会存在。</p>
+<ul>
+<li>__exectuable_start: 程序的起始地址，并非入口地址，是程序最开始的地址</li>
+<li>__etext &amp; _etext &amp; etext: 代码段结束地址，即代码段最末尾的地址 </li>
+<li>_edata &amp; edata: 该符号表示数据段结束地址，即代码最末尾的地址</li>
+<li>_end &amp; end: 程序结束的地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="符号修饰和函数签名"><a href="#符号修饰和函数签名" class="headerlink" title="符号修饰和函数签名"></a>符号修饰和函数签名</h2><ul>
+<li>最早的时候，编译器编译源代码产生目标文件时，符号名与相应的变量名或者函数名是一致的。但后来 UNIX 平台和 C 语言出现，一个 C 程序想要使用原来用汇编写的库或者目标文件时，就不能用和这些库中定义的函数和变量名字重复的，否则会造成冲突。</li>
+<li>为了防止符号名冲突，UNIX 下的 C 语言规定， C 语言源代码文件中的所有全局变量和函数经过编译以后，相应符号名前加上下划线。别的语言也加上别的东西。这是最原始的解决方法。后来便有了<strong>命名空间（NameSpace）</strong> 的方法来解决多模块的符号冲突问题。</li>
+</ul>
+<h3 id="C-符号修饰"><a href="#C-符号修饰" class="headerlink" title="C++ 符号修饰"></a>C++ 符号修饰</h3><figure class="highlight c++"><figcaption><span>函数名修饰</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">func</span><span class="params">(<span class="keyword">float</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">C2</span>&#123;</span></span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> N &#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">C</span> &#123;</span></span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>区别他们，用到了一个叫做<strong>函数签名（Function Signature）</strong>的东西，函数签名包括了一个函数的信息，如：参数类型，类，函数名，返回值等。这样每个函数名虽然相同，但其函数签名不同，我们用某种名称修饰的方法使得每个函数签名对用一个修饰后的名字。</p>
+<p>上述函数在 gcc 编译器下相对应的修饰后的名称：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>函数签名</th>
+<th>修饰后的符号名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int func(int)</td>
+<td>_Z4funci</td>
+</tr>
+<tr>
+<td>float func(float)</td>
+<td>_Z4funcf</td>
+</tr>
+<tr>
+<td>int C::func(int)</td>
+<td>_ZN1C4funcEi</td>
+</tr>
+<tr>
+<td>int C::C2::func(int)</td>
+<td>_ZN1C2C24funcEi</td>
+</tr>
+<tr>
+<td>int N::func(int)</td>
+<td>_ZN1N4funcEi</td>
+</tr>
+<tr>
+<td>int N::C::func(int)</td>
+<td>_ZN1N1C4funcEi</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们不需要了解怎么修饰， binutils 提供了一个 “c++filt” 的工具可以解析<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ c++filt _ZN1N1C4funcEi</span><br><span class="line"><span class="function">N::<span class="title">C</span>::<span class="title">func</span>(<span class="title">int</span>)</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>当然 Visual C++ 修饰的方法和结果与 gcc 完全不同。<ul>
+<li>由于不同的编译器采取不同的的名字来修饰，必然导致不同的编译器直接的文件无法正常相互链接，这是导致不同编译器之间不能互操作的重要的原因之一</li>
+</ul>
+</li>
+</ul>
+<h2 id="extern-“C”"><a href="#extern-“C”" class="headerlink" title="extern “C”"></a>extern “C”</h2><ul>
+<li>C++ 为了与 c 兼容，在符号管理方面，使用 extern “C” 来把作用的代码当做 C 的代码来处理。</li>
+<li>很多时候，我们会碰到有些头文件声明了一些 C 语言的函数和全局变量，但是这个头文件可能会被 C 语言的代码或 C++ 代码包含。如 string.h 库中的 memset 函数。如果不做任何处理，在 C++ 中就会认为其是 C++ 的函数，这样修饰后就无法和 C 语言库的 memset 符号进行链接。对于 C++，必须使用 extern “C” ，但 C 语言没有这个。</li>
+<li>解决方法：使用 C++ 的宏 “__cplusplus”</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用条件宏来判断当前编译单元是不是 C++ 的代码</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">memset</span><span class="params">(<span class="keyword">void</span> *, <span class="keyword">int</span>, <span class="keyword">size_t</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果是 C++ 会加上 extern “C” 来声明。如果是 C 代码就直接声明。上面这段代码的技巧几乎在所有的系统头文件里都被用到。</li>
+</ul>
+<h2 id="强符号和弱符号"><a href="#强符号和弱符号" class="headerlink" title="强符号和弱符号"></a>强符号和弱符号</h2><ul>
+<li>全局初始化的变量会被称为<strong>强符号（Strong Symbol）</strong>。而未初始化则被认为是<strong>弱符号（Weak Symbol）</strong></li>
+<li>我们可以用 GCC 的 “__attribute__((weak))” 来定义任何一个强符号为弱符号。需要注意：强符号和弱符号都是相当于定义来说的，而不是针对符号的引用。针对强弱符号的概念，链接器按如下规则处理<ul>
+<li>不允许强符号被多次定义</li>
+<li>如果一个符号在某个目标文件中是强符号，在其他文件中是弱符号，则选择强符号作为定义</li>
+<li>如果一个符号在多个目标文件中都是弱符号，则选择占用空间最大的</li>
+</ul>
+</li>
+</ul>
+<h3 id="弱引用和强引用"><a href="#弱引用和强引用" class="headerlink" title="弱引用和强引用"></a>弱引用和强引用</h3><ul>
+<li>对外部目标文件的符号引用在目标文件被最终链接时要被正确的决议。如果找不到定义，则报未定义错误，这种被称为<strong>强引用（Strong Reference）</strong>。与之对应还有<strong>弱引用（Weak Reference）</strong>，在处理弱引用时，如果有定义，则用定义。如果没有则对于该引用不报错。一般对于未定义的弱引用，链接器默认其为0。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((weak)) <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(foo)&#123;</span><br><span class="line">        foo();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行一下没有任何结果，果然 foo 被赋值为0</p>
+<h4 id="关于-weakref"><a href="#关于-weakref" class="headerlink" title="关于 weakref"></a>关于 weakref</h4><blockquote>
+<p>weakref<br>weakref (“target”)<br>The weakref attribute marks a declaration as a weak reference. Without arguments, it should be accompanied by an alias（别名） attribute naming the target symbol. Optionally, the target may be given as an argument to weakref itself. In either case, weakref implicitly（隐式） marks the declaration as weak. Without a target, given as an argument to weakref or to alias, weakref is equivalent to weak.</p>
+<p>static int x() __attribute__ ((weakref (“y”)));<br>/<em> is equivalent to… </em>/<br>static int x() __attribute__ ((weak, weakref, alias (“y”)));<br>/<em> and to… </em>/<br>static int x() __attribute__ ((weakref));<br>static int x() __attribute__ ((alias (“y”)));<br>A weak reference is an alias that does not by itself require a definition to be given for the target symbol. If the target symbol is only referenced through weak references, then it becomes a weak undefined symbol. If it is directly referenced, however, then such strong references prevail, and a definition is required for the symbol, not necessarily in the same translation unit.</p>
+<p>At present, a declaration to which weakref is attached can only be static.</p>
+</blockquote>
+<h2 id="调试信息"><a href="#调试信息" class="headerlink" title="调试信息"></a>调试信息</h2><ul>
+<li>如果在 gcc 编译时加上 -g 参数，就会加上调试信息。</li>
+<li>调试信息有相应的标准格式而且往往很大（比程序的代码和数据本身大好多倍）</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>程序员的自我修养—目标文件里有什么</p><p><a href="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-4/">http://cyx0706.github.io/2020/02/02/Linkers-Loaders-4/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>John Doe</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-02-02</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linkers-Loaders/">Linkers&amp;Loaders</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/02/11/django-understanding-2/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Django WSGI Server</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/02/02/Linkers-Loaders-3/"><span class="level-item">程序员的自我修养—目标文件里有什么</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "b15f40962db9e9ce25b3c19bfa9cb2d3",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#链接的接口"><span class="level-left"><span class="level-item">1</span><span class="level-item">链接的接口</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#ELF-符号表结构"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">ELF 符号表结构</span></span></a></li><li><a class="level is-mobile" href="#特殊符号"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">特殊符号</span></span></a></li><li><a class="level is-mobile" href="#符号修饰和函数签名"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">符号修饰和函数签名</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#C-符号修饰"><span class="level-left"><span class="level-item">1.3.1</span><span class="level-item">C++ 符号修饰</span></span></a></li></ul></li><li><a class="level is-mobile" href="#extern-“C”"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">extern “C”</span></span></a></li><li><a class="level is-mobile" href="#强符号和弱符号"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">强符号和弱符号</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#弱引用和强引用"><span class="level-left"><span class="level-item">1.5.1</span><span class="level-item">弱引用和强引用</span></span></a></li></ul></li><li><a class="level is-mobile" href="#调试信息"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">调试信息</span></span></a></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 John Doe</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

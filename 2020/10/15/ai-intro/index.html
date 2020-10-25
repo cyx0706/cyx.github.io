@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>AI-Introduction - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="每羊大学 2020 级软工不做网站&amp;#x2F;应用了，改成了做一个人工智能相关的项目（亚达），这门课改名为软件工程——人工智能导论！ 人工智能绪论人工智能 &amp;gt; 机器学习 &amp;gt; 深度学习"><meta property="og:type" content="blog"><meta property="og:title" content="AI-Introduction"><meta property="og:url" content="http://cyx0706.github.io/2020/10/15/ai-intro/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="每羊大学 2020 级软工不做网站&amp;#x2F;应用了，改成了做一个人工智能相关的项目（亚达），这门课改名为软件工程——人工智能导论！ 人工智能绪论人工智能 &amp;gt; 机器学习 &amp;gt; 深度学习"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/ai.jpg"><meta property="article:published_time" content="2020-10-15T11:50:00.000Z"><meta property="article:modified_time" content="2020-10-25T01:42:10.454Z"><meta property="article:author" content="John Doe"><meta property="article:tag" content="Machine Learning"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/ai.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2020/10/15/ai-intro/"},"headline":"Hexo","image":["http://cyx0706.github.io/gallery/thumbnails/ai.jpg"],"datePublished":"2020-10-15T11:50:00.000Z","dateModified":"2020-10-25T01:42:10.454Z","author":{"@type":"Person","name":"John Doe"},"description":"每羊大学 2020 级软工不做网站&#x2F;应用了，改成了做一个人工智能相关的项目（亚达），这门课改名为软件工程——人工智能导论！ 人工智能绪论人工智能 &gt; 机器学习 &gt; 深度学习"}</script><link rel="canonical" href="http://cyx0706.github.io/2020/10/15/ai-intro/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/ai.jpg" alt="AI-Introduction"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-10-15T11:50:00.000Z" title="2020-10-15T11:50:00.000Z">2020-10-15</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:42:10.454Z" title="2020-10-25T01:42:10.454Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/AI/">AI</a></span></div></div><h1 class="title is-3 is-size-4-mobile">AI-Introduction</h1><div class="content"><p>每羊大学 2020 级软工不做网站/应用了，改成了做一个人工智能相关的项目（亚达），<del>这门课改名为软件工程——人工智能导论！</del></p>
+<h1 id="人工智能绪论"><a href="#人工智能绪论" class="headerlink" title="人工智能绪论"></a>人工智能绪论</h1><p>人工智能 &gt; 机器学习 &gt; 深度学习<br><a id="more"></a></p>
+<h2 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h2><ul>
+<li>数据标记（输出空间）已知，目的在于学习输入和输出的映射</li>
+<li>标注所有的数据过于庞大</li>
+</ul>
+<h2 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h2><ul>
+<li>数据标记未知，目的在于发现数据中的模式或者有意义的信息</li>
+</ul>
+<h2 id="半监督学习"><a href="#半监督学习" class="headerlink" title="半监督学习"></a>半监督学习</h2><ul>
+<li>数据标记部分已知，是监督学习和无监督学习的混合</li>
+</ul>
+<h2 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h2><ul>
+<li>数据标记未知，知道与输出目标相关的反馈，适用于决策类问题</li>
+<li>虽然使用未标记的数据，但可以知道离目标越来越近还是越来越远（奖励反馈）</li>
+</ul>
+<h2 id="数据分布"><a href="#数据分布" class="headerlink" title="数据分布"></a>数据分布</h2><h3 id="参数模型"><a href="#参数模型" class="headerlink" title="参数模型"></a>参数模型</h3><p>对数据分布进行假设，待求解的数据模式/映射可以用一组有限且固定数目的参数来刻画<br>比如假设条件概率 P(Y|X) 属于高斯分布，我们就应该用一个线性回归模型来解决（对问题数据的假设后用固定数量参数的模型来解决）</p>
+<h3 id="非参数模型"><a href="#非参数模型" class="headerlink" title="非参数模型"></a>非参数模型</h3><p>无法得到数据的分布，所有的模型特性都从数据本身来学。非参 != 无参</p>
+<h2 id="建模对象"><a href="#建模对象" class="headerlink" title="建模对象"></a>建模对象</h2><p>生成模型：对输入X和输出Y的联合分布P(X, Y)建模<br>判别模型：对已知输入X条件下输出Y的条件分布P(Y|X)建模</p>
+<h2 id="机器学习历史"><a href="#机器学习历史" class="headerlink" title="机器学习历史"></a>机器学习历史</h2><div align=center><img src="https://i.loli.net/2020/10/15/AxpzT3VQUobh2q9.png" width="70%" height="50%" /></div>
+
+<h3 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h3><p>传统机器学习：人工设计特征</p>
+<ul>
+<li>预处理：经过数据的预处理，如去除噪声等。比如在文本分析中去除停用词</li>
+<li>特征提取：从原始数据中提取一些有效的特征。比如在图像分类中提取边缘，尺度不变特征变换特征等</li>
+<li>特征转换：对特征进行一定的加工，比如降维和升维。降维包括：<ul>
+<li>特征抽取（Feature Extraction）：PCA，LDA</li>
+<li>特征选择（Feature Selection）：互信息，TF-IDF</li>
+</ul>
+</li>
+</ul>
+<p>深度学习的不能</p>
+<ul>
+<li>算法输出不稳定，容易被攻击（如：one pixel attack）</li>
+<li>模型复杂程度高，难以纠错和调试</li>
+<li>模型层级复合程度高，参数不透明</li>
+<li>专注直观感知类问题，对开放性推理问题无能为力</li>
+<li>人类知识无法有效引入进行监督，机器偏见难以避免</li>
+<li>可解释性差</li>
+</ul>
+<h2 id="神经网络基础"><a href="#神经网络基础" class="headerlink" title="神经网络基础"></a>神经网络基础</h2><h3 id="浅层神经网络"><a href="#浅层神经网络" class="headerlink" title="浅层神经网络"></a>浅层神经网络</h3><p>启发：生物神经元</p>
+<ul>
+<li>每个神经元都是一个多输入单输出的信息处理单元</li>
+<li>神经元具有空间整合和时间整合特性</li>
+<li>神经元输入分为兴奋性输入和抑制性输入</li>
+<li>神经元具有阈值特性</li>
+</ul>
+<p>生物神经元 -&gt; M-P 神经元</p>
+<div align=center><img src="https://i.loli.net/2020/10/16/mxHPXFL1tZ9DT7M.png" width="70%" height="50%"></div>
+
+<p>f？激活函数，超出阈值才会被激活。为什么要引入激活函数？</p>
+<ul>
+<li>没有激活函数就相当于矩阵相乘，只能拟合线性函数</li>
+<li>加入激活函数使得对非线性函数有拟合能力</li>
+</ul>
+<p>sigmoid 函数，逻辑函数: $\sigma \left ( z \right ) = \frac{1}{1+e^{-z} }$，其导数 ${\sigma \left ( z \right ) }’ = \sigma \left ( z \right )\left ( 1- \sigma \left ( z \right ) \right )$</p>
+<p>由于输出不对称，修改为双极S性函数</p>
+<script type="math/tex; mode=display">
+tanh(x) = 2 \times sigmoid(2x)-1 = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}
+\\
+g(z)' = 1 - g(z)^2</script><p>其余的还有ReLU修正线性单元 $relu(z) = max(0,z)$，leaky ReLU $leakyrelu(z)=max(0.01z, z)$ （增加了可以跳出0的初值）</p>
+<h3 id="单层感知器"><a href="#单层感知器" class="headerlink" title="单层感知器"></a>单层感知器</h3><p><img src="https://i.loli.net/2020/10/16/Y1o5By9OFdRcHkn.png"/></p>
+<h4 id="非线性激活函数"><a href="#非线性激活函数" class="headerlink" title="非线性激活函数"></a>非线性激活函数</h4><p>$h(x)=g(10-20x_1)$，当x=0时，z=10，h计算选择 sigmoid 函数，此时h近似为1，当x=1时，z=-10，h近似为0，相当于实现了逻辑非，我们只看x和h，相当于在01空间里做了一个分界面，这个面就是我们上面的函数。</p>
+<p>但是异或就无法被划分了，单层-&gt;多层 来解决这个问题。</p>
+<p>拿基础的逻辑or或者and组合来完成这个操作，对于原始的输入，经过第一步处理形成了一个中间层，中间层通过组合来确立最终的输出。</p>
+<blockquote>
+<p>深度学习训练过程可视化 <a target="_blank" rel="noopener" href="http://playground.tensorflow.org">playground.tensorflow.org</a></p>
+</blockquote>
+<p>如果一个隐层包含足够多的神经元，三层前馈神经网络（输入-隐层-输出）能以任意精度逼近任意预定的连续函数。当隐层足够宽时，双隐层感知器可以逼近任何非连续函数</p>
+<p><img src="https://i.loli.net/2020/10/16/vXTJBkASQrujYZ8.png" height="50%" /></p>
+<h4 id="为什么隐层越多越精确？"><a href="#为什么隐层越多越精确？" class="headerlink" title="为什么隐层越多越精确？"></a>为什么隐层越多越精确？</h4><p>每一层的数学公式 $\vec{y}=a(W\cdot\vec{x}+b)$</p>
+<p>完成输入到输出空间的变化（升维降维，放大缩小，旋转平移，弯曲）</p>
+<p>神经网络学习如何利用矩阵的线性变换加激活函数的非线性变换，将原始输入空间投影到线性可分的空间去分类/回归。增加节点数：增加线性转换能力，增加层数:增加激活函数的次数，即增加非线性转换次数。</p>
+<h4 id="Fat-and-Short-or-Thin-and-Tall"><a href="#Fat-and-Short-or-Thin-and-Tall" class="headerlink" title="Fat and Short or Thin and Tall?"></a>Fat and Short or Thin and Tall?</h4><p>有论文说明：深度和宽度对函数复杂度的贡献是不同的，深度的贡献是指数增长的，而宽度贡献是线性的。</p>
+<p>但实际我们如果用上面的网站，尝试在使用 sigmoid 激活函数做二分时，当深度在4,5时就无法分类了。</p>
+<p>这就是多层神经网络的一个<strong>梯度消失</strong>问题</p>
+<p>多层神经网络可以看做一个<strong>复合的非线性多元函数</strong>，但不断的传输会导致损失不断的增大。</p>
+<div align=center><img src="https://i.loli.net/2020/10/16/h1aXOqFyJPQKvAV.png"></div>
+
+
+<p>无约束优化：梯度下降</p>
+<p>参数沿负梯度方向更新可以使函数值下降</p>
+<script type="math/tex; mode=display">
+\theta_j = \theta_j - \alpha\frac{\partial}{\partial\theta_j}J(\theta)</script><h4 id="误差反向传播"><a href="#误差反向传播" class="headerlink" title="误差反向传播"></a>误差反向传播</h4><p>复合函数的链式求导</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial w_i} = \frac{\partial L}{\partial a} \cdot \frac{\partial a}{\partial z} \cdot \frac{\partial z}{\partial w_i}</script><p>代入</p>
+<script type="math/tex; mode=display">
+\sum_{c}^{k=1}(a_k-y_k)^2 \\ 
+\sigma(z)=\frac{1}{1+e^-z}</script><p>经过计算</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial w_i} = 2(a-y)\cdot a(1-a) \cdot x_i</script><p>残差：定义为损失函数在某个结点的偏导：<br>$da^{[1]}=\frac{\partial L}{\partial a^{[1]}} = \frac{\partial L}{\partial z^{[2]}} \cdot W^{[2]}$</p>
+<h4 id="梯度消失"><a href="#梯度消失" class="headerlink" title="梯度消失"></a>梯度消失</h4><p>误差在反向传播时在乘激活函数的倒数时由于斜率过低导致误差直接消失掉了。也就是说前面的几层根本无法接收到这个传回来的误差。这样虽然更新了后面的几层，但是当新一个 x 传入时，后面的值又变了回来，相当于这次基于误差的修改并没有起到作用。</p>
+<div align=center><img src="https://i.loli.net/2020/10/16/KqyjkMasJwglZTS.png" width="50%" height="50%" /></div>
+
+<p>逐层预训练（layer-wise pre-training）解决局部最小值的问题和梯度消失问题，即寻找一个还不错的局部最小值。</p>
+<h3 id="受限波尔兹曼机和自编码器"><a href="#受限波尔兹曼机和自编码器" class="headerlink" title="受限波尔兹曼机和自编码器"></a>受限波尔兹曼机和自编码器</h3><p>自编码器：最初被提出来用来降维</p>
+<p><img src="https://i.loli.net/2020/10/16/Cr3uTgBwqGdohEz.png"/></p>
+<p><img src="https://i.loli.net/2020/10/16/EW2g7Hcm48GsKby.png"/></p>
+<p>堆叠自编码器（stacked autoencoder，SAE）</p>
+<ul>
+<li>将多个自编码器得到的隐层串联</li>
+<li>将所有层预训练完成后，进行基于监督学习的全网络微调</li>
+</ul>
+<p><img src="https://i.loli.net/2020/10/16/4IWAFB8Tjorkqwh.png" height="50%" /></p>
+<p>受限玻尔兹曼机（RBM）：</p>
+<p><img src="https://i.loli.net/2020/10/16/DxdAPXHObIyEg89.png" height="50%" /></p>
+<p>目的是让隐藏层得到可见层v’ 与原来的可见层v分布一致，从而使隐藏层作为可见层输入的特征。两个方向权重w共享，偏置不同。</p>
+<p>最终形式，条件概率建模，以 sigmoid 作为激活函数:</p>
+<script type="math/tex; mode=display">
+P(h_i=1|v) = sigm(c_i+W_i v)
+\\
+P(v_j=1|h) = sigm(b_j+{W_j}'h)</script><p>联合概率 -&gt; 条件概率，即需要从联合概率里推出两个方向的条件概率</p>
+<script type="math/tex; mode=display">
+p(h|v)=\frac{p(h,v)}{p(v)}, p(v|h)=\frac{p(h,v)}{p(h)}</script><p>怎么推出来的？什么是波尔兹曼？</p>
+<p>判别模型：直接建模计算条件概率<br>生成模型：先计算联合概率，然后通过贝叶斯公式来计算条件概率</p>
+<p>那受限波尔兹曼的联合条件概率是什么样子的？</p>
+<p>统计物理学：能量越低越稳定，概率越大（熵小），即我们通过熵来联系概率和能量。</p>
+<p>把能量的玻尔兹曼分布定义联合概率</p>
+<p>把玻尔兹曼公式代入条件概率计算：</p>
+<p><img src="https://i.loli.net/2020/10/16/pBevLAZCJ1K3WgE.png" width="80%" height="50%" /></p>
+<p><img src="https://i.loli.net/2020/10/16/ochusQE36O5KDBG.png" width="80%" height="50%" /></p>
+<p>RBM 到 DBN（深度信念网络）<br>一个 DBN 模型有若干个 RBM 堆叠而成，最后加一个监督层（如 BP 网络）</p>
+<p>一般波尔兹曼机（BM）：</p>
+<p><img src="https://i.loli.net/2020/10/16/GQ6BPg9bxS4Vpqk.png" width="80%" height="50%" /></p>
+<p>如今，逐层预训练成为了历史……</p>
+<p>新的激活函数 + 优化方法 + 更大的标注训练数据使得预训练很少再被使用了，逐层训练无法从本质上解决梯度消失问题。</p>
+<p>主流的深度学习平台甚至不支持 RBM 和预训练。</p>
+<h3 id="自编码器的变种"><a href="#自编码器的变种" class="headerlink" title="自编码器的变种"></a>自编码器的变种</h3><ul>
+<li>正则自编码器（Regularized AE），使提取的特征表达式符合某种性质</li>
+<li>稀疏自编码器（Sparse AE），提取稀疏特征表达（我们认为高维而稀疏的表达式是好的）</li>
+<li>去噪自编码器（Denoising AE），对被破坏或者污染的数据中重构原始数据，提取特征</li>
+<li>变分自编码器（Variational AE），与对抗式生成网络 GAN 关系密切，是深度学习—-概率图模型的桥梁</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>AI-Introduction</p><p><a href="http://cyx0706.github.io/2020/10/15/ai-intro/">http://cyx0706.github.io/2020/10/15/ai-intro/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>John Doe</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-10-15</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Machine-Learning/">Machine Learning</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/10/18/python-web-6/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">python-web-6</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/10/15/denominator/"><span class="level-item">denominator</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "953946140e1506506043d5c5d2d696bc",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#人工智能绪论"><span class="level-left"><span class="level-item">1</span><span class="level-item">人工智能绪论</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#监督学习"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">监督学习</span></span></a></li><li><a class="level is-mobile" href="#无监督学习"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">无监督学习</span></span></a></li><li><a class="level is-mobile" href="#半监督学习"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">半监督学习</span></span></a></li><li><a class="level is-mobile" href="#强化学习"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">强化学习</span></span></a></li><li><a class="level is-mobile" href="#数据分布"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">数据分布</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#参数模型"><span class="level-left"><span class="level-item">1.5.1</span><span class="level-item">参数模型</span></span></a></li><li><a class="level is-mobile" href="#非参数模型"><span class="level-left"><span class="level-item">1.5.2</span><span class="level-item">非参数模型</span></span></a></li></ul></li><li><a class="level is-mobile" href="#建模对象"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">建模对象</span></span></a></li><li><a class="level is-mobile" href="#机器学习历史"><span class="level-left"><span class="level-item">1.7</span><span class="level-item">机器学习历史</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特征"><span class="level-left"><span class="level-item">1.7.1</span><span class="level-item">特征</span></span></a></li></ul></li><li><a class="level is-mobile" href="#神经网络基础"><span class="level-left"><span class="level-item">1.8</span><span class="level-item">神经网络基础</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#浅层神经网络"><span class="level-left"><span class="level-item">1.8.1</span><span class="level-item">浅层神经网络</span></span></a></li><li><a class="level is-mobile" href="#单层感知器"><span class="level-left"><span class="level-item">1.8.2</span><span class="level-item">单层感知器</span></span></a></li><li><a class="level is-mobile" href="#受限波尔兹曼机和自编码器"><span class="level-left"><span class="level-item">1.8.3</span><span class="level-item">受限波尔兹曼机和自编码器</span></span></a></li><li><a class="level is-mobile" href="#自编码器的变种"><span class="level-left"><span class="level-item">1.8.4</span><span class="level-item">自编码器的变种</span></span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 John Doe</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

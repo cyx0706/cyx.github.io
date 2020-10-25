@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>runtime-test - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="一般来说，我们的测试代码是测试自己写的代码，测试模块的功能，但如果我们想自动化测试一个.py文件或者exe程序，就完全不一样了如何自己写一个简易的测评姬？就是实现自动读取样例和输出样例对比来确定程序是否正确 思路：启动一个子线程，将子线程的输入输出流重定向方便我们获取，然后样例标志答案保存至文件，读取即可。 需要用到Python的subprocess模块"><meta property="og:type" content="blog"><meta property="og:title" content="runtime-test"><meta property="og:url" content="http://cyx0706.github.io/2019/09/26/runtime-test/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="一般来说，我们的测试代码是测试自己写的代码，测试模块的功能，但如果我们想自动化测试一个.py文件或者exe程序，就完全不一样了如何自己写一个简易的测评姬？就是实现自动读取样例和输出样例对比来确定程序是否正确 思路：启动一个子线程，将子线程的输入输出流重定向方便我们获取，然后样例标志答案保存至文件，读取即可。 需要用到Python的subprocess模块"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/unittest.jpg"><meta property="article:published_time" content="2019-09-26T12:55:27.000Z"><meta property="article:modified_time" content="2020-10-25T01:56:47.776Z"><meta property="article:author" content="John Doe"><meta property="article:tag" content="unittest"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/unittest.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2019/09/26/runtime-test/"},"headline":"Hexo","image":["http://cyx0706.github.io/gallery/thumbnails/unittest.jpg"],"datePublished":"2019-09-26T12:55:27.000Z","dateModified":"2020-10-25T01:56:47.776Z","author":{"@type":"Person","name":"John Doe"},"description":"一般来说，我们的测试代码是测试自己写的代码，测试模块的功能，但如果我们想自动化测试一个.py文件或者exe程序，就完全不一样了如何自己写一个简易的测评姬？就是实现自动读取样例和输出样例对比来确定程序是否正确 思路：启动一个子线程，将子线程的输入输出流重定向方便我们获取，然后样例标志答案保存至文件，读取即可。 需要用到Python的subprocess模块"}</script><link rel="canonical" href="http://cyx0706.github.io/2019/09/26/runtime-test/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/unittest.jpg" alt="runtime-test"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2019-09-26T12:55:27.000Z" title="2019-09-26T12:55:27.000Z">2019-09-26</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:56:47.776Z" title="2020-10-25T01:56:47.776Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/Python/">Python</a></span></div></div><h1 class="title is-3 is-size-4-mobile">runtime-test</h1><div class="content"><p>一般来说，我们的测试代码是测试自己写的代码，测试模块的功能，但如果我们想自动化测试一个.py文件或者exe程序，就完全不一样了<br>如何自己写一个简易的测评姬？就是实现自动读取样例和输出样例对比来确定程序是否正确</p>
+<p>思路：启动一个子线程，将子线程的输入输出流重定向方便我们获取，然后样例标志答案保存至文件，读取即可。</p>
+<p>需要用到Python的subprocess模块<br><a id="more"></a></p>
+<h2 id="subprocess模块"><a href="#subprocess模块" class="headerlink" title="subprocess模块"></a>subprocess模块</h2><p>运行python的时候，我们都是在创建并运行一个进程。像Linux进程那样，一个进程可以fork一个子进程，并让这个子进程exec另外一个程序。在Python中，我们通过标准库中的subprocess包来fork一个子进程，并运行一个外部的程序。<br>subprocess包中定义有数个创建子进程的函数，这些函数分别以不同的方式创建子进程，所以我们可以根据需要来从中选取一个使用。另外subprocess还提供了一些管理标准流(standard stream)和管道(pipe)的工具，从而在进程间使用文本通信。</p>
+<ul>
+<li><p><code>subprocess.call()</code><br>父进程等待子进程完成<br>返回退出信息(return code，相当于Linux exit code)</p>
+</li>
+<li><p><code>subprocess.check_call()</code><br>父进程等待子进程完成并返回0<br>检查退出信息，如果returncode不为0，则举出错误subprocess.CalledProcessError，该对象包含有returncode属性，可用try…except…来检查</p>
+</li>
+<li><p><code>subprocess.Popen()</code><br>启动一个子线程，它有一个复杂的构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def __init__(self, args, bufsize&#x3D;-1, executable&#x3D;None,</span><br><span class="line">                 stdin&#x3D;None, stdout&#x3D;None, stderr&#x3D;None,</span><br><span class="line">                 preexec_fn&#x3D;None, close_fds&#x3D;_PLATFORM_DEFAULT_CLOSE_FDS,</span><br><span class="line">                 shell&#x3D;False, cwd&#x3D;None, env&#x3D;None, universal_newlines&#x3D;False,</span><br><span class="line">                 startupinfo&#x3D;None, creationflags&#x3D;0,</span><br><span class="line">                 restore_signals&#x3D;True, start_new_session&#x3D;False,</span><br><span class="line">                 pass_fds&#x3D;(), *, encoding&#x3D;None, errors&#x3D;None)</span><br></pre></td></tr></table></figure>
+<p>经常用到的参数也不多：</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>args</td>
+<td>要执行的shell命令，可以是字符串，也可以是命令各个参数组成的序列。当该参数的值是一个字符串时，该命令的解释过程是与平台相关的，因此通常建议将args参数作为一个序列传递。</td>
+</tr>
+<tr>
+<td>bufsize</td>
+<td>指定缓存策略，0表示不缓冲，1表示行缓冲，其他大于1的数字表示缓冲区大小，负数 表示使用系统默认缓冲策略。</td>
+</tr>
+<tr>
+<td>stdin，stdout</td>
+<td>用于重定向标准的流。</td>
+</tr>
+<tr>
+<td>shell</td>
+<td>该参数用于标识是否使用shell作为要执行的程序，如果shell值为True，则建议将args参数作为一个字符串传递而不要作为一个序列传递。</td>
+</tr>
+<tr>
+<td>universal_newlines</td>
+<td>不同系统的换行符不同。若True，则该文件对象的stdin，stdout和stderr将会以文本流方式打开；否则以二进制流方式打开。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>比较特殊的地方是，我们可以指定使用subprocess.PIPE</strong><br>并可以利用subprocess.PIPE将多个子进程的输入和输出连接在一起，构成管道(pipe)，这实际就是建立了一块缓冲区</p>
+<p>Popen的方法：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Popen.poll()</td>
+<td>用于检查子进程是否已经结束。设置并返回returncode属性。</td>
+</tr>
+<tr>
+<td>Popen.wait()</td>
+<td>等待子进程结束。设置并返回returncode属性。</td>
+</tr>
+<tr>
+<td>Popen.send_signal(signal)</td>
+<td>向子进程发送信号。</td>
+</tr>
+<tr>
+<td>Popen.terminate()</td>
+<td>停止(stop)子进程。在windows平台下，该方法将调用Windows API TerminateProcess（）来结束子进程。</td>
+</tr>
+<tr>
+<td>Popen.kill()</td>
+<td>杀死子进程。</td>
+</tr>
+<tr>
+<td>Popen.stdin()</td>
+<td>如果在创建Popen对象时，参数stdin被设置为PIPE，Popen.stdin将返回一个文件对象用于向子进程发送指令。否则返回None。</td>
+</tr>
+<tr>
+<td>Popen.stdout</td>
+<td>类似上</td>
+</tr>
+<tr>
+<td>Popen.pid</td>
+<td>获取子进程的进程ID。</td>
+</tr>
+<tr>
+<td>Popen.returncode</td>
+<td>获取进程的返回值。如果进程还没有结束，返回None。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><code>Popen.communicate()</code><br>用于获取缓冲区的数据并且避免死锁情况：<br>如果 stdout或 stderr 参数是 pipe，并且程序输出超过操作系统的 pipe size时，如果使用 Popen.wait() 方式等待程序结束获取返回值，会导致死锁，程序卡在 wait() 调用上。<br>需要注意的是，communicate获取到的是一个元组，包含stdout和stderr<br>同时communicate()是Popen对象的一个方法，该方法会阻塞父进程，直到子进程完成，所以不需要wait了<h2 id="重定向标志流"><a href="#重定向标志流" class="headerlink" title="重定向标志流"></a>重定向标志流</h2>sys.stdin = 文件流即可</li>
+</ul>
+<h2 id="获取文件的路径"><a href="#获取文件的路径" class="headerlink" title="获取文件的路径"></a>获取文件的路径</h2><p>使用sys.getcwd(),得到的就是你文件的所在文件夹路径</p>
+<h2 id="简单测评姬的代码"><a href="#简单测评姬的代码" class="headerlink" title="简单测评姬的代码"></a>简单测评姬的代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">class VirtualTestGirl:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    测评姬, 仅供此次爱特国庆作业的测评使用</span><br><span class="line">    存在安全问题</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def __init__(self, stdin_file_list, code_file_path, q_number):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        文件的格式标准:</span><br><span class="line">        qx_x.txt存储样例</span><br><span class="line">        qx_x_out.txt 存储标准输出</span><br><span class="line">        :param stdin_file_list:标准输入的文件的文件名列表</span><br><span class="line">        :param code_file_path: 待测试的代码的文件的绝对路径</span><br><span class="line">        :param q_number: 题目的编号</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        self.q_number &#x3D; q_number</span><br><span class="line">        # 获取绝对路径</span><br><span class="line">        absolute_path &#x3D; (os.getcwd() + &#39;&#x2F;&#123;&#125;&#x2F;&#39;.format(q_number)).replace(&#39;\\&#39;, &#39;&#x2F;&#39;)</span><br><span class="line">        self.stdin_file_list &#x3D; [absolute_path + x for x in stdin_file_list]</span><br><span class="line">        self.code_file_path &#x3D; code_file_path</span><br><span class="line">        self.error_file &#x3D; &quot;log.txt&quot;</span><br><span class="line"></span><br><span class="line">    def _test(self, stdin_file):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        测试某个样例</span><br><span class="line">        :param stdin_file: 标准数据的文件名</span><br><span class="line">        :return:</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        error_fp &#x3D; open(self.error_file, &#39;a+&#39;, encoding&#x3D;&#39;utf-8&#39;)</span><br><span class="line">        fp_in &#x3D; open(stdin_file)</span><br><span class="line">        output_path &#x3D; stdin_file.split(&#39;.&#39;)[0] + &quot;_out.txt&quot;</span><br><span class="line"></span><br><span class="line">        std_out_fp &#x3D; open(output_path, encoding&#x3D;&quot;utf-8&quot;)</span><br><span class="line">        std_out &#x3D; std_out_fp.read()</span><br><span class="line">        std_out_fp.close()</span><br><span class="line"></span><br><span class="line">        error_fp.write(&quot;----测试----\n&quot;)</span><br><span class="line">        child_proc &#x3D; subprocess.Popen(&quot;python &#123;&#125;&quot;.format(self.code_file_path), stdin&#x3D;fp_in, stdout&#x3D;subprocess.PIPE, stderr&#x3D;error_fp)</span><br><span class="line">        print(&quot;pid:&quot;, child_proc.pid)</span><br><span class="line">        # 接受子线程的返回</span><br><span class="line">        print(child_proc.returncode)</span><br><span class="line">        # 获取输出</span><br><span class="line">        # 主线程等待子线程的完成, 此时会阻塞主线程</span><br><span class="line">        out_put &#x3D; child_proc.communicate()[0].decode(&quot;utf-8&quot;)</span><br><span class="line">        # 删除文件读出内容结尾的\r\n</span><br><span class="line">        out_put &#x3D; out_put.rstrip(&quot;\n&quot;)</span><br><span class="line">        out_put &#x3D; out_put.rstrip(&quot;\r&quot;)</span><br><span class="line">        out_put &#x3D; out_put.replace(&#39;\r&#39;, &#39;&#39;)</span><br><span class="line">        # print(&quot;标准答案:&quot;, std_out)</span><br><span class="line">        # print(&quot;测试答案:&quot;, out_put)</span><br><span class="line">        if out_put &#x3D;&#x3D; std_out:</span><br><span class="line">            print(&quot;通过!&quot;)</span><br><span class="line">        else:</span><br><span class="line">            if out_put.strip() &#x3D;&#x3D; std_out.strip():</span><br><span class="line">                print(&quot;格式错误&quot;)</span><br><span class="line">            else:</span><br><span class="line">                pass</span><br><span class="line">            print(&quot;未通过&quot;)</span><br><span class="line"></span><br><span class="line">        fp_in.close()</span><br><span class="line">        error_fp.close()</span><br><span class="line">        print(&quot;------&quot;)</span><br><span class="line"></span><br><span class="line">    def start_test(self):</span><br><span class="line">        for stdin_file in self.stdin_file_list:</span><br><span class="line">            self._test(stdin_file)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>需要注意的是，不同平台下的换行符不同，MAC下是\r， Windows下默认是\r\n，Linux下是\n</li>
+<li>有神奇的一个地方是，print函数打印出来的是\n， 但定向输出到PIPE里然后再读出时变成了\r\n（可以split切一下\n看看会发现每行多了一个\r），推测为写入内存里的时候发生了替换，因为Windows下是\r\n</li>
+<li>rstrip()会去除字符串末尾的指定字符，而strip()是删去字符串中所有匹配到的指定字符(默认删除\r\n)</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>runtime-test</p><p><a href="http://cyx0706.github.io/2019/09/26/runtime-test/">http://cyx0706.github.io/2019/09/26/runtime-test/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>John Doe</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2019-09-26</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/unittest/">unittest</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2019/10/06/Linkers-Loaders-1/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">程序员的自我修养——温故而知新</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2019/09/17/unit-test/"><span class="level-item">unit-test</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "2e63dfdabae90106b5fdaf835aa06318",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#subprocess模块"><span class="level-left"><span class="level-item">1</span><span class="level-item">subprocess模块</span></span></a></li><li><a class="level is-mobile" href="#重定向标志流"><span class="level-left"><span class="level-item">2</span><span class="level-item">重定向标志流</span></span></a></li><li><a class="level is-mobile" href="#获取文件的路径"><span class="level-left"><span class="level-item">3</span><span class="level-item">获取文件的路径</span></span></a></li><li><a class="level is-mobile" href="#简单测评姬的代码"><span class="level-left"><span class="level-item">4</span><span class="level-item">简单测评姬的代码</span></span></a></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 John Doe</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
