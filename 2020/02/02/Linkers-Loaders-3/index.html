@@ -1,27 +1,45 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>程序员的自我修养—目标文件里有什么 - Ctwo&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Ctwo&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ctwo&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="2020.2.2 更新补充内容  迟到的更新 在开始这一章之前，先复习一下gcc的操作 复习 -c只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。 -o output_filename确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的可执行"><meta property="og:type" content="blog"><meta property="og:title" content="程序员的自我修养—目标文件里有什么"><meta property="og:url" content="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/"><meta property="og:site_name" content="Ctwo&#039;s Blog"><meta property="og:description" content="2020.2.2 更新补充内容  迟到的更新 在开始这一章之前，先复习一下gcc的操作 复习 -c只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。 -o output_filename确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的可执行"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"><meta property="article:published_time" content="2020-02-02T13:06:53.000Z"><meta property="article:modified_time" content="2020-10-25T01:51:42.211Z"><meta property="article:author" content="Ctwo"><meta property="article:tag" content="Linkers&amp;Loaders"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/self-culture.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/"},"headline":"Ctwo's Blog","image":["http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"],"datePublished":"2020-02-02T13:06:53.000Z","dateModified":"2020-10-25T01:51:42.211Z","author":{"@type":"Person","name":"Ctwo"},"description":"2020.2.2 更新补充内容  迟到的更新 在开始这一章之前，先复习一下gcc的操作 复习 -c只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。 -o output_filename确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的可执行"}</script><link rel="canonical" href="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/self-culture.jpg" alt="程序员的自我修养—目标文件里有什么"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-02-02T13:06:53.000Z" title="2020-02-02T13:06:53.000Z">2020-02-02</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:51:42.211Z" title="2020-10-25T01:51:42.211Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/ComputerOrganization/">ComputerOrganization</a></span></div></div><h1 class="title is-3 is-size-4-mobile">程序员的自我修养—目标文件里有什么</h1><div class="content"><ul>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>程序员的自我修养—目标文件里有什么 - Ctwo&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Ctwo&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ctwo&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="2020.2.2 更新补充内容  迟到的更新 在开始这一章之前，先复习一下gcc的操作 复习  -c 只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。 -o output_filename 确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的"><meta property="og:type" content="blog"><meta property="og:title" content="程序员的自我修养—目标文件里有什么"><meta property="og:url" content="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/"><meta property="og:site_name" content="Ctwo&#039;s Blog"><meta property="og:description" content="2020.2.2 更新补充内容  迟到的更新 在开始这一章之前，先复习一下gcc的操作 复习  -c 只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。 -o output_filename 确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"><meta property="article:published_time" content="2020-02-02T13:06:53.000Z"><meta property="article:modified_time" content="2020-10-25T01:51:42.211Z"><meta property="article:author" content="Ctwo"><meta property="article:tag" content="Linkers&amp;Loaders"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/self-culture.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/"},"headline":"Ctwo's Blog","image":["http://cyx0706.github.io/gallery/thumbnails/self-culture.jpg"],"datePublished":"2020-02-02T13:06:53.000Z","dateModified":"2020-10-25T01:51:42.211Z","author":{"@type":"Person","name":"Ctwo"},"description":"2020.2.2 更新补充内容  迟到的更新 在开始这一章之前，先复习一下gcc的操作 复习  -c 只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。 -o output_filename 确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的"}</script><link rel="canonical" href="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/self-culture.jpg" alt="程序员的自我修养—目标文件里有什么"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-02-02T13:06:53.000Z" title="2020-02-02T13:06:53.000Z">2020-02-02</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-25T01:51:42.211Z" title="2020-10-25T01:51:42.211Z">2020-10-25</time></span><span class="level-item"><a class="link-muted" href="/categories/ComputerOrganization/">ComputerOrganization</a></span></div></div><h1 class="title is-3 is-size-4-mobile">程序员的自我修养—目标文件里有什么</h1><div class="content"><ul>
 <li>2020.2.2 更新补充内容</li>
 </ul>
 <p><em>迟到的更新</em></p>
 <p>在开始这一章之前，先复习一下gcc的操作</p>
-<h1 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h1><ul>
-<li>-c<br>只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。</li>
-<li>-o output_filename<br>确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的可执行文件 a.out </li>
+<h1>复习</h1>
+<ul>
+<li>-c<br>
+只编译，不链接成为可执行文件。编译器只是由输入的 .c 等源代码文件生成 .o 为后缀的目标文件，通常用于编译不包含主程序的子程序文件。</li>
+<li>-o output_filename<br>
+确定输出文件的名称为output_filename。同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出默认的可执行文件 a.out</li>
 </ul>
 <a id="more"></a>
 <ul>
-<li>-g<br>产生符号调试工具（GNU的 gdb）所必要的符号信息。想要对源代码进行调试，就必须加入这个选项。</li>
-<li>-O<br>对程序进行优化编译、链接。采用这个选项，整个源代码会在编译、链接过程中进行优化处理，这样产生的可执行文件的执行效率可以提高。</li>
-<li>-O2<br>比 -O 更好的优化编译、链接。当然整个编译链接过程会更慢。</li>
-<li>-E<br>预编译后停下来，生成后缀为 .i 的预编译文件。</li>
-<li>-c<br>编译后停下来，生成后缀为 .o 的目标文件。</li>
-<li>-S<br>汇编后停下来，生成后缀为 .s 的汇编源文件。</li>
+<li>-g<br>
+产生符号调试工具（GNU的 gdb）所必要的符号信息。想要对源代码进行调试，就必须加入这个选项。</li>
+<li>-O<br>
+对程序进行优化编译、链接。采用这个选项，整个源代码会在编译、链接过程中进行优化处理，这样产生的可执行文件的执行效率可以提高。</li>
+<li>-O2<br>
+比 -O 更好的优化编译、链接。当然整个编译链接过程会更慢。</li>
+<li>-E<br>
+预编译后停下来，生成后缀为 .i 的预编译文件。</li>
+<li>-c<br>
+编译后停下来，生成后缀为 .o 的目标文件。</li>
+<li>-S<br>
+汇编后停下来，生成后缀为 .s 的汇编源文件。</li>
 </ul>
 <p>整体来看的话：</p>
-<p>第一步：进行预编译，使用 -E 参数<br>gcc -E test.c -o test.i<br>查看 test.i 文件中的内容，会发现 stdio.h 的内容确实都插到文件里去了，而其他应当被预处理的宏定义也都做了相应的处理。<br>第二步：将 test.i 编译为目标代码，使用 -c 参数<br>gcc -c test.c -o test.o<br>第三步：生成汇编源文件<br>gcc -S test.c -o test.s<br>第四步：将生成的目标文件链接成可执行文件<br>gcc test.o - o test</p>
-<h1 id="目标文件里有什么"><a href="#目标文件里有什么" class="headerlink" title="目标文件里有什么"></a>目标文件里有什么</h1><h2 id="目标文件的格式"><a href="#目标文件的格式" class="headerlink" title="目标文件的格式"></a>目标文件的格式</h2><p>现在PC平台流行的<strong>可执行文件格式（Executable）</strong>主要是Win下的PE（Portable Executable）和Linux下的ELF（Executable Linkable Format），它们都是COFF（Common File Format）格式的变种。而目标文件就是源代码编译后但未链接的中间文件。</p>
-<p>不光是可执行文件按照可执行文件格式存储。<strong>动态链接库（DLL，Dynamic Linking Library）如Win下的.dll，Linux下的.so 文件也按照可执行文件格式存储</strong>。但静态链接库稍稍有些不同，它是把很多目标文件捆绑在一起形成一个文件，再加上一些索引，可以简单的理解为一个包含有很多的目标文件的文件包。</p>
-<div class="table-container">
+<p>第一步：进行预编译，使用 -E 参数<br>
+gcc -E test.c -o test.i<br>
+查看 test.i 文件中的内容，会发现 stdio.h 的内容确实都插到文件里去了，而其他应当被预处理的宏定义也都做了相应的处理。<br>
+第二步：将 test.i 编译为目标代码，使用 -c 参数<br>
+gcc -c test.c -o test.o<br>
+第三步：生成汇编源文件<br>
+gcc -S test.c -o test.s<br>
+第四步：将生成的目标文件链接成可执行文件<br>
+gcc test.o - o test</p>
+<h1>目标文件里有什么</h1>
+<h2 id="目标文件的格式">目标文件的格式</h2>
+<p>现在PC平台流行的**可执行文件格式（Executable）**主要是Win下的PE（Portable Executable）和Linux下的ELF（Executable Linkable Format），它们都是COFF（Common File Format）格式的变种。而目标文件就是源代码编译后但未链接的中间文件。</p>
+<p>不光是可执行文件按照可执行文件格式存储。<strong>动态链接库（DLL，Dynamic Linking Library）如Win下的.dll，<a target="_blank" rel="noopener" href="http://xn--Linux-gi1hr13v.so">Linux下的.so</a> 文件也按照可执行文件格式存储</strong>。但静态链接库稍稍有些不同，它是把很多目标文件捆绑在一起形成一个文件，再加上一些索引，可以简单的理解为一个包含有很多的目标文件的文件包。</p>
 <table>
 <thead>
 <tr>
@@ -44,7 +62,7 @@
 <tr>
 <td>共享目标文件（Shared Object File）</td>
 <td>这种文件包含了代码和数据，可以在两种情况下使用，一种是链接器可以使用这种文件和其他的可重定位文件和共享目标文件链接，产生新的目标文件。第二种是动态链接器可以将几个这种共享目标文件与可执行文件结合，作为进程映像的一部分</td>
-<td>Linux的.so，Win下的DLL</td>
+<td><a target="_blank" rel="noopener" href="http://xn--Linux-m81m.so">Linux的.so</a>，Win下的DLL</td>
 </tr>
 <tr>
 <td>核心转存储文件（Core Dump File）</td>
@@ -53,8 +71,8 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="使用file命令可以查看文件格式"><a href="#使用file命令可以查看文件格式" class="headerlink" title="使用file命令可以查看文件格式"></a>使用file命令可以查看文件格式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim foo.c</span><br><span class="line">&gt; gcc -c foo.c -o foo.o</span><br><span class="line">&gt; file foo.o</span><br><span class="line">foo.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped</span><br><span class="line">&gt; gcc foo.c -o foo</span><br><span class="line">&gt; file foo</span><br><span class="line">foo: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter &#x2F;lib64&#x2F;l, for GNU&#x2F;Linux 3.2.0, BuildID[sha1]&#x3D;27a7f2f6cccacc9d1c828c6399a0035790b551f8, not stripped</span><br></pre></td></tr></table></figure>
+<h2 id="使用file命令可以查看文件格式">使用file命令可以查看文件格式</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim foo.c</span><br><span class="line">&gt; gcc -c foo.c -o foo.o</span><br><span class="line">&gt; file foo.o</span><br><span class="line">foo.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped</span><br><span class="line">&gt; gcc foo.c -o foo</span><br><span class="line">&gt; file foo</span><br><span class="line">foo: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter &#x2F;lib64&#x2F;l, for GNU&#x2F;Linux 3.2.0, BuildID[sha1]&#x3D;27a7f2f6cccacc9d1c828c6399a0035790b551f8, not stripped</span><br></pre></td></tr></table></figure>
 <p>发现一个神奇的东西/lib64/l，进到目录里看</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; cd &#x2F;lib64</span><br><span class="line">&#x2F;lib64$ ls</span><br><span class="line">ld-linux-x86-64.so.2</span><br><span class="line">&#x2F;lib64$ file ld-linux-x86-64.so.2</span><br><span class="line">ld-linux-x86-64.so.2: symbolic link to &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;ld-2.27.so</span><br><span class="line">&#x2F;lib64$ file  &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;ld-2.27.so</span><br><span class="line">&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;ld-2.27.so: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]&#x3D;64df1b961228382fe18684249ed800ab1dceaad4, stripped</span><br></pre></td></tr></table></figure>
 <p>看到ld-linux-x86-64.so是我们想找到的共享的动态链接库，但ld-linux-x86-64.so.2又是什么呢？</p>
@@ -65,16 +83,21 @@
 <p>还有一点值得留意，我们发现<code>gcc foo.c -o foo</code>生成了一个<strong>共享目标文件</strong>，经过查询得到了一定的了解</p>
 <p>如果想要生成可执行文件，需要使用<code>-no-pie</code>指令来禁掉一个gcc的默认选项</p>
 <blockquote>
-<p>Position-Independent-Executable是Binutils,glibc和gcc的一个功能，能用来创建介于共享库和通常可执行代码之间的代码–能像共享库一样可重分配地址的程序，这种程序必须连接到Scrt1.o。标准的可执行程序需要固定的地址，并且只有被装载到这个地址时，程序才能正确执行。PIE能使程序像共享库一样在主存任何位置装载，这需要将程序编译成位置无关，并链接为ELF共享对象。<br>引入PIE的原因是让程序能装载在随机的地址，通常情况下，内核都在固定的地址运行，如果能改用位置无关，那攻击者就很难借助系统中的可执行码实施攻击了。类似缓冲区溢出之类的攻击将无法实施。而且这种安全提升的代价很小</p>
+<p>Position-Independent-Executable是Binutils,glibc和gcc的一个功能，能用来创建介于共享库和通常可执行代码之间的代码–能像共享库一样可重分配地址的程序，这种程序必须连接到Scrt1.o。标准的可执行程序需要固定的地址，并且只有被装载到这个地址时，程序才能正确执行。PIE能使程序像共享库一样在主存任何位置装载，这需要将程序编译成位置无关，并链接为ELF共享对象。<br>
+引入PIE的原因是让程序能装载在随机的地址，通常情况下，内核都在固定的地址运行，如果能改用位置无关，那攻击者就很难借助系统中的可执行码实施攻击了。类似缓冲区溢出之类的攻击将无法实施。而且这种安全提升的代价很小</p>
 </blockquote>
-<h2 id="目标文件是什么样子"><a href="#目标文件是什么样子" class="headerlink" title="目标文件是什么样子"></a>目标文件是什么样子</h2><p><img src="https://i.loli.net/2019/11/08/ax8Zns4oJgQWUKM.png" alt="程序与目标文件"></p>
+<h2 id="目标文件是什么样子">目标文件是什么样子</h2>
+<p><img src="https://i.loli.net/2019/11/08/ax8Zns4oJgQWUKM.png" alt="程序与目标文件"></p>
 <p>假设可执行文件（目标文件）的格式是ELF，从图来看，ELF文件的开头是一个“文件头”，它描述了一个文件是否可以执行，是静态链接还是动态以及入口地址，目标硬件，目标操作系统等信息。同时，文件头还包括一个<strong>段表（Section Table）</strong>，段表其实就是一个描述文件中各个段的数组。段表描述了文件中各个段在文件中的偏移位置及段的属性等。</p>
 <ul>
-<li><p>C语言编译后执行语句都编译成机器代码，保存在.text段</p>
+<li>
+<p>C语言编译后执行语句都编译成机器代码，保存在.text段</p>
 </li>
-<li><p>已经初始化的全局变量和局部静态变量都保存在.data段</p>
+<li>
+<p>已经初始化的全局变量和局部静态变量都保存在.data段</p>
 </li>
-<li><p>未初始化的全局变量和局部静态变量一般放在.bss段里，这个段只是为未初始化的全局变量和局部变量预留位置而已，它并没有内容，所以在文件里不占据空间</p>
+<li>
+<p>未初始化的全局变量和局部静态变量一般放在.bss段里，这个段只是为未初始化的全局变量和局部变量预留位置而已，它并没有内容，所以在文件里不占据空间</p>
 <blockquote>
 <p>未初始化的全局变量和局部静态变量默认值都是0，本来都可以放在.data段里，但因为都是0，所以在.data段分配空间并且存0没有意义，但运行时还要占空间，所以放在了.bss段</p>
 </blockquote>
@@ -86,21 +109,32 @@
 <li>对现代CPU的缓存（Cache）有益，现代的CPU一般都设计成数据缓存和指令缓存分离，分离段可以提高缓存的命中率</li>
 <li>和操作系统节省内存空间相关：当系统中运行着多个该程序的副本时，他们的指令一样，所以内存中只用保存一份该程序的指令部分（只读的），当然对于只读数据也是这样的，如程序里的图标，文本，图片也是可以共享的。当然，进程的数据私有。</li>
 </ul>
-<h2 id="挖掘-o文件"><a href="#挖掘-o文件" class="headerlink" title="挖掘.o文件"></a>挖掘.o文件</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> global_init_var = <span class="number">84</span>;</span><br><span class="line"><span class="keyword">int</span> global_uninit_var;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_var = <span class="number">85</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_var2;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> b;</span><br><span class="line"></span><br><span class="line">    func1(static_var + static_var2 + a + b);</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="挖掘-o文件">挖掘.o文件</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> global_init_var = <span class="number">84</span>;</span><br><span class="line"><span class="keyword">int</span> global_uninit_var;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_var = <span class="number">85</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_var2;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> b;</span><br><span class="line"></span><br><span class="line">    func1(static_var + static_var2 + a + b);</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.loli.net/2020/02/02/uPqMSRLInAcFehU.png" alt="课本例子.png"></p>
 <p>出了最基本的代码段，数据段和 BSS 段以外，还有 3 个段分别是<strong>只读数据段(.rodata)</strong>，<strong>注释信息段(.comment)</strong>，<strong>堆栈提示段(.note.GNU-stack)</strong>，我们暂时不研究这三个段，把重点放在属性上：属性有长度(size)，位置(file offset)，每个段的第二行中的 “CONTENTS” 表示该段在文件中存在。 BSS 段就没有这个属性。 还有一个大小为 0 的堆栈提示段，也同样暂时忽略，这样我们就大致得到了文件的结构（可能会由于编译器版本和机器平台导致大小不太一致）</p>
-<p>|—|—|<br>|elf header|0x0~0x34|<br>|.text|0x34~0x90(这里应该是对齐了边界)|<br>|.data|0x90~0x98|<br>|.rodata|0x98~0x9c|<br>|.comment|0x9c~0xc6|<br>|other data|…|</p>
-<h3 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h3><ul>
+<p>|–|–|<br>
+|elf header|0x0~0x34|<br>
+|.text|0x34~0x90(这里应该是对齐了边界)|<br>
+|.data|0x90~0x98|<br>
+|.rodata|0x98~0x9c|<br>
+|.comment|0x9c~0xc6|<br>
+|other data|…|</p>
+<h3 id="代码段">代码段</h3>
+<ul>
 <li>使用 <code>objdump -s -d xxx</code> 来查看16进制的段内容和反汇编</li>
 </ul>
-<h3 id="数据段和只读数据段"><a href="#数据段和只读数据段" class="headerlink" title="数据段和只读数据段"></a>数据段和只读数据段</h3><ul>
+<h3 id="数据段和只读数据段">数据段和只读数据段</h3>
+<ul>
 <li>.data 段保存了初始化了的全局静态变量和局部静态变量。分别是 static_var， global_init_var 共 8 字节。</li>
-<li>在调用 printf 时，格式化字符是以只读存入的，故被放入了 .rodata 段， <code>%d\n</code> 再加上 <code>&#39;\0&#39;</code> 是 4 字节。<br>  rodata 段在语义上支持了 const 关键字，也为操作系统处理只读提供了方便，保证程序的安全</li>
+<li>在调用 printf 时，格式化字符是以只读存入的，故被放入了 .rodata 段， <code>%d\n</code> 再加上 <code>'\0'</code> 是 4 字节。<br>
+rodata 段在语义上支持了 const 关键字，也为操作系统处理只读提供了方便，保证程序的安全</li>
 </ul>
-<h3 id="BSS-段"><a href="#BSS-段" class="headerlink" title="BSS 段"></a>BSS 段</h3><ul>
+<h3 id="BSS-段">BSS 段</h3>
+<ul>
 <li>存放为初始化的全局变量和局部静态变量， .bss 段为他们预留了空间，但 global_uninit_var， static_var2 应为 8 字节，实际只存储了 4 字节，这是因为符号表(Symbol Table)，实际上只有 static_var2 被放在了 bss 段，而 global_uninit_var 只是一个未定义的 COMMON 符号。而且这会因不同编译器的实现而不同，有些编译器会将<strong>全局未初始化的变量</strong>存在 bss 段，而有些仅仅只会预留一个<strong>未定义的全局变量符号</strong></li>
 </ul>
-<h3 id="其他段"><a href="#其他段" class="headerlink" title="其他段"></a>其他段</h3><div class="table-container">
+<h3 id="其他段">其他段</h3>
 <table>
 <thead>
 <tr>
@@ -159,35 +193,44 @@
 </tr>
 </tbody>
 </table>
-</div>
 <ul>
 <li>当然应用程序也可以使用一些非系统保留的名字作为段名，如加入一个 music 段来存放一些音乐的信息。这样这个文件只有你自己写的读取程序可以解析。但注意应用程序定义的段名不能用. 前缀。</li>
 <li>还有些段名是历史遗留问题，不用理会，如 .sdata, .confict, …</li>
 </ul>
-<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><ul>
-<li><p>如何在 64 位的电脑编译 32 位的程序呢，如果直接使用 <code>gcc -c</code> 得到的是 elf64-x86-64 的 64 位格式的文件，这时我们需要 <code>gcc -m32 -c</code> 这样得到的就是 elf32-i386 格式的文件</p>
+<h3 id="补充">补充</h3>
+<ul>
+<li>
+<p>如何在 64 位的电脑编译 32 位的程序呢，如果直接使用 <code>gcc -c</code> 得到的是 elf64-x86-64 的 64 位格式的文件，这时我们需要 <code>gcc -m32 -c</code> 这样得到的就是 elf32-i386 格式的文件</p>
 </li>
-<li><p>但是这个文件我们查看结构和书上的并不完全一样</p>
+<li>
+<p>但是这个文件我们查看结构和书上的并不完全一样</p>
 </li>
 </ul>
 <p><img src="https://i.loli.net/2020/02/02/L3fWjAzKFp2crUe.png" alt="在 wsl 下的结果"></p>
 <pre><code>- .group 段: ???
 - .eh_frame 段: 调试信息段
-</code></pre><h2 id="ELF-文件结构描述"><a href="#ELF-文件结构描述" class="headerlink" title="ELF 文件结构描述"></a>ELF 文件结构描述</h2><p>ELF 目标文件格式最前部是 ELF 文件头(ELF Header)， 其包含了描述整个文件的基本属性，比如 ELF 文件版本，目标机器型号，程序入口地址等。ELF 文件中与段有关的重要结构就是段表(Section Header Table)，该表描述了 ELF 文件包含的所有段的信息，比如每个段的段名，段长度，文件中的偏移位置，读写权限以及其他属性。</p>
-<h3 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h3><p><code>readelf -h xx</code> 查看 ELF 文件头</p>
+</code></pre>
+<h2 id="ELF-文件结构描述">ELF 文件结构描述</h2>
+<p>ELF 目标文件格式最前部是 ELF 文件头(ELF Header)， 其包含了描述整个文件的基本属性，比如 ELF 文件版本，目标机器型号，程序入口地址等。ELF 文件中与段有关的重要结构就是段表(Section Header Table)，该表描述了 ELF 文件包含的所有段的信息，比如每个段的段名，段长度，文件中的偏移位置，读写权限以及其他属性。</p>
+<h3 id="文件头">文件头</h3>
+<p><code>readelf -h xx</code> 查看 ELF 文件头</p>
 <p><img src="https://i.loli.net/2020/02/02/ZjCYbwfH4SPQ9v3.png" alt="ELF 文件头"></p>
 <p>ELF 文件头结构及相关常数被定义在 “/usr/include/elf.h” 里，因为 ELF 文件在各种平台下都通用，ELF 文件有 32 位版本和 64 位版本。内容一样但是有些成员的大小不一样。 elf.h 中使用 typedef 定义了一套自己的变量，ELF 详细的定义可以在 ELF 标准文档里找到。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span>	e_ident[EI_NIDENT];	<span class="comment">/* Magic number and other info */</span></span><br><span class="line">  Elf32_Half	e_type;			<span class="comment">/* Object file type */</span></span><br><span class="line">  Elf32_Half	e_machine;		<span class="comment">/* Architecture */</span></span><br><span class="line">  Elf32_Word	e_version;		<span class="comment">/* Object file version */</span></span><br><span class="line">  Elf32_Addr	e_entry;		<span class="comment">/* Entry point virtual address */</span></span><br><span class="line">  Elf32_Off	e_phoff;		<span class="comment">/* Program header table file offset */</span></span><br><span class="line">  Elf32_Off	e_shoff;		<span class="comment">/* Section header table file offset */</span></span><br><span class="line">  Elf32_Word	e_flags;		<span class="comment">/* Processor-specific flags */</span></span><br><span class="line">  Elf32_Half	e_ehsize;		<span class="comment">/* ELF header size in bytes */</span></span><br><span class="line">  Elf32_Half	e_phentsize;		<span class="comment">/* Program header table entry size */</span></span><br><span class="line">  Elf32_Half	e_phnum;		<span class="comment">/* Program header table entry count */</span></span><br><span class="line">  Elf32_Half	e_shentsize;		<span class="comment">/* Section header table entry size */</span></span><br><span class="line">  Elf32_Half	e_shnum;		<span class="comment">/* Section header table entry count */</span></span><br><span class="line">  Elf32_Half	e_shstrndx;		<span class="comment">/* Section header string table index */</span></span><br><span class="line">&#125; Elf32_Ehdr;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2020/02/02/DwvklogrebqE7B8.png" alt="直接引用书上的图"><br><img src="https://i.loli.net/2020/02/02/GFDhYdRCZgcws38.png" alt="直接引用书上的图"></p>
-<h4 id="ELF-魔数"><a href="#ELF-魔数" class="headerlink" title="ELF 魔数"></a>ELF 魔数</h4><p>“Magic”，这 16 个字节被 ELF 标准规定用来标识 ELF 文件的平台属性，比如这个 ELF 的字长（32/64），字节序，ELF 文件版本。</p>
+<p><img src="https://i.loli.net/2020/02/02/DwvklogrebqE7B8.png" alt="直接引用书上的图"><br>
+<img src="https://i.loli.net/2020/02/02/GFDhYdRCZgcws38.png" alt="直接引用书上的图"></p>
+<h4 id="ELF-魔数">ELF 魔数</h4>
+<p>“Magic”，这 16 个字节被 ELF 标准规定用来标识 ELF 文件的平台属性，比如这个 ELF 的字长（32/64），字节序，ELF 文件版本。</p>
 <p><img src="https://i.loli.net/2020/02/02/fb1jYJd37Lw8GWP.png" alt="ELF 魔数"></p>
 <ul>
-<li><p>最开始的 4 个字节是所有 ELF 文件必须相同的标识码，分别为 0x7F，0x45，0x4c，0x46，第一个字节对应的 ASCII 字符里的 DEL 控制符，后面三个是 ELF 这三个字母的 ASCII 码。魔数用来确认文件的类型，操作系统在加载可执行文件时会确认魔数是否正确，否则拒绝加载。</p>
+<li>
+<p>最开始的 4 个字节是所有 ELF 文件必须相同的标识码，分别为 0x7F，0x45，0x4c，0x46，第一个字节对应的 ASCII 字符里的 DEL 控制符，后面三个是 ELF 这三个字母的 ASCII 码。魔数用来确认文件的类型，操作系统在加载可执行文件时会确认魔数是否正确，否则拒绝加载。</p>
 </li>
-<li><p>接下来的一个字节用来标识 ELF 的文件类，0x01 表示为32位， 0x02 表示为64位，第6个字是字节序，规定大端还是小端。第7个字节规定 ELF 文件的主版本号，一般是1。 ELF 对后面的9个字节没有标准，一般是0，有些平台会使用这9个字节作为扩展标志。</p>
+<li>
+<p>接下来的一个字节用来标识 ELF 的文件类，0x01 表示为32位， 0x02 表示为64位，第6个字是字节序，规定大端还是小端。第7个字节规定 ELF 文件的主版本号，一般是1。 ELF 对后面的9个字节没有标准，一般是0，有些平台会使用这9个字节作为扩展标志。</p>
 </li>
 </ul>
-<h4 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h4><div class="table-container">
+<h4 id="文件类型">文件类型</h4>
 <table>
 <thead>
 <tr>
@@ -210,13 +253,13 @@
 <tr>
 <td style="text-align:left">ET_DYN</td>
 <td style="text-align:left">3</td>
-<td style="text-align:left">共享目标文件，一般为.so</td>
+<td style="text-align:left">共享目标文件，<a target="_blank" rel="noopener" href="http://xn--4gq6es90n.so">一般为.so</a></td>
 </tr>
 </tbody>
 </table>
-</div>
-<h3 id="段表"><a href="#段表" class="headerlink" title="段表"></a>段表</h3><p>使用 <code>readelf -S xxxx.o</code> 来查看段表，它是一个以 “Elf32_Shdr” 结构体为元素的数组。其被定义在 elf.h 中</p>
-<p>段表是 ELF 中除了文件头以外的最重要的结构，它描述了 ELF 各个段的信息，比如说段名，段长度，在文件中的偏移，读写权限以及段的其他属性。也就是说，ELF 文件的段结构就是由段表决定的，编译器，链接器和装载器都是依赖段表来定位和访问各个段的属性的。段表在文件中的偏移位置由 ELF 文件头中的 “e_shoff” 成员决定。 </p>
+<h3 id="段表">段表</h3>
+<p>使用 <code>readelf -S xxxx.o</code> 来查看段表，它是一个以 “Elf32_Shdr” 结构体为元素的数组。其被定义在 elf.h 中</p>
+<p>段表是 ELF 中除了文件头以外的最重要的结构，它描述了 ELF 各个段的信息，比如说段名，段长度，在文件中的偏移，读写权限以及段的其他属性。也就是说，ELF 文件的段结构就是由段表决定的，编译器，链接器和装载器都是依赖段表来定位和访问各个段的属性的。段表在文件中的偏移位置由 ELF 文件头中的 “e_shoff” 成员决定。</p>
 <p><img src="https://i.loli.net/2020/02/02/uKyjCDxSYtiWINd.png" alt="段表信息"></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Type for a 16-bit quantity.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint16_t</span> Elf32_Half;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Types for signed and unsigned 32-bit quantities.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint32_t</span> Elf32_Word;</span><br><span class="line"><span class="keyword">typedef</span>	<span class="keyword">int32_t</span>  Elf32_Sword;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Types for signed and unsigned 64-bit quantities.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint64_t</span> Elf32_Xword;</span><br><span class="line"><span class="keyword">typedef</span>	<span class="keyword">int64_t</span>  Elf32_Sxword;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Type of addresses.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint32_t</span> Elf32_Addr;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Type of file offsets.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint32_t</span> Elf32_Off;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Type for section indices, which are 16-bit quantities.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint16_t</span> Elf32_Section;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint16_t</span> Elf64_Section;</span><br><span class="line"><span class="comment">/* Section header.  */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  Elf32_Word	sh_name;		<span class="comment">/* Section name (string tbl index) */</span></span><br><span class="line">  Elf32_Word	sh_type;		<span class="comment">/* Section type */</span></span><br><span class="line">  Elf32_Word	sh_flags;		<span class="comment">/* Section flags */</span></span><br><span class="line">  Elf32_Addr	sh_addr;		<span class="comment">/* Section virtual addr at execution */</span></span><br><span class="line">  Elf32_Off	sh_offset;		<span class="comment">/* Section file offset */</span></span><br><span class="line">  Elf32_Word	sh_size;		<span class="comment">/* Section size in bytes */</span></span><br><span class="line">  Elf32_Word	sh_link;		<span class="comment">/* Link to another section */</span></span><br><span class="line">  Elf32_Word	sh_info;		<span class="comment">/* Additional section information */</span></span><br><span class="line">  Elf32_Word	sh_addralign;		<span class="comment">/* Section alignment */</span></span><br><span class="line">  Elf32_Word	sh_entsize;		<span class="comment">/* Entry size if section holds table */</span></span><br><span class="line">&#125; Elf32_Shdr;</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.loli.net/2020/02/02/ReXm7PpLDoETtj1.png" alt="段描述符结构的解释"></p>
@@ -224,7 +267,7 @@
 <li>虚拟地址涉及一些映像文件的加载的概念，会在后面解释说明</li>
 <li>段的名称对于编译器，链接器是有意义的，但对于操作系统没有实质的意义，对于操作系统来说，一个段该如何处理取决于它的属性和权限，即由段的类型和标志这两个成员决定。</li>
 </ul>
-<h4 id="段的类型-sh-type"><a href="#段的类型-sh-type" class="headerlink" title="段的类型(sh_type)"></a>段的类型(sh_type)</h4><div class="table-container">
+<h4 id="段的类型-sh-type">段的类型(sh_type)</h4>
 <table>
 <thead>
 <tr>
@@ -296,19 +339,25 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h4 id="段的标志位-sh-flag"><a href="#段的标志位-sh-flag" class="headerlink" title="段的标志位(sh_flag)"></a>段的标志位(sh_flag)</h4><p>表示该段在进程虚拟地址空间中的属性，比如是否可写，是否可执行</p>
-<p>|常量|值|含义|<br>|SHF_WRITE|1|表示该段在进程空间中可写|<br>|SHF_ALLOC|2|表示该段在进程空间需要分配空间，像代码段，数据段，.bss段都会有|<br>|SHF_EXECINSTR|4|表示该段在进程空间可以被执行，一般指代码|</p>
-<h4 id="段的链接信息-sh-link-sh-info"><a href="#段的链接信息-sh-link-sh-info" class="headerlink" title="段的链接信息(sh_link, sh_info)"></a>段的链接信息(sh_link, sh_info)</h4><p>如果段的类型与链接相关，比如重定位表，符号表，那么这两个成员所包含的含义为：</p>
+<h4 id="段的标志位-sh-flag">段的标志位(sh_flag)</h4>
+<p>表示该段在进程虚拟地址空间中的属性，比如是否可写，是否可执行</p>
+<p>|常量|值|含义|<br>
+|SHF_WRITE|1|表示该段在进程空间中可写|<br>
+|SHF_ALLOC|2|表示该段在进程空间需要分配空间，像代码段，数据段，.bss段都会有|<br>
+|SHF_EXECINSTR|4|表示该段在进程空间可以被执行，一般指代码|</p>
+<h4 id="段的链接信息-sh-link-sh-info">段的链接信息(sh_link, sh_info)</h4>
+<p>如果段的类型与链接相关，比如重定位表，符号表，那么这两个成员所包含的含义为：</p>
 <ul>
 <li>SHT_DYNAMIC: link: 该段所使用的字符串表在段表中的下标，info: 0</li>
-<li>SHT_HASH: link: …… 符号表 ……， info: 0</li>
+<li>SHT_HASH: link: … 符号表 …， info: 0</li>
 <li>SHT_REL &amp; SHT_RELA: link: 使用的符号在段表中的下标，info: 重定位表作用的段在段表中的下标</li>
 <li>SHT_SYMTAB &amp; SHT_DYNSYM: link &amp; info: 操作系统相关</li>
 </ul>
-<h4 id="重定位表"><a href="#重定位表" class="headerlink" title="重定位表"></a>重定位表</h4><p>对于每个需要重定位的代码段或数据段都会有一个对应的相应的重定位表</p>
-<pre><code>- .rel.text 就是针对 .text 的重定位表，我们也可以通过 info 来看其对应的重定位的段
-</code></pre><h4 id="字符串表"><a href="#字符串表" class="headerlink" title="字符串表"></a>字符串表</h4><p>ELF 文件中用到了很多字符串，比如段名，变量名等，因为字符串的长度往往不定，所以就集中起来然后用在表中的偏移量来引用字符串，偏移量表示头，’\0’表示结尾</p>
+<h4 id="重定位表">重定位表</h4>
+<p>对于每个需要重定位的代码段或数据段都会有一个对应的相应的重定位表<br>
+- .rel.text 就是针对 .text 的重定位表，我们也可以通过 info 来看其对应的重定位的段</p>
+<h4 id="字符串表">字符串表</h4>
+<p>ELF 文件中用到了很多字符串，比如段名，变量名等，因为字符串的长度往往不定，所以就集中起来然后用在表中的偏移量来引用字符串，偏移量表示头，'\0’表示结尾</p>
 <p>一般字符串表在 ELF 中也以段的形式保存，常见的段名为 .strtab 或 .shstrtab 前一个存普通的字符串，后一个存储段表用到的字符串，如 sh_name</p>
 <p>我们回头看 ELF 文件头里的 “e_shstrndx”(Section header string table index)的缩写，其表示 .shstrtab 在段表（数组）中的下标，即段表字符串表在段表中的下标。这样我们分析 ELF 文件头就可以得到段表，而通过段表里索引的段字符表值以及段字符表的位置，我们就可以解析整个 ELF 文件了。</p>
 </div><div class="article-licensing box"><div class="licensing-title"><p>程序员的自我修养—目标文件里有什么</p><p><a href="http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/">http://cyx0706.github.io/2020/02/02/Linkers-Loaders-3/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Ctwo</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-02-02</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linkers-Loaders/">Linkers&amp;Loaders</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/02/02/Linkers-Loaders-4/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">程序员的自我修养—目标文件里有什么</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/01/31/django-understanding-1/"><span class="level-item">WSGI</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
@@ -327,7 +376,7 @@
             enableHotKey: true,
             language: "zh-CN",
         })
-        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#复习"><span class="level-left"><span class="level-item">1</span><span class="level-item">复习</span></span></a></li><li><a class="level is-mobile" href="#目标文件里有什么"><span class="level-left"><span class="level-item">2</span><span class="level-item">目标文件里有什么</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#目标文件的格式"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">目标文件的格式</span></span></a></li><li><a class="level is-mobile" href="#使用file命令可以查看文件格式"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">使用file命令可以查看文件格式</span></span></a></li><li><a class="level is-mobile" href="#目标文件是什么样子"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">目标文件是什么样子</span></span></a></li><li><a class="level is-mobile" href="#挖掘-o文件"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">挖掘.o文件</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#代码段"><span class="level-left"><span class="level-item">2.4.1</span><span class="level-item">代码段</span></span></a></li><li><a class="level is-mobile" href="#数据段和只读数据段"><span class="level-left"><span class="level-item">2.4.2</span><span class="level-item">数据段和只读数据段</span></span></a></li><li><a class="level is-mobile" href="#BSS-段"><span class="level-left"><span class="level-item">2.4.3</span><span class="level-item">BSS 段</span></span></a></li><li><a class="level is-mobile" href="#其他段"><span class="level-left"><span class="level-item">2.4.4</span><span class="level-item">其他段</span></span></a></li><li><a class="level is-mobile" href="#补充"><span class="level-left"><span class="level-item">2.4.5</span><span class="level-item">补充</span></span></a></li></ul></li><li><a class="level is-mobile" href="#ELF-文件结构描述"><span class="level-left"><span class="level-item">2.5</span><span class="level-item">ELF 文件结构描述</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#文件头"><span class="level-left"><span class="level-item">2.5.1</span><span class="level-item">文件头</span></span></a></li><li><a class="level is-mobile" href="#段表"><span class="level-left"><span class="level-item">2.5.2</span><span class="level-item">段表</span></span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2020 Ctwo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">1</span><span class="level-item">复习</span></span></a></li><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">2</span><span class="level-item">目标文件里有什么</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#目标文件的格式"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">目标文件的格式</span></span></a></li><li><a class="level is-mobile" href="#使用file命令可以查看文件格式"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">使用file命令可以查看文件格式</span></span></a></li><li><a class="level is-mobile" href="#目标文件是什么样子"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">目标文件是什么样子</span></span></a></li><li><a class="level is-mobile" href="#挖掘-o文件"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">挖掘.o文件</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#代码段"><span class="level-left"><span class="level-item">2.4.1</span><span class="level-item">代码段</span></span></a></li><li><a class="level is-mobile" href="#数据段和只读数据段"><span class="level-left"><span class="level-item">2.4.2</span><span class="level-item">数据段和只读数据段</span></span></a></li><li><a class="level is-mobile" href="#BSS-段"><span class="level-left"><span class="level-item">2.4.3</span><span class="level-item">BSS 段</span></span></a></li><li><a class="level is-mobile" href="#其他段"><span class="level-left"><span class="level-item">2.4.4</span><span class="level-item">其他段</span></span></a></li><li><a class="level is-mobile" href="#补充"><span class="level-left"><span class="level-item">2.4.5</span><span class="level-item">补充</span></span></a></li></ul></li><li><a class="level is-mobile" href="#ELF-文件结构描述"><span class="level-left"><span class="level-item">2.5</span><span class="level-item">ELF 文件结构描述</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#文件头"><span class="level-left"><span class="level-item">2.5.1</span><span class="level-item">文件头</span></span></a></li><li><a class="level is-mobile" href="#段表"><span class="level-left"><span class="level-item">2.5.2</span><span class="level-item">段表</span></span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2020 Ctwo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
