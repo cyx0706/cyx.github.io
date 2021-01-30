@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>aix - Ctwo&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Ctwo&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ctwo&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="正式开课了，这里仅是我的学习记录。"><meta property="og:type" content="blog"><meta property="og:title" content="aix"><meta property="og:url" content="http://cyx0706.github.io/2021/01/28/ode/"><meta property="og:site_name" content="Ctwo&#039;s Blog"><meta property="og:description" content="正式开课了，这里仅是我的学习记录。"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/aix.jpg"><meta property="article:published_time" content="2021-01-28T14:21:04.000Z"><meta property="article:modified_time" content="2021-01-30T12:44:41.923Z"><meta property="article:author" content="Ctwo"><meta property="article:tag" content="AI+X Blending"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/aix.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2021/01/28/ode/"},"headline":"Ctwo's Blog","image":["http://cyx0706.github.io/gallery/thumbnails/aix.jpg"],"datePublished":"2021-01-28T14:21:04.000Z","dateModified":"2021-01-30T12:44:41.923Z","author":{"@type":"Person","name":"Ctwo"},"description":"正式开课了，这里仅是我的学习记录。"}</script><link rel="canonical" href="http://cyx0706.github.io/2021/01/28/ode/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/aix.jpg" alt="aix"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-01-28T14:21:04.000Z" title="2021-01-28T14:21:04.000Z">2021-01-28</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-01-30T12:44:41.923Z" title="2021-01-30T12:44:41.923Z">2021-01-30</time></span><span class="level-item"><a class="link-muted" href="/categories/AI/">AI</a></span></div></div><h1 class="title is-3 is-size-4-mobile">aix</h1><div class="content"><p>正式开课了，这里仅是我的学习记录。<br><a id="more"></a></p>
+<h1 id="Module-1"><a href="#Module-1" class="headerlink" title="Module 1"></a>Module 1</h1><h2 id="introduction"><a href="#introduction" class="headerlink" title="introduction"></a>introduction</h2><blockquote>
+<p>Now, engineering and science applications may, as you know, have very different demands. Accuracy and reliability may be paramount(=very important). Large data sets might or might not be available. And we might need to use prior physical knowledge with new data-driven insights. We need to really combine physical modeling with what data can tell us.</p>
+</blockquote>
+<p>Before all the learning, we need a comprehensive cognition of the model and computational paradigm and the theory of coputation.</p>
+<p>The computational paradigm change over centuries: </p>
+<ul>
+<li>The experiment based model such as Newton’s Laws of Motion, we just observe carefully and distill the pricinple from thousands of experiments.</li>
+<li>The theory based model. It describe the physical world with a great deal of predictive power, accuary, and generalizability.</li>
+<li>The computational modeling and simulation. Based on the ideas that we use the computer to help us broaden the theory based model.</li>
+<li>The data-driven model. Using the machine learning method which gives us powerful ways of rebuilding models together with making predictions.</li>
+</ul>
+<h1 id="Module-2：常微分方程"><a href="#Module-2：常微分方程" class="headerlink" title="Module 2：常微分方程"></a>Module 2：常微分方程</h1><blockquote>
+<p>they are equations that describe how things vary in time.</p>
+<p>they are equation that describe how certain things vary in space.</p>
+<p>they can be understood as a very deep limit of a recurrent neural network.</p>
+<p>……</p>
+</blockquote>
+<p>常微分方程的一般形式是</p>
+<script type="math/tex; mode=display">
+\frac{du}{dt} = f(u,t)</script><p>其中 u 代表状态向量(state vector) 而 t 代表时间。</p>
+<h2 id="计算机求解常微分方程"><a href="#计算机求解常微分方程" class="headerlink" title="计算机求解常微分方程"></a>计算机求解常微分方程</h2><p>补充一下泰勒展开:<br>当函数 $f(x)$ 在点 $x_0$ 处可导时，在点 $x_0$ 的邻域内恒有:</p>
+<script type="math/tex; mode=display">
+f(x)=f(x_0)+f'(x_0)\frac{(x-x_0)^1}{1!}+f''(x_0)\frac{(x-x_0)^2}{2!}+...+f^{(n)}(x_0)\frac{(x-x_0)^n}{n!}</script><p><a target="_blank" rel="noopener" href="https://youtu.be/3d6DsjIBzJ4">一个很好的讲解(3bBlue1Brown)</a></p>
+<p>如果我们从本质来看，可以更好的理解泰勒展开</p>
+<p><img src="https://i.loli.net/2021/01/30/9IuzmYCbnXpxcye.png" alt="泰勒展开.png"></p>
+<p>如上图，我们绘制了一个函数 $f(x)$ 的导数的图像，在这个 $\frac{df}{dx}$ 图像中, $f(x)$ 的值可以用 $x$ 和这个曲线围成的面积来计算。我们要求的 $f(x)$ 由三个部分组成：</p>
+<ul>
+<li>$f(a)$</li>
+<li>矩形</li>
+<li>近似面积三角形</li>
+</ul>
+<p>矩形的面积很简单，为长乘宽 $(x-a)\frac{df}{dx}(a)$, 我们取的三角形为图中 $a$ 点导数与 $x$ 构成的区域, 那么三角形的面积就是 </p>
+<script type="math/tex; mode=display">
+S = 0.5*h*(x-a) = 0.5*f''(a)(x-a)*(x-a) = \frac{1}{2}f''(a)(x-a)^2</script><p>这就是一个二阶的泰勒展开式，如果我们借助3阶甚至更高阶导数来进一步求面积，就会使结果更加的精确，就有了上面的泰勒展开式的形式。</p>
+<h3 id="显式欧拉法-Forward-Euler"><a href="#显式欧拉法-Forward-Euler" class="headerlink" title="显式欧拉法(Forward-Euler)"></a>显式欧拉法(Forward-Euler)</h3><p>显示欧拉法的核心是用 $\frac{f(x_{n+1})-f(x_n)}{x_{n+1}-x_n}$ 来代替 $f’(x_n)$, 这样在一阶泰勒展开式就可以用我们已知的量来计算未知的 $f(x_n)$ 的值。为了保证计算更加的精确，同时我们将从 $x_n$ 到 $x_{n+1}$ 分成若干个 $\Delta t$ , 我们通过步步迭代来求得最终的估计值。迭代的函数如下:</p>
+<script type="math/tex; mode=display">
+u_{k+1} = u_k + \Delta t f(u_k, t_k) 
+\\ u(t_0)=u_0=f(x_0)
+\\ u(t_n)=f(x_n)</script><p>其中 $u_k$ 为我们的估计值，而 $t_k$ 就是当前累计迭代的 $t$ 值，由于我们忽略掉了泰勒展开二阶以后的所有量，所以我们的这个方法只有一阶的精度。</p>
+<h3 id="隐式欧拉法-Backward-Euler"><a href="#隐式欧拉法-Backward-Euler" class="headerlink" title="隐式欧拉法(Backward-Euler)"></a>隐式欧拉法(Backward-Euler)</h3><p>和显示欧拉大部分相同，但有些微不同。不同就在于隐式欧拉法选择用 $\frac{f(x_{n+1})-f(x_n)}{x_{n+1}-x_n}$ 代替 $f’(x_{n+1})$, 这样如果对 $f(x_{n+1})$ 在 $x_n$ 处展开，就能得到一个包含未知数的方程的递推公式。</p>
+<script type="math/tex; mode=display">
+u_{k+1}=u_k+\Delta t f(u_{k+1}, t_{k+1}) 
+\\ u(t_0)=u_0=f(x_0)
+\\ u(t_n)=f(x_n)</script><p>隐式欧拉也等价于找上述方程的解，如果这个解有解，那么自然近似值也有解，即隐式欧拉可以更加好的确保稳定性，这对于考察一些系统的长期行为有帮助（我们会在后面的代码中说明这一点）</p>
+<h3 id="龙格库塔法-Runge-Kutta"><a href="#龙格库塔法-Runge-Kutta" class="headerlink" title="龙格库塔法(Runge-Kutta)"></a>龙格库塔法(Runge-Kutta)</h3><p>龙格库塔方法是一种高阶的方法，注意这里的高阶并不意味着任何时候它更加精确，只是它在我们减小步长的时候更误差会降低的更小。实际上，以四阶龙格库塔法为例，当步长选的比较大的时候，它的误差甚至比显式欧拉法还大。（我们会在后面的代码中观察到这一现象）</p>
+<p>下面介绍 RK4（4阶龙格库塔）方法，迭代公式如下:</p>
+<script type="math/tex; mode=display">
+t_{k+\frac{1}{2}}=t_k+\frac{\Delta t}{2}; t_{k+1}=t_k+\Delta t \\
+S_1=f(u_k, t_k) \\
+S_2=f(u_k+\frac{\Delta t}{2}S_1, t_{k+\frac{1}{2}}) \\
+S_3=f(u_k+\frac{\Delta t}{2}S_2, t_{k+\frac{1}{2}}) \\
+S_4=f(u_k+\Delta t S_3, t_{k+1}) \\
+u_{k+1}=u_k+\frac{\Delta t}{6}(S_1+2S_2+3S_3+S_4)</script></div><div class="article-licensing box"><div class="licensing-title"><p>aix</p><p><a href="http://cyx0706.github.io/2021/01/28/ode/">http://cyx0706.github.io/2021/01/28/ode/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Ctwo</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-01-28</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2021-01-30</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/AI-X-Blending/">AI+X Blending</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/01/16/winter-2021/"><span class="level-item">winter-2021</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "17ae9f588b33a09001a26bb6116dbe32",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Module-1"><span class="level-left"><span class="level-item">1</span><span class="level-item">Module 1</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#introduction"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">introduction</span></span></a></li></ul></li><li><a class="level is-mobile" href="#Module-2：常微分方程"><span class="level-left"><span class="level-item">2</span><span class="level-item">Module 2：常微分方程</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#计算机求解常微分方程"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">计算机求解常微分方程</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#显式欧拉法-Forward-Euler"><span class="level-left"><span class="level-item">2.1.1</span><span class="level-item">显式欧拉法(Forward-Euler)</span></span></a></li><li><a class="level is-mobile" href="#隐式欧拉法-Backward-Euler"><span class="level-left"><span class="level-item">2.1.2</span><span class="level-item">隐式欧拉法(Backward-Euler)</span></span></a></li><li><a class="level is-mobile" href="#龙格库塔法-Runge-Kutta"><span class="level-left"><span class="level-item">2.1.3</span><span class="level-item">龙格库塔法(Runge-Kutta)</span></span></a></li></ul></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 Ctwo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
