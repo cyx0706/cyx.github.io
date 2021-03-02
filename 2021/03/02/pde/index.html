@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>aix - Ctwo&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Ctwo&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ctwo&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="偏微分方程  学的时候记得笔记都是英语的加上又懒得翻译就只好拖到了现在  General  偏微分方程（PDE, partial differential equation）的解是一个关于时间和空间的方程 $u(x, t)$，我们用 u 代表在特定时间和空间的函数值。 在常微分方程的数值解中，我们是通过将 0-T 划分为若干个 $\Delta t$，通过计算每个 $\Delta t$ 位置的值来计"><meta property="og:type" content="blog"><meta property="og:title" content="aix"><meta property="og:url" content="http://cyx0706.github.io/2021/03/02/pde/"><meta property="og:site_name" content="Ctwo&#039;s Blog"><meta property="og:description" content="偏微分方程  学的时候记得笔记都是英语的加上又懒得翻译就只好拖到了现在  General  偏微分方程（PDE, partial differential equation）的解是一个关于时间和空间的方程 $u(x, t)$，我们用 u 代表在特定时间和空间的函数值。 在常微分方程的数值解中，我们是通过将 0-T 划分为若干个 $\Delta t$，通过计算每个 $\Delta t$ 位置的值来计"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/aix.jpg"><meta property="article:published_time" content="2021-03-02T03:16:16.000Z"><meta property="article:modified_time" content="2021-03-02T12:55:44.620Z"><meta property="article:author" content="Ctwo"><meta property="article:tag" content="AI+X Blending"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/aix.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2021/03/02/pde/"},"headline":"Ctwo's Blog","image":["http://cyx0706.github.io/gallery/thumbnails/aix.jpg"],"datePublished":"2021-03-02T03:16:16.000Z","dateModified":"2021-03-02T12:55:44.620Z","author":{"@type":"Person","name":"Ctwo"},"description":"偏微分方程  学的时候记得笔记都是英语的加上又懒得翻译就只好拖到了现在  General  偏微分方程（PDE, partial differential equation）的解是一个关于时间和空间的方程 $u(x, t)$，我们用 u 代表在特定时间和空间的函数值。 在常微分方程的数值解中，我们是通过将 0-T 划分为若干个 $\\Delta t$，通过计算每个 $\\Delta t$ 位置的值来计"}</script><link rel="canonical" href="http://cyx0706.github.io/2021/03/02/pde/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/thumbnails/aix.jpg" alt="aix"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-03-02T03:16:16.000Z" title="2021-03-02T03:16:16.000Z">2021-03-02</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-03-02T12:55:44.620Z" title="2021-03-02T12:55:44.620Z">2021-03-02</time></span><span class="level-item"><a class="link-muted" href="/categories/AI/">AI</a></span></div></div><h1 class="title is-3 is-size-4-mobile">aix</h1><div class="content"><h1>偏微分方程</h1>
+<ul>
+<li><s>学的时候记得笔记都是英语的加上又懒得翻译就只好拖到了现在</s></li>
+</ul>
+<h2 id="General">General</h2>
+<ul>
+<li>偏微分方程（PDE, partial differential equation）的解是一个关于时间和空间的方程 $u(x, t)$，我们用 u 代表在特定时间和空间的函数值。</li>
+<li>在常微分方程的数值解中，我们是通过将 0-T 划分为若干个 $\Delta t$，通过计算每个 $\Delta t$ 位置的值来计算 $u(t)$。在偏微分方程中，我们构造下面的图形（mesh）来辅助我们的计算：</li>
+</ul>
+<p><img src="https://i.loli.net/2021/03/01/MlCWKkFL3YTDvr2.png" alt="mesh"></p>
+<p>我们用 mesh 网格图上的 u 值来近似计算偏微分的值，我们观察临近的矩形，他们构成偏导的近似值。这样我们将偏微分方程的空间离散化，转换为常微分方程的系统。</p>
+<p>空间离散化的方案(spatial discretization schemes)有：</p>
+<ul>
+<li>Finite Element Methods</li>
+<li>Finite Difference Methods</li>
+<li>Finite Volume Methods</li>
+</ul>
+<h2 id="Finite-Difference-Formulas">Finite Difference Formulas</h2>
+<p>我们以一个简单的偏微分方程为例：<br>
+$$<br>
+\frac{\partial u}{\partial t} = k \frac{\partial^2 u}{\partial x^2}<br>
+$$<br>
+k 代表导热系数。</p>
+<p>假设网格在空间上的距离为 h，那么我们有:</p>
+<ul>
+<li>一阶偏导的前向差分(Forward difference for first spatial derivative)<br>
+$$<br>
+\frac{\partial u}{\partial x} \Big|<em>{x_i} \approx \frac{u(x</em>{i+1}, t)-u(x_i, t)}{h}<br>
+$$</li>
+<li>一阶偏导的向后差分(Backward difference for first spatial derivative)<br>
+$$<br>
+\frac{\partial u}{\partial x} \Big|<em>{x_i} \approx \frac{u(x</em>{i}, t)-u(x_{i-1}, t)}{h}<br>
+$$</li>
+<li>一阶偏导的中心差分(Central difference for first spatial derivative)<br>
+$$<br>
+\frac{\partial u}{\partial x} \Big|<em>{x_i} \approx \frac{u(x</em>{i+1}, t)-u(x_{i-1}, t)}{2h}<br>
+$$</li>
+<li>二阶偏导的中心差分(Central difference for second spatial derivative)<br>
+$$<br>
+\frac{\partial^2 u}{\partial x^2} \Big|<em>{x_i} \approx \frac{\frac{u(x</em>{i+1}, t)-u(x_{i}, t)}{h}-\frac{u(x_{i}, t)-u(x_{i-1}, t)}{h}}{h} \<br>
+\quad \quad \quad \quad  \approx \frac{u(x_{i+1}, t)-2u(x_{i}, t)+u(x_{i-1}, t)}{h^2}<br>
+$$</li>
+</ul>
+<h2 id="Discretization-Stencil">Discretization Stencil</h2>
+<ul>
+<li>我们在网格来近似计算空间函数$u(x, t)$偏导（前向差分，中心差分等等）的这种方法叫做<code>stencil</code>，如果用空间内更多更远的点来近似一个点的偏导值，那么一般情况下误差就会变的更小。但对于有些情况却不同，补充的来说，用更多的点近似来减少误差只对光滑的函数有效，对于那些不连续的函数，相邻点之间的关系很小，使用太多的点反而会影响准确度。</li>
+<li>我们用 <code>stencils size</code> 来描述有多少个点被用于近似偏导值。我们的误差和使用的近似方法的阶数成正比关系。我们假设误差为 e，h 为 网格缩小比例，q 是使用方法的阶数，我们有这样的关系：$e \sim h^q$</li>
+<li>需要注意：减小空间网格的大小的同时也要减小每一步的时间$\Delta t$来确保稳定性。</li>
+</ul>
+<h2 id="Solving-PDE">Solving PDE</h2>
+<ul>
+<li>解决 PDE 问题就是解决一个初始边界值问题（initial boundary value problem）：$u(x, t)$ 在给定的初始条件和边界条件下是如何变化的。</li>
+</ul>
+<p>我们仍以热传导方程$\frac{\partial u}{\partial t} = k \frac{\partial^2 u}{\partial x^2}$为例。在网格内部的点上，我们可以将求偏导转换为计算一组离散化的点，运用我们上面的二阶中心差分的近似计算：<br>
+$$<br>
+\frac{\partial u}{\partial t} \Big|<em>{x_i} = k \frac{u(x</em>{i+1}, t)-2u(x_{i}, t)+u(x_{i-1}, t)}{h^2}<br>
+$$</p>
+<p>我们想象 i 从 0 到 N-1，总共有 N-1 个类似上面的式子，即我们把 t 时间的 x 范围划分为 N-1 块，每一块都可以通过它临近的点来计算。下面把这 N-1 个式子合成在一起：<br>
+$$<br>
+u(t)=\begin{bmatrix}<br>
+u(x_1, t)\<br>
+u(x_2, t)\<br>
+\vdots \<br>
+u(x_{N-1}, t)\<br>
+\end{bmatrix}<br>
+$$<br>
+这样上面的方程就可以写成类似下面的形式：<br>
+$$<br>
+\frac{du}{dt}=Au+f<br>
+$$<br>
+f包含边界条件的信息。在这里，我们的 f 是 0，A 是一个 $N-1 \times N$ 的系数矩阵：<br>
+$$<br>
+\frac{k}{h^2}<br>
+\begin{bmatrix}<br>
+&amp;1  &amp;-2  &amp;1  &amp;\cdots &amp;0 &amp;0 \quad \<br>
+&amp;0  &amp;1  &amp;-2  &amp;1  &amp;\cdots &amp;0 \quad \<br>
+&amp;\vdots  &amp;\vdots  &amp;\vdots  &amp;\vdots &amp;\vdots &amp;0 \quad \<br>
+&amp;0  &amp;0  &amp;\cdots &amp;1  &amp;-2  &amp;1 \quad<br>
+\end{bmatrix}<br>
+\hspace{-0.5cm}<br>
+\left.\begin{matrix}<br>
+&amp; \<br>
+&amp; \<br>
+&amp; \<br>
+&amp;<br>
+\end{matrix}\right}</p>
+<p>N-1<br>
+$$<br>
+这样我们就可以用 ODE 的方法来解决 PDE 问题，比如说我们运用前向欧拉法：<br>
+$$<br>
+\boldsymbol{u}<sup>{n+1}=\boldsymbol{u}</sup>{n}+\Delta t(A \boldsymbol{u}^n+f)<br>
+$$</p>
+<blockquote>
+<p>We discretize the spatial domain into N spaces with N+1 grid points. How many unknown variables are evolved in the resulting system of ODEs?</p>
+</blockquote>
+<p>答案是 <strong>N-1</strong>，$u_0$ 和 $u_{N+1}$ 都是边界点（已知），这样在网格的内部就只有 N-1 个未知的点。</p>
+<p>下面我们考虑计算的误差：PDE 方程的解的精确度分为空间和时间上的。我们取 e 代表误差，$\Delta t $ 代表每一步选择迭代的时间差(time_step)，h 代表相邻 x 之间的距离，也可以看做网格大小(mesh_size)，那么有关系：$e \approx (\Delta t)<sup>p+h</sup>q$。其中 p 和 q 分别是我们选择的 ODE 方法的阶数和偏导数值解方法的阶数。如我们选择 FE (forward eluer) + 中心差分（Central Difference），那么 p 值为 1，q 值为 2。因为它们分别是 1 阶和 2 阶精确度的方法。如果 h 减小一半，那么误差就会变为四分之一。</p>
+<p>需要注意，我们前面也提到了，一个小的 h 需要同时一个更小的 $\Delta t$，否则求解将会变得不再稳定。怎么理解呢，我们仍用热传导方程来理解：当我们观察更小的一段的变化的时候，不同段直接的交互会更加的频繁，我们需要用更小的时间来确保可以更加精确的捕获这些变化。</p>
+<h2 id="Boundary-Conditions">Boundary Conditions</h2>
+<ul>
+<li>Dirichlet conditions</li>
+</ul>
+<blockquote>
+<p>Dirichlet conditions fix the value of the solution u(x,t) at the boundary. This is like pinning the solution to a certain value at the boundary.</p>
+</blockquote>
+<p>即在边界指定函数的分布形式</p>
+<ul>
+<li>Neumann conditions</li>
+</ul>
+<blockquote>
+<p>Neumann conditions fix the value, not of the solution, but of its spatial derivative $\frac{\partial u}{\partial x}$ at the boundary. This is like fixing the stresses at the boundary.</p>
+</blockquote>
+<p>在边界指定外法线方向上的导数的数值</p>
+<ul>
+<li>Robin conditions</li>
+</ul>
+<blockquote>
+<p>Robin conditions fix the value of a linear combination of the solution itself and its partial derivative at the boundary.</p>
+</blockquote>
+<p>可以看做是第1和2条件的组合，要求偏导和函数本身的数值。</p>
+<h2 id="Linear-System">Linear System</h2>
+<p>对于转换为 ODE 的 PDE 问题，我们也可以用一些隐式的方法求解，如隐式欧拉法<br>
+$$<br>
+u<sup>{n+1}=u</sup>n+\Delta t (Au^{n+1}+f)<br>
+$$<br>
+求解这个方法，移项：<br>
+$$<br>
+(1-\Delta tA)u<sup>{n+1}=u</sup>n+\Delta tf<br>
+$$<br>
+它的每一步相当于求解一个线性系统（linear system）（这不就是线性方程组吗），$M \boldsymbol u=b$<br>
+这么做的好处在于，这样让我们可以使用更大的 $\Delta t$ 相比较于显式方法（隐式方法的稳定性，参考 ODE 那节）</p>
+<p>求解线性系统有很多的现成方法：</p>
+<ul>
+<li>A 是一般矩阵（general）：高斯消元（Gaussian elimination），$O(N^3)$</li>
+<li>A 是三角矩阵（triangular）：Forward substitution/backward substitution，$O(N^2)$</li>
+<li>A 是三对角线矩阵（tri-diagonal）：托马斯算法（Thomas algorithm），$O(N)$</li>
+</ul>
+<h3 id="Iterative-Algorithms-for-Linear-Systems">Iterative Algorithms for Linear Systems</h3>
+<p>当线性系统中的 M 是一个很大的矩阵，又不特殊时，用高斯消元太慢了并且太占用空间。这时就需要一个更高效的方法：迭代法再次上线。我们先猜一个初始值 v，通过计算 Mv 和 b 比较，修改 v 来一步步逼近真实解。</p>
+<p>可选的迭代方法有很多，如 Krylov Subspace Method（krylov 子空间算法），conjugate gradients（共轭梯度法），GMRes（广义最小残差法）。</p>
+<p><s>学一下共轭梯度法然后补充在这里</s></p>
+<h2 id="Nonlinear-Systems">Nonlinear Systems</h2>
+<p>对于如下非线性形式的 ODEs：<br>
+$$<br>
+\frac{du}{dt}=f(u)<br>
+$$<br>
+使用隐式欧拉法得到迭代公式：<br>
+$$<br>
+u_{n+1}=u_n+\Delta tf(u_{n+1})<br>
+$$<br>
+求解$u_{n+1}$等同于在这样一个方程中寻找根:$R(u_{n+1})=u_{n+1}-\Delta tf(u_{n+1})=0$，常用的计算方法有：二分法，牛顿法</p>
+<h2 id="Sample">Sample</h2>
+<p>在写了（有个例子但我解不出来解析解所以暂时没有），等找个好例子</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>aix</p><p><a href="http://cyx0706.github.io/2021/03/02/pde/">http://cyx0706.github.io/2021/03/02/pde/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Ctwo</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-03-02</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2021-03-02</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/AI-X-Blending/">AI+X Blending</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/01/28/ode/"><span class="level-item">aix</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "8660644fb76a9a2611ec786ad50d353b",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">1</span><span class="level-item">偏微分方程</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#General"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">General</span></span></a></li><li><a class="level is-mobile" href="#Finite-Difference-Formulas"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">Finite Difference Formulas</span></span></a></li><li><a class="level is-mobile" href="#Discretization-Stencil"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">Discretization Stencil</span></span></a></li><li><a class="level is-mobile" href="#Solving-PDE"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">Solving PDE</span></span></a></li><li><a class="level is-mobile" href="#Boundary-Conditions"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">Boundary Conditions</span></span></a></li><li><a class="level is-mobile" href="#Linear-System"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">Linear System</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Iterative-Algorithms-for-Linear-Systems"><span class="level-left"><span class="level-item">1.6.1</span><span class="level-item">Iterative Algorithms for Linear Systems</span></span></a></li></ul></li><li><a class="level is-mobile" href="#Nonlinear-Systems"><span class="level-left"><span class="level-item">1.7</span><span class="level-item">Nonlinear Systems</span></span></a></li><li><a class="level is-mobile" href="#Sample"><span class="level-left"><span class="level-item">1.8</span><span class="level-item">Sample</span></span></a></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 Ctwo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
