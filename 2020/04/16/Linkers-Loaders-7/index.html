@@ -23,10 +23,7 @@
 <p>当我们的模块 prog1.c 被编译成为了 .o 文件时，编译器还不知道 foo() 函数的地址，当链接器将 prog1.o 链接生成可执行文件时，这时候就必须确定 foo() 函数的性质。如果它是定义在其他静态目标模块中的函数，链接器按照静态链接的规则将地址引用重定位。如果是一个动态共享对象的函数，那么链接器就会将这个符号的引用标记为一个动态链接的符号，不对他进行重定位，把这个过程留到装载时再进行。</p>
 <h3 id="地址空间分布">地址空间分布</h3>
 <blockquote>
-<p>$./prog1 &amp;<br>
-[1] 120<br>
-Printing from <a target="_blank" rel="noopener" href="http://lib.so">lib.so</a> 1<br>
-$cat /proc/120/maps<br>
+<p><img src="https://math.now.sh?inline=.%2Fprog1%20%26%0A%5B1%5D%20120%0APrinting%20from%20lib.so%201%0A" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/>cat /proc/120/maps<br>
 7f83e65f0000-7f83e67d7000 r-xp 00000000 00:00 161323             /lib/x86_64-linux-gnu/libc-2.27.so<br>
 7f83e67d7000-7f83e67e0000 —p 001e7000 00:00 161323             /lib/x86_64-linux-gnu/libc-2.27.so<br>
 7f83e67e0000-7f83e69d7000 —p 000001f0 00:00 161323             /lib/x86_64-linux-gnu/libc-2.27.so<br>

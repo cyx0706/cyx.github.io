@@ -8,7 +8,7 @@
 <p>关于栈，我们其实已经相当熟悉了（陌生的可以去看汇编模块的过程调用篇，有对过程调用中栈的变化有说明）。</p>
 <p>而在 C++ 里返回一个对象的时候，对象要经过2次拷贝构造函数的调用才可以完成返回对象的传递，1次拷贝到栈上的临时对象里，另一次把临时对象拷贝到存储返回值的对象里。</p>
 <p>这样带来一个恶果，就是返回较大的对象时会有非常多的额外开销，因此 C++ 程序中避免返回对象，同时为了减小返回对象的开销，C++ 提出了返回值优化（Return Value Optimization, RVO）的技术，可以在某些场合减少对象的拷贝1次。如下:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function">cpp_obj <span class="title">re_test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> cpp_obj();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function">cpp_obj <span class="title">re_test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">cpp_obj</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这时，构造一个 cpp_obj 对象会调用一次他的构造函数，在返回时会调用拷贝构造函数。c++的返回优化可以将这两部合并，直接构造在传出时使用的临时变量，减少一次复制的过程。</p>
 <h2 id="堆">堆</h2>
 <p>堆（Heap）是一块巨大的内存空间，常常占用整个虚拟空间的绝大部分，在这里，程序可以申请一块连续的内存空间，这块内存再程序主动放弃之前都会一直的有效。</p>

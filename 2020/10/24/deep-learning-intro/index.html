@@ -8,11 +8,8 @@
 </ul>
 <a id="more"></a>
 <h2 id="矩阵线性变换">矩阵线性变换</h2>
-<p>对于给定的矩阵 A，假设其特征值为 $\lambda$，特征向量为x，则他们之间的关系如下:</p>
-<p>$$<br>
-Ax = \lambda x<br>
-$$</p>
-<div align=center><img width=80% src="https://i.loli.net/2020/10/23/lgupfzZInUJeLdF.png" ></div>
+<p>对于给定的矩阵 A，假设其特征值为 <img src="https://math.now.sh?inline=%5Clambda" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/>，特征向量为x，则他们之间的关系如下:</p>
+<p style="filter: opacity(95%);transform:scale(0.85);text-align:center;"><img src="https://math.now.sh?from=Ax%20%3D%20%5Clambda%20x%0A" /></p><div align=center><img width=80% src="https://i.loli.net/2020/10/23/lgupfzZInUJeLdF.png" ></div>
 <p>矩阵 A 对于 A 的特征向量做线性变换的时候，方向不再发生变化。</p>
 <ul>
 <li>从线性变换的角度，矩阵相乘对原始向量同时施加方向变化和尺度变化。</li>
@@ -40,37 +37,18 @@ $$</p>
 <h2 id="低秩近似">低秩近似</h2>
 <p>较大奇异值包含了矩阵的主要信息，只保留前r个较大奇异值及其对应的特征向量，一般 r 取 d 的十分之一就可以保留足够信息，可以实现数据从 <code>n x d</code> 维降维到 <code>n x r + r x r + r x d</code></p>
 <p>矩阵低秩近似:</p>
-<p>$$<br>
-A_{m \times n} = U_{m \times n} \textstyle \sum_{n \times n}^{} V_{k \times n}^T \quad rank(A)=r<br>
-\<br>
-\hat{A}<em>{m \times n} = U</em>{m \times n} \textstyle \sum_{n \times n}^{} V_{k \times n}^T \quad rank(\hat A)=r<br>
-$$</p>
-<p>图像去噪：数据矩阵X一般同事包含结构信息和噪声</p>
-<p>矩阵分解为两个矩阵的相加，一个是低秩的（结构信息造成行或列间线性相关）另一个是稀疏的（噪声是稀疏的），很多问题中都会有这样类似的优化方法，写成函数如下:<br>
-$$<br>
-\min_{A,E} ,rank(A) + \lambda \left | E \right |_0<br>
-\<br>
-s.t., X = A+E<br>
-$$</p>
-<h2 id="概率函数形式统一">概率函数形式统一</h2>
+<p style="filter: opacity(95%);transform:scale(0.85);text-align:center;"><img src="https://math.now.sh?from=A_%7Bm%20%5Ctimes%20n%7D%20%3D%20U_%7Bm%20%5Ctimes%20n%7D%20%5Ctextstyle%20%5Csum_%7Bn%20%5Ctimes%20n%7D%5E%7B%7D%20V_%7Bk%20%5Ctimes%20n%7D%5ET%20%5Cquad%20rank%28A%29%3Dr%0A%5C%5C%0A%5Chat%7BA%7D_%7Bm%20%5Ctimes%20n%7D%20%3D%20U_%7Bm%20%5Ctimes%20n%7D%20%5Ctextstyle%20%5Csum_%7Bn%20%5Ctimes%20n%7D%5E%7B%7D%20V_%7Bk%20%5Ctimes%20n%7D%5ET%20%5Cquad%20rank(%5Chat%20A)%3Dr%0A" /></p><p>图像去噪：数据矩阵X一般同事包含结构信息和噪声</p>
+<p>矩阵分解为两个矩阵的相加，一个是低秩的（结构信息造成行或列间线性相关）另一个是稀疏的（噪声是稀疏的），很多问题中都会有这样类似的优化方法，写成函数如下:</p>
+<p style="filter: opacity(95%);transform:scale(0.85);text-align:center;"><img src="https://math.now.sh?from=%5Cmin_%7BA%2CE%7D%20%5C%2Crank%28A%29%20%2B%20%5Clambda%20%5Cleft%20%5C%7C%20E%20%5Cright%20%5C%7C_0%0A%5C%5C%0As.t.%5C%2C%20X%20%3D%20A%2BE%0A" /></p><h2 id="概率函数形式统一">概率函数形式统一</h2>
 <p>同一个模型可以用概率形式和函数形式来表示</p>
 <p><img src="https://i.loli.net/2020/10/23/bRlFCvdGeALtNyz.png" alt=""></p>
 <p>指数族：对常见分布标准化的形式；广义线性模型：线性回归，逻辑回归都是广义线性回归</p>
 <p>指数族决定是高斯分布，那么广义线性模型就是线性回归模型。</p>
-<p>例子：对于逻辑回归模型，假定的概率分布是伯努利分布，根据伯努利分布的定义，其概率质量函数 PMF 为：<br>
-$$<br>
-P(Y=n)=<br>
-\begin{cases}<br>
-1-p \quad n=0\p \quad n=1<br>
-\end{cases}<br>
-$$<br>
-似然函数可以写成：$L(\theta)=\prod_{i=1}<sup>{m}P(y=1|x_i)</sup>{y_i}P(y=0|x_i)^{1-y_i}$</p>
-<p>常规操作——取对数，然后求最大化的对数似然<br>
-$$<br>
-max ;lnL(\theta)\longrightarrow min ;-lnL(\theta)=\sum_{i=1}^{m}-y_i ln P(y=1|x_i)-(1-y_i)ln(1-P(y=1|x_i))<br>
-$$</p>
-<p>这个公式的每个加数子项表示单个样本的对数损失：若yi=1，P(y=1|x)越大损失越小；yi=0，P(y=1|x) 越小损失越小。</p>
-<p>这些样本的损失，实际上和逻辑回归的经验风险损失$J(\theta)$很相近，逻辑回归也可以直接采用对数损失函数通过经验风险最小化求参，而经验风险最小化策略与极大似然策略优化得到的模型参数是一致的。</p>
+<p>例子：对于逻辑回归模型，假定的概率分布是伯努利分布，根据伯努利分布的定义，其概率质量函数 PMF 为：</p>
+<p style="filter: opacity(95%);transform:scale(0.85);text-align:center;"><img src="https://math.now.sh?from=P%28Y%3Dn%29%3D%0A%5Cbegin%7Bcases%7D%0A%201-p%20%5Cquad%20n%3D0%5C%5Cp%20%5Cquad%20n%3D1%0A%5Cend%7Bcases%7D%0A" /></p><p>似然函数可以写成：<img src="https://math.now.sh?inline=L%28%5Ctheta%29%3D%5Cprod_%7Bi%3D1%7D%5E%7Bm%7DP(y%3D1%7Cx_i)%5E%7By_i%7DP(y%3D0%7Cx_i)%5E%7B1-y_i%7D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/></p>
+<p>常规操作——取对数，然后求最大化的对数似然</p>
+<p style="filter: opacity(95%);transform:scale(0.85);text-align:center;"><img src="https://math.now.sh?from=max%20%5C%3BlnL%28%5Ctheta%29%5Clongrightarrow%20min%20%5C%3B-lnL(%5Ctheta)%3D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D-y_i%20ln%20P(y%3D1%7Cx_i)-(1-y_i)ln(1-P(y%3D1%7Cx_i))%0A" /></p><p>这个公式的每个加数子项表示单个样本的对数损失：若yi=1，P(y=1|x)越大损失越小；yi=0，P(y=1|x) 越小损失越小。</p>
+<p>这些样本的损失，实际上和逻辑回归的经验风险损失<img src="https://math.now.sh?inline=J%28%5Ctheta%29" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/>很相近，逻辑回归也可以直接采用对数损失函数通过经验风险最小化求参，而经验风险最小化策略与极大似然策略优化得到的模型参数是一致的。</p>
 <h2 id="策略设计">策略设计</h2>
 <p>衡量训练误差与泛化误差的差异：计算学习理论，它得出来一个结论——训练误差与泛化误差的差异和训练样本样本量与模型的复杂程度有关，样本量越大误差越小，模型越复杂差异越大</p>
 <p>PAC 理论给出了实际训练学习器的目标</p>
@@ -103,17 +81,14 @@ $$</p>
 </ul>
 <h2 id="损失函数">损失函数</h2>
 <p>BP 神经网络和损失函数：</p>
-<p>如果设定$S(x)=\frac{1}{1+e^-x}$，损失函数<br>
-$$<br>
-L=\frac{1}{2}\sum_{k=1}^{N}D(f(x_k), h(x_k)) = \frac{1}{2}\sum_{k=1}<sup>{N}\sum_{i=1}</sup>{c}(f_i(x_k)-x_{k_i}<sup>{(\mathfrak{h})})</sup>2=\sum_{k=1}^{N}E_k<br>
-$$</p>
-<p>令 $E_k=\sum_{i=1}<sup>{c}(f_i(x_k)-x_{k_i}</sup>{(\mathfrak{h})})^2$ 为每个样本的平方损失代价</p>
-<p>待优化参数：权重 $\omega_{ij}^{(t)}$</p>
-<p>待优化算法：梯度下降，需要计算代价函数L和梯度 $\frac{\partial L}{\partial \omega_{ij}^{(t)}}$</p>
-<p>更新公式：$\omega_{ij}^{(t)}\leftarrow \omega_{ij}^{(t)}- \eta\frac{\partial E_k}{\partial \omega_{ij}^{(t)}}$</p>
+<p>如果设定<img src="https://math.now.sh?inline=S%28x%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E-x%7D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/>，损失函数</p>
+<p style="filter: opacity(95%);transform:scale(0.85);text-align:center;"><img src="https://math.now.sh?from=L%3D%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bk%3D1%7D%5E%7BN%7DD%28f(x_k%29%2C%20h(x_k))%20%3D%20%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bk%3D1%7D%5E%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7Bc%7D(f_i(x_k)-x_%7Bk_i%7D%5E%7B(%5Cmathfrak%7Bh%7D)%7D)%5E2%3D%5Csum_%7Bk%3D1%7D%5E%7BN%7DE_k%0A" /></p><p>令 <img src="https://math.now.sh?inline=E_k%3D%5Csum_%7Bi%3D1%7D%5E%7Bc%7D%28f_i(x_k%29-x_%7Bk_i%7D%5E%7B(%5Cmathfrak%7Bh%7D)%7D)%5E2" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/> 为每个样本的平方损失代价</p>
+<p>待优化参数：权重 <img src="https://math.now.sh?inline=%5Comega_%7Bij%7D%5E%7B%28t%29%7D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/></p>
+<p>待优化算法：梯度下降，需要计算代价函数L和梯度 <img src="https://math.now.sh?inline=%5Cfrac%7B%5Cpartial%20L%7D%7B%5Cpartial%20%5Comega_%7Bij%7D%5E%7B%28t%29%7D%7D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/></p>
+<p>更新公式：<img src="https://math.now.sh?inline=%5Comega_%7Bij%7D%5E%7B%28t%29%7D%5Cleftarrow%20%5Comega_%7Bij%7D%5E%7B(t)%7D-%20%5Ceta%5Cfrac%7B%5Cpartial%20E_k%7D%7B%5Cpartial%20%5Comega_%7Bij%7D%5E%7B(t)%7D%7D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/></p>
 <h3 id="平方损失">平方损失</h3>
-<p>$\frac{\partial L}{\partial w_i}=2(a-y)\cdot a(1-a)\cdot x_i$ 计算困难，采用交叉熵（对数损失函数）</p>
-<p>$L(a,y)=-yloga-(1-y)log(1-a)$ 巴拉巴拉…听不懂了这里，改天再改改</p>
+<p><img src="https://math.now.sh?inline=%5Cfrac%7B%5Cpartial%20L%7D%7B%5Cpartial%20w_i%7D%3D2%28a-y%29%5Ccdot%20a(1-a)%5Ccdot%20x_i" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/> 计算困难，采用交叉熵（对数损失函数）</p>
+<p><img src="https://math.now.sh?inline=L%28a%2Cy%29%3D-yloga-(1-y)log(1-a)" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/> 巴拉巴拉…听不懂了这里，改天再改改</p>
 <h2 id="概率学派-贝叶斯学派">概率学派&amp;贝叶斯学派</h2>
 <ul>
 <li>频率学派：关注可独立重复的随机试验中单个事件发生的频率，假设概率是客观存在的并且是固定的。这样得出的模型参数唯一，需要从有限的观测数据中估计参数值。</li>
@@ -145,12 +120,8 @@ $$</p>
 </ul>
 <h3 id="卷积">卷积</h3>
 <p>一维卷积经常用在信号处理中，用于计算信号的延迟累积。假设一个信号发生器在时刻 t 发出一个信号xi，其信息衰减率为 fk，即在 k-1 个时间步长后，信息衰减为原来的 fk 倍。</p>
-<p>我们设 f1=1,f2=0.5,f3=0.25，在 t 时刻收到的信号 yt 为当前时刻产生的信息和以前时刻延迟信息的叠加：<br>
-$$<br>
-yt=1\times x_i+\frac{1}{2} \times x_{i-1} + \frac{1}{4} \times x_{i-2}<br>
-=\sum_{3}^{k=1}f_k \cdot x_{i-k+1}<br>
-$$<br>
-此处的 $f=[f_1,f_2,f_3]$ 被称为滤波器（filter）或者叫卷积核（convolutional kernel），假设滤波器 f 的长度为 m，它和一个信号序列 $x=[x_1,x_2,x_3,…]$ 的卷积记为 $y_t = \sum_{m}^{k=1}f_k \cdot x_{i-k+1}$</p>
+<p>我们设 f1=1,f2=0.5,f3=0.25，在 t 时刻收到的信号 yt 为当前时刻产生的信息和以前时刻延迟信息的叠加：</p>
+<p style="filter: opacity(95%);transform:scale(0.85);text-align:center;"><img src="https://math.now.sh?from=yt%3D1%5Ctimes%20x_i%2B%5Cfrac%7B1%7D%7B2%7D%20%5Ctimes%20x_%7Bi-1%7D%20%2B%20%5Cfrac%7B1%7D%7B4%7D%20%5Ctimes%20x_%7Bi-2%7D%0A%3D%5Csum_%7B3%7D%5E%7Bk%3D1%7Df_k%20%5Ccdot%20x_%7Bi-k%2B1%7D%0A" /></p><p>此处的 <img src="https://math.now.sh?inline=f%3D%5Bf_1%2Cf_2%2Cf_3%5D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/> 被称为滤波器（filter）或者叫卷积核（convolutional kernel），假设滤波器 f 的长度为 m，它和一个信号序列 <img src="https://math.now.sh?inline=x%3D%5Bx_1%2Cx_2%2Cx_3%2C...%5D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/> 的卷积记为 <img src="https://math.now.sh?inline=y_t%20%3D%20%5Csum_%7Bm%7D%5E%7Bk%3D1%7Df_k%20%5Ccdot%20x_%7Bi-k%2B1%7D" style="filter: opacity(95%);transform:scale(0.85);text-align:center;display:inline-block;margin: 0;"/></p>
 <p>那么卷积是什么?</p>
 <blockquote>
 <p>convolution is an operation on two functions of a real-valued argument.</p>
