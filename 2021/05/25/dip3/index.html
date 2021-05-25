@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>数字图像处理 - Ctwo&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Ctwo&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ctwo&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="小波变换  小波 (Wavelet) 是时间（空间）频率的局部化分析，它通过伸缩平移运算对信号(函数)逐步进行多尺度细化，最终达到高频处时间细分，低频处频率细分，能自动适应时频信号分析的要求，从而可聚焦到信号的任意细节。有人把小波变换称为“数学显微镜”。  而对于图像处理相关领域，小波变换曾经相当的热门，一些经典的算法如 JPEG-2000 就是基于小波变换原理的。 要理解小波变换，有一大堆需要铺"><meta property="og:type" content="blog"><meta property="og:title" content="数字图像处理"><meta property="og:url" content="http://cyx0706.github.io/2021/05/25/dip3/"><meta property="og:site_name" content="Ctwo&#039;s Blog"><meta property="og:description" content="小波变换  小波 (Wavelet) 是时间（空间）频率的局部化分析，它通过伸缩平移运算对信号(函数)逐步进行多尺度细化，最终达到高频处时间细分，低频处频率细分，能自动适应时频信号分析的要求，从而可聚焦到信号的任意细节。有人把小波变换称为“数学显微镜”。  而对于图像处理相关领域，小波变换曾经相当的热门，一些经典的算法如 JPEG-2000 就是基于小波变换原理的。 要理解小波变换，有一大堆需要铺"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/cover/dip.jpg"><meta property="article:published_time" content="2021-05-25T13:16:50.000Z"><meta property="article:modified_time" content="2021-05-25T16:27:55.139Z"><meta property="article:author" content="Ctwo"><meta property="article:tag" content="CV"><meta property="article:tag" content="Digital Image Processing"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/cover/dip.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2021/05/25/dip3/"},"headline":"Ctwo's Blog","image":["http://cyx0706.github.io/gallery/cover/dip.jpg"],"datePublished":"2021-05-25T13:16:50.000Z","dateModified":"2021-05-25T16:27:55.139Z","author":{"@type":"Person","name":"Ctwo"},"description":"小波变换  小波 (Wavelet) 是时间（空间）频率的局部化分析，它通过伸缩平移运算对信号(函数)逐步进行多尺度细化，最终达到高频处时间细分，低频处频率细分，能自动适应时频信号分析的要求，从而可聚焦到信号的任意细节。有人把小波变换称为“数学显微镜”。  而对于图像处理相关领域，小波变换曾经相当的热门，一些经典的算法如 JPEG-2000 就是基于小波变换原理的。 要理解小波变换，有一大堆需要铺"}</script><link rel="canonical" href="http://cyx0706.github.io/2021/05/25/dip3/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/gallery/cover/dip.jpg" alt="数字图像处理"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-05-25T13:16:50.000Z" title="2021-05-25T13:16:50.000Z">2021-05-25</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-05-25T16:27:55.139Z" title="2021-05-25T16:27:55.139Z">2021-05-26</time></span><span class="level-item"><a class="link-muted" href="/categories/Digital-Image-Processing/">Digital Image Processing</a></span></div></div><h1 class="title is-3 is-size-4-mobile">数字图像处理</h1><div class="content"><h1>小波变换</h1>
+<blockquote>
+<p>小波 (Wavelet) 是时间（空间）频率的局部化分析，它通过伸缩平移运算对信号(函数)逐步进行多尺度细化，最终达到高频处时间细分，低频处频率细分，能自动适应时频信号分析的要求，从而可聚焦到信号的任意细节。有人把小波变换称为“数学显微镜”。</p>
+</blockquote>
+<p>而对于图像处理相关领域，小波变换曾经相当的热门，一些经典的算法如 JPEG-2000 就是基于小波变换原理的。</p>
+<p>要理解小波变换，有一大堆需要铺垫的东西…</p>
+<a id="more"></a>
+<h2 id="多分辨率金字塔（Image-Resolution-Pyramids）">多分辨率金字塔（Image Resolution Pyramids）</h2>
+<p>一般情况下，我们要处理的都是一张具有固定分辨率的图片，但有些时候，我们会对同一图像的不同分辨率的子图像进行处理，这些子图像往往是根据原图下采样得到的，如果我们将最大的图像放在底部，最小的放在顶部，就能得到一个金字塔的形状。图片金字塔可以用于图像融合，不过这不是我们在这里需要关注的。</p>
+<img src="https://i.loli.net/2021/05/25/aZ1STdIOJhlDk6t.png" alt="image resolution pyramids" style="zoom:67%;" />
+<p>下采样的方法有很多，比如<strong>高斯金字塔</strong>：顶部图像中每个像素等于下一层图像中5个像素的高斯加权平均值。这样我们将一个 <img src="https://math.now.sh?inline=M%20%5Ctimes%20N" style="text-align:center;display:inline-block;margin: 0;"/> 的图像变成了 <img src="https://math.now.sh?inline=%5Cfrac%7BM%7D%7B2%7D%5Ctimes%5Cfrac%7BN%7D%7B2%7D" style="text-align:center;display:inline-block;margin: 0;"/> 大小的图像。</p>
+<p>我们可以通过一个大图，通过高斯金字塔生成的方法得到多个小分辨率的图，但是，当我们通过金字塔顶层的图片来试图复原原图的时候，我们复原后的图会很“糊”，因为我们在下采样的时候丢失了图片的一些细节。</p>
+<p>有没有一种变换可以不丢失细节，我们通过金字塔的顶层和一些其他的东西也可以复原出来原图像？</p>
+<p>我们先在一维研究一下这个问题，如下图：</p>
+<p>我们想要通过一组变换将 <img src="https://math.now.sh?inline=x%28n%29" style="text-align:center;display:inline-block;margin: 0;"/> 变换 <img src="https://math.now.sh?inline=x'%28n%29" style="text-align:center;display:inline-block;margin: 0;"/> 然后再通过一个反变换得到 <img src="https://math.now.sh?inline=%5Chat%7Bx%7D%28n%29" style="text-align:center;display:inline-block;margin: 0;"/>，使得<img src="https://math.now.sh?inline=x%28n%29%3D%5Chat%7Bx%7D(n)" style="text-align:center;display:inline-block;margin: 0;"/> ：</p>
+<p><img src="https://i.loli.net/2021/05/25/RvYzmUDK4JgH63b.png" alt="无失真重建图像"></p>
+<h2 id="子带编码（Subband-Coding）">子带编码（Subband Coding）</h2>
+<p>子带编码一种以信号频谱为依据的编码方法，将信号分解成不同频带分量来去除信号相关性（可以理解成正交分解），再将分量分别进行取样、量化、编码，从而得到一组互不相关的码字合并在一起后进行传输。</p>
+<p>如果我们可以把 <img src="https://math.now.sh?inline=x%28n%29" style="text-align:center;display:inline-block;margin: 0;"/> 按照高频和低频分解，在根据一种方法重组，根据子带编码的理论，我们可以无失真的重建 <img src="https://math.now.sh?inline=x%28n%29" style="text-align:center;display:inline-block;margin: 0;"/>。</p>
+<p><img src="https://i.loli.net/2021/05/25/8MBcUIANXFnwjP7.png" alt="子带编码"></p>
+<p>现在，我们只需要找到一组 <img src="https://math.now.sh?inline=%5C%7B%20h_0%28n%29%2C%20%20h_1(n)%2C%20g_0(n)%2C%20g_1(n)%5C%7D" style="text-align:center;display:inline-block;margin: 0;"/> 就可以无失真重建了，我们可以将这一组的函数看做是一组一维的滤波器。</p>
+<h3 id="上-下采样（Upsampling-Downsampling）">上/下采样（Upsampling/Downsampling）</h3>
+<p>我们首先对 <img src="https://math.now.sh?inline=x%28n%29" style="text-align:center;display:inline-block;margin: 0;"/> 做 Z 变换：</p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=X%28Z%29%20%3D%20%5Csum_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7Dx(n)z%5E%7B-n%7D%0A" /></p><p>在时间域我们做因数为 2 的下采样可以等价到在 Z 域（复频域）的计算：</p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=x_%7Bdown%7D%28n%29%3Dx(2n)%20%5CLeftrightarrow%20X_%7Bdown%7D(Z)%3D%5Cfrac%7B1%7D%7B2%7D%5Cleft%5BX%5Cleft(z%5E%7B1%20%2F%202%7D%5Cright)%2BX%5Cleft(-z%5E%7B1%20%2F%202%7D%5Cright)%5Cright%5D%0A" /></p><p>对应上采样的计算：</p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=x%5E%7B%5Ctext%20%7Bup%20%7D%7D%28n%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bcl%7D%0Ax(n%20%2F%202)%20%26%20n%3D0%2C2%2C4%2C%20%5Cldots%20%5C%5C%0A0%20%26%20%5Ctext%20%7B%20otherwise%20%7D%0A%5Cend%7Barray%7D%20%5CLeftrightarrow%20X%5E%7B%5Ctext%20%7Bup%20%7D%7D(Z)%3DX%5Cleft(z%5E%7B2%7D%5Cright)%5Cright.%0A" /></p><hr>
+<p>我们已经知道了如何上下采样了，现在只需要找到变换的函数了。根据数学公式的一堆推导（详细的参考课本，这里不再写了），我们可以得到关系式：</p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bl%7D%0AH_%7B0%7D%28-z%29%20G_%7B0%7D(z)%2BH_%7B1%7D(-z)%20G_%7B1%7D(z)%3D0%20%5C%5C%0AH_%7B0%7D(z)%20G_%7B0%7D(z)%2BH_%7B1%7D(z)%20G_%7B1%7D(z)%3D2%0A%5Cend%7Barray%7D%0A" /></p><p>满足上面的关系的 H 和 G 函数都可以。</p>
+<p>对于一个图像，我们只需要在行和列上分别应用子带编码就可以得到图像的滤波器了：</p>
+<img src="https://i.loli.net/2021/05/25/Bep1I7DqjzNKfSO.png" alt="2D separable filters" style="zoom:80%;" />
+<h2 id="哈尔变换（The-Haar-Transform）">哈尔变换（The Haar Transform）</h2>
+<p>哈尔变换基于**哈尔函数 <img src="https://math.now.sh?inline=h_u%28x%29" style="text-align:center;display:inline-block;margin: 0;"/> **，就是满足上面的一组函数，他们定义在0到1之间。</p>
+<p>为了便于理解，我们先将哈尔变换近似为另一种基于矩阵的变换。函数变成了我们表示为矩阵相乘：<img src="https://math.now.sh?inline=T%3DAFA%5ET" style="text-align:center;display:inline-block;margin: 0;"/>，其中 F 是 <img src="https://math.now.sh?inline=N%5Ctimes%20N" style="text-align:center;display:inline-block;margin: 0;"/> 的图像, A 是 <img src="https://math.now.sh?inline=N%5Ctimes%20N" style="text-align:center;display:inline-block;margin: 0;"/> 的变换矩阵，T 是变换的结果。而对于逆变换，有 <img src="https://math.now.sh?inline=F%3DA%5ETTA" style="text-align:center;display:inline-block;margin: 0;"/>。</p>
+<p>下面给出生成哈尔变换矩阵 A 的方法：</p>
+<p>对于任意的一个整数 u，它可以被唯一分解为</p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=u%20%3D%202%5Ep%2Bq%0A" /></p><p>p 是 u 中包含的最大的 2 幂次，而 q 是余数，定义哈尔基函数：</p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=h_u%28x%29%3D%5Cleft%5C%7B%5Cbegin%7Bmatrix%7D%0A%201%2C%20%26%20u%3D0%E5%92%8C0%5Cle%20x%5Clt1%5C%5C%0A%202%5E%7B%5Cfrac%7Bp%7D%7B2%7D%7D%2C%20%26%20u%5Cgt0%20%E5%92%8C%5Cfrac%7Bq%7D%7B2%5Ep%7D%5Cle%20x%20%5Clt%20%5Cfrac%7B(q%2B0.5)%7D%7B2%5Ep%7D%5C%5C%0A%20-2%5E%7B%5Cfrac%7Bp%7D%7B2%7D%7D%2C%20%26%20u%5Clt0%20%E5%92%8C%5Cfrac%7B(q%2B0.5)%7D%7B2%5Ep%7D%5Cle%20x%20%5Clt%20%5Cfrac%7B(q%2B1)%7D%7B2%5Ep%7D%20%5C%5C%0A%200%2C%26%20%E5%85%B6%E4%BB%96%0A%5Cend%7Bmatrix%7D%5Cright.%0A" /></p><p>哈尔矩阵的第 i 行包含了 <img src="https://math.now.sh?inline=h_i%28z%29%2C%20%5Cquad%20z%3D0%2FN%2C%201%2FN%2C%20%5Ccdots%2C%20(N-1)%2FN" style="text-align:center;display:inline-block;margin: 0;"/></p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=%5Cbegin%7Beqnarray%7D%0A%20H_N%26%3D%26%5Cbegin%7Bbmatrix%7D%0A%20h_0%28%5Cfrac%7B0%7D%7BN%7D%29%20%26%20h_0(%5Cfrac%7B1%7D%7BN%7D)%20%26%20%5Ccdots%20%26%20h_0(%5Cfrac%7BN-1%7D%7BN%7D)%5C%5C%0A%20h_1(%5Cfrac%7B0%7D%7BN%7D)%20%26%20h_1(%5Cfrac%7B1%7D%7BN%7D)%20%26%20%5Ccdots%20%26%20h_1(%5Cfrac%7BN-1%7D%7BN%7D)%5C%5C%0A%20%5Cvdots%20%26%20%5Cvdots%20%26%20%5Cddots%20%20%26%20%5Cvdots%20%5C%5C%0A%20h_%7BN-1%7D(%5Cfrac%7B0%7D%7BN%7D)%20%26%20h_%7BN-1%7D(%5Cfrac%7B1%7D%7BN%7D)%20%26%20%5Ccdots%20%26%20h_%7BN-1%7D(%5Cfrac%7BN-1%7D%7BN%7D)%0A%20%5Cend%7Bbmatrix%7D%20%5C%5C%0A%20%5C%5C%0A%20A_H%20%26%3D%26%20%5Cfrac%7B1%7D%7B%5Csqrt%7BN%7D%7DH_N%0A%5Cend%7Beqnarray%7D%0A" /></p><p>如一个 4 阶的哈尔变换矩阵</p>
+<p style="text-align:center;"><img src="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AA_4%20%26%20%3D%20%5Cfrac%7B1%7D%7B2%7D%5Cbegin%7Bbmatrix%7D%0A%201%20%26%201%20%26%201%20%26%201%5C%5C%0A%201%20%26%201%20%26%20-1%20%26%20-1%5C%5C%0A%20%5Csqrt%7B2%7D%20%26%20-%5Csqrt%7B2%7D%20%26%200%20%26%200%5C%5C%0A%200%20%26%200%20%26%20%5Csqrt%7B2%7D%20%26%20-%5Csqrt%7B2%7D%0A%5Cend%7Bbmatrix%7D%0A%5Cend%7Balign%7D%0A" /></p><p>这样我们就构造好了变换：先按照上面的方法用对应的 <img src="https://math.now.sh?inline=A_N" style="text-align:center;display:inline-block;margin: 0;"/> 计算 T，然后下采样，再用对应 <img src="https://math.now.sh?inline=A_%7BN%2F2%7D" style="text-align:center;display:inline-block;margin: 0;"/> 计算 T…，要恢复的时候就用逆变换的公式得到 F，再上采样，再逆变换…</p>
+<h2 id="基函数-尺度函数">基函数&amp;尺度函数</h2>
+<p>我们理解了如何用矩阵去实现上面的子带编码的计算和恢复，问题是我们很难用矩阵的运算来代替复杂函数的变换。那么我们用更加复杂的 G 和 H，应该如何去计算和理解上述的过程？</p>
+<p>尺度函数用于创建函数或图像的一些列逼近，每个逼近的分辨率与其最邻近逼近的分辨率相差 2 倍。并且使用称为<strong>小波</strong>的<strong>补函数</strong>对<strong>相邻逼近之间的差进行编码</strong></p>
+<p>这里开始就进入小波变换的内容了，**离散小波变换（DWT）**使用小波和一个尺度函数，将函数或者图像表示为小波和尺度函数的线性组合。</p>
+<h1>后记</h1>
+<p>学起来的时候还真是反复看了好多边，再加上一些资料，才感觉有一丝丝的理解了…，真的难，本人菜鸡，有问题还请指出。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li>数字图像处理第四版（冈萨雷斯）</li>
+<li><a href="users.rowan.edu/~polikar/WTtutorial.html">The Wavelet Tutorial</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_18343569/article/details/46912929">图像的多分辨率金字塔</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/hhaowang/article/details/102533040">OpenCV教程（25）图像金字塔</a></li>
+<li><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/41ddf4eab52acfc788ebc900.html">小波变换和多分辨率处理（百度文库）</a></li>
+<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%B0%8F%E6%B3%A2%E5%88%86%E6%9E%90/1504577?fr=aladdin">小波分析（百度百科）</a></li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>数字图像处理</p><p><a href="http://cyx0706.github.io/2021/05/25/dip3/">http://cyx0706.github.io/2021/05/25/dip3/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Ctwo</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-05-25</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2021-05-26</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/CV/">CV</a><a class="link-muted mr-2" rel="tag" href="/tags/Digital-Image-Processing/">Digital Image Processing</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/05/25/zte-contest/"><span class="level-item">中兴捧月竞赛</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "10708cd9173d0bb4d13a076236daa449",
+            repo: "cyx0706.github.io",
+            owner: "cyx0706",
+            clientID: "4d458c0d13a2c2157dbd",
+            clientSecret: "99a8159ca4a12d236f888be149168b92808a4e29",
+            admin: ["cyx0706"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 20,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">1</span><span class="level-item">小波变换</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#多分辨率金字塔（Image-Resolution-Pyramids）"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">多分辨率金字塔（Image Resolution Pyramids）</span></span></a></li><li><a class="level is-mobile" href="#子带编码（Subband-Coding）"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">子带编码（Subband Coding）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#上-下采样（Upsampling-Downsampling）"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">上/下采样（Upsampling/Downsampling）</span></span></a></li></ul></li><li><a class="level is-mobile" href="#哈尔变换（The-Haar-Transform）"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">哈尔变换（The Haar Transform）</span></span></a></li><li><a class="level is-mobile" href="#基函数-尺度函数"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">基函数&amp;尺度函数</span></span></a></li></ul></li><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">2</span><span class="level-item">后记</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#参考"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">参考</span></span></a></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 Ctwo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
