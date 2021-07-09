@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ctwo&#39;s Blog</title>
+  <icon>http://cyx0706.github.io/icon.png</icon>
+  
+  <link href="http://cyx0706.github.io/atom.xml" rel="self"/>
+  
+  <link href="http://cyx0706.github.io/"/>
+  <updated>2021-07-09T09:57:04.074Z</updated>
+  <id>http://cyx0706.github.io/</id>
+  
+  <author>
+    <name>Ctwo</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>中兴捧月竞赛</title>
+    <link href="http://cyx0706.github.io/2021/07/07/zte-contest/"/>
+    <id>http://cyx0706.github.io/2021/07/07/zte-contest/</id>
+    <published>2021-07-07T09:43:47.000Z</published>
+    <updated>2021-07-09T09:57:04.074Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;第十一届中兴捧月大赛&quot;&gt;&lt;a href=&quot;#第十一届中兴捧月大赛&quot; class=&quot;headerlink&quot; title=&quot;第十一届中兴捧月大赛&quot;&gt;&lt;/a&gt;第十一届中兴捧月大赛&lt;/h1&gt;&lt;p&gt;菜菜子，比特派，美羊大学，江湖名号 Ctwo&lt;/p&gt;
+&lt;p&gt;不太可以具体透露题目，只能随便讲讲了。&lt;del&gt;不会有人是来看题解的吧&lt;/del&gt;&lt;br&gt;</summary>
+    
+    
+    
+    <category term="travel" scheme="http://cyx0706.github.io/categories/travel/"/>
+    
+    
+    <category term="travel" scheme="http://cyx0706.github.io/tags/travel/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我免费了，暂时的</title>
+    <link href="http://cyx0706.github.io/2021/07/07/tempfree/"/>
+    <id>http://cyx0706.github.io/2021/07/07/tempfree/</id>
+    <published>2021-07-07T07:55:14.000Z</published>
+    <updated>2021-07-09T11:21:47.143Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;del&gt;上篇写的太负能量了吧&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;夏令营的面经不想写，也没啥写的，我就没几个夏令营 =_=&lt;/p&gt;
+&lt;p&gt;看到一个很好的基于 icarus 的样式，试了一下，有点问题，有空解决了再换上吧。&lt;br&gt;</summary>
+    
+    
+    
+    
+    <category term="essay" scheme="http://cyx0706.github.io/tags/essay/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>black</title>
+    <link href="http://cyx0706.github.io/2021/07/05/black/"/>
+    <id>http://cyx0706.github.io/2021/07/05/black/</id>
+    <published>2021-07-05T14:26:31.000Z</published>
+    <updated>2021-07-07T08:31:54.604Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;将近半学期没怎么写博客了，最近夏令营频频心态爆炸，这两天刚考完试颓废过去了，感觉自己的心情也没有很好的调整上来。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="essay" scheme="http://cyx0706.github.io/tags/essay/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数字图像处理</title>
+    <link href="http://cyx0706.github.io/2021/05/26/dip3/"/>
+    <id>http://cyx0706.github.io/2021/05/26/dip3/</id>
+    <published>2021-05-26T13:16:50.000Z</published>
+    <updated>2021-07-09T11:20:41.219Z</updated>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;2021/5/28: 增加了部分示例代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;小波变换&quot;&gt;&lt;a href=&quot;#小波变换&quot; class=&quot;headerlink&quot; title=&quot;小波变换&quot;&gt;&lt;/a&gt;小波变换&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;小波 (Wavelet) 是时间（空间）频率的局部化分析，它通过伸缩平移运算对信号(函数)逐步进行多尺度细化，最终达到高频处时间细分，低频处频率细分，能自动适应时频信号分析的要求，从而可聚焦到信号的任意细节。有人把小波变换称为“数学显微镜”。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;而对于图像处理相关领域，小波变换曾经相当的热门，一些经典的算法如 JPEG-2000 就是基于小波变换原理的。&lt;/p&gt;
+&lt;p&gt;要理解小波变换，有一大堆需要铺垫的东西……&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Digital Image Processing" scheme="http://cyx0706.github.io/categories/Digital-Image-Processing/"/>
+    
+    
+    <category term="CV" scheme="http://cyx0706.github.io/tags/CV/"/>
+    
+    <category term="Digital Image Processing" scheme="http://cyx0706.github.io/tags/Digital-Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Take Your Time</title>
+    <link href="http://cyx0706.github.io/2021/05/25/busyday/"/>
+    <id>http://cyx0706.github.io/2021/05/25/busyday/</id>
+    <published>2021-05-24T16:57:00.000Z</published>
+    <updated>2021-07-07T08:02:49.311Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近期末考试的安排出来了，学期末要来了，一学期又要结束了，说实话这学期懈怠了好多。&lt;/p&gt;
+&lt;p&gt;夏令营在紧张的准备中，联系的导师大多不回复，一度觉得自己要没学上了，加上同学给的压力有点大，好不容易调平心态了，就接着写博客呗…..&lt;/p&gt;
+&lt;p&gt;icarus 最近更新了，加入了自定义不同页面的显示，再也不用之前改代码了，是时候翻新一下博客的样式了！图片标题的问题实在是太难看了，顺便如果可以还是直接在页面渲染出来 latex 公式好看，插入图片有点对不齐显得很丑！&lt;/p&gt;
+&lt;p&gt;更多的&lt;del&gt;废话&lt;/del&gt;放在 more 中了。&lt;br&gt;</summary>
+    
+    
+    
+    
+    <category term="essay" scheme="http://cyx0706.github.io/tags/essay/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数字图像处理</title>
+    <link href="http://cyx0706.github.io/2021/05/08/dip2/"/>
+    <id>http://cyx0706.github.io/2021/05/08/dip2/</id>
+    <published>2021-05-08T14:01:16.000Z</published>
+    <updated>2021-05-25T13:43:13.267Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;图像复原与重建&quot;&gt;&lt;a href=&quot;#图像复原与重建&quot; class=&quot;headerlink&quot; title=&quot;图像复原与重建&quot;&gt;&lt;/a&gt;图像复原与重建&lt;/h1&gt;&lt;p&gt;对于一些周期性噪声，空间滤波器的效果不会很好，而且会比较麻烦。在前面的一篇中，我们提到了，除了空间域，我们还可以在频率域进行滤波。这种变换的基本思想是：在傅里叶变换中，周期噪声在对应于周期干扰的频率处显示为集中突发的能量。方法是通过一个选择性滤波器来分离噪声。&lt;br&gt;</summary>
+    
+    
+    
+    <category term="Digital Image Processing" scheme="http://cyx0706.github.io/categories/Digital-Image-Processing/"/>
+    
+    
+    <category term="CV" scheme="http://cyx0706.github.io/tags/CV/"/>
+    
+    <category term="Digital Image Processing" scheme="http://cyx0706.github.io/tags/Digital-Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数字图像处理</title>
+    <link href="http://cyx0706.github.io/2021/04/23/dip1/"/>
+    <id>http://cyx0706.github.io/2021/04/23/dip1/</id>
+    <published>2021-04-23T01:43:40.000Z</published>
+    <updated>2021-04-24T04:47:09.399Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;2021/4/24: 解决(?)公式渲染问题，卸了重装了渲染器，然后参考配置了&lt;a href=&quot;https://github.com/MakerGYT/markdown-it-latex2img&quot;&gt;服务器渲染&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;空间-amp-频率域滤波&quot;&gt;&lt;a href=&quot;#空间-amp-频率域滤波&quot; class=&quot;headerlink&quot; title=&quot;空间&amp;amp;频率域滤波&quot;&gt;&lt;/a&gt;空间&amp;amp;频率域滤波&lt;/h1&gt;&lt;p&gt;用于记录学习数字图像处理的历程（不完全同步学校课程，不定期摸鱼）&lt;/p&gt;
+&lt;h2 id=&quot;空间域滤波&quot;&gt;&lt;a href=&quot;#空间域滤波&quot; class=&quot;headerlink&quot; title=&quot;空间域滤波&quot;&gt;&lt;/a&gt;空间域滤波&lt;/h2&gt;&lt;h3 id=&quot;直方图均衡化&quot;&gt;&lt;a href=&quot;#直方图均衡化&quot; class=&quot;headerlink&quot; title=&quot;直方图均衡化&quot;&gt;&lt;/a&gt;直方图均衡化&lt;/h3&gt;&lt;p&gt;直方图的形状往往与图像的外观有关。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在暗图像的直方图中，大多数直方图容器集中在灰度级较低的一端（靠近 0）&lt;/li&gt;
+&lt;li&gt;亮的图像的直方图中，多数直方图容器集中在灰度级的高端&lt;/li&gt;
+&lt;li&gt;低对比度的图像的直方图中，直方图容器基本位于灰度级的中间&lt;/li&gt;
+&lt;li&gt;高对比度图像的直方图，容器覆盖了较宽的范围，并且像素的分布是基本均匀的</summary>
+    
+    
+    
+    <category term="Digital Image Processing" scheme="http://cyx0706.github.io/categories/Digital-Image-Processing/"/>
+    
+    
+    <category term="CV" scheme="http://cyx0706.github.io/tags/CV/"/>
+    
+    <category term="Digital Image Processing" scheme="http://cyx0706.github.io/tags/Digital-Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>winter-2021</title>
+    <link href="http://cyx0706.github.io/2021/03/19/winter-2021/"/>
+    <id>http://cyx0706.github.io/2021/03/19/winter-2021/</id>
+    <published>2021-03-19T03:14:08.000Z</published>
+    <updated>2021-03-19T01:31:35.919Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;del&gt;诈尸&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;2021/3/19 开学第三周，挖出来，填一下实际完成的东西。&lt;br&gt;</summary>
+    
+    
+    
+    
+    <category term="essay" scheme="http://cyx0706.github.io/tags/essay/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>probabilistic-methods</title>
+    <link href="http://cyx0706.github.io/2021/03/13/probabilistic-methods/"/>
+    <id>http://cyx0706.github.io/2021/03/13/probabilistic-methods/</id>
+    <published>2021-03-13T13:46:37.000Z</published>
+    <updated>2021-04-24T03:48:46.415Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;概率方法&quot;&gt;&lt;a href=&quot;#概率方法&quot; class=&quot;headerlink&quot; title=&quot;概率方法&quot;&gt;&lt;/a&gt;概率方法&lt;/h1&gt;&lt;h2 id=&quot;Monte-Carlo-Simulation&quot;&gt;&lt;a href=&quot;#Monte-Carlo-Simulation&quot; class=&quot;headerlink&quot; title=&quot;Monte Carlo Simulation&quot;&gt;&lt;/a&gt;Monte Carlo Simulation&lt;/h2&gt;&lt;h3 id=&quot;General&quot;&gt;&lt;a href=&quot;#General&quot; class=&quot;headerlink&quot; title=&quot;General&quot;&gt;&lt;/a&gt;General&lt;/h3&gt;&lt;p&gt;我们需要定量分析我们的模型预测结果的可靠性，而蒙特卡洛方法就是可以预测概率，评估风险的一个方法。当我们需要计算，测量不确定性对模型的影响，模特卡洛方法是首先考虑的。简单来说，蒙特卡洛方法就是用不确定的参数反复评估模型，研究模型输出的不确定性。&lt;/p&gt;
+&lt;p&gt;蒙特卡洛方法的主要好处就在于它的鲁棒性和多功能性，不好之处在于它的收敛速度很慢并且计算量很大。&lt;br&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="AI+X Blending" scheme="http://cyx0706.github.io/tags/AI-X-Blending/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>from-optimization-to-ml</title>
+    <link href="http://cyx0706.github.io/2021/03/11/from-optimization-to-ml/"/>
+    <id>http://cyx0706.github.io/2021/03/11/from-optimization-to-ml/</id>
+    <published>2021-03-11T12:42:33.000Z</published>
+    <updated>2021-03-11T11:21:39.865Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;From-Optimization-To-Machine-Learning&quot;&gt;&lt;a href=&quot;#From-Optimization-To-Machine-Learning&quot; class=&quot;headerlink&quot; title=&quot;From Optimization To Machine Learning&quot;&gt;&lt;/a&gt;From Optimization To Machine Learning&lt;/h1&gt;&lt;p&gt;ps：数学公式好多渲染出奇怪的问题，我佛了，看看换个渲染引擎&lt;/p&gt;
+&lt;h2 id=&quot;Regession-Problems&quot;&gt;&lt;a href=&quot;#Regession-Problems&quot; class=&quot;headerlink&quot; title=&quot;Regession Problems&quot;&gt;&lt;/a&gt;Regession Problems&lt;/h2&gt;&lt;h3 id=&quot;General&quot;&gt;&lt;a href=&quot;#General&quot; class=&quot;headerlink&quot; title=&quot;General&quot;&gt;&lt;/a&gt;General&lt;/h3&gt;&lt;p&gt;先补充回顾一下&lt;a href=&quot;https://zhuanlan.zhihu.com/p/26884695&quot;&gt;范数&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;我们前面包括后面见到的 $||x ||_2$ 就是 l2 范数，表示向量或者矩阵的元素的平方和： &lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+|| x ||_2  =  \sqrt { \sum_i {x_i}^2 }&lt;/script&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;回归方法是建立模型常用的一种策略，当我们有数据但没有建立起具体的模型或者是想要一个便于计算的模型时，回归模型是一种不错的选择。它可以从多个预测变量中得到一个连续的预测值。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="AI+X Blending" scheme="http://cyx0706.github.io/tags/AI-X-Blending/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>aix</title>
+    <link href="http://cyx0706.github.io/2021/03/04/optimization/"/>
+    <id>http://cyx0706.github.io/2021/03/04/optimization/</id>
+    <published>2021-03-04T09:48:49.000Z</published>
+    <updated>2021-04-24T03:48:10.771Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;2021/3/9 补充了数学层面的牛顿公式理解和在求解最小二乘问题中的应用&lt;/p&gt;
+&lt;h1 id=&quot;Optimization&quot;&gt;&lt;a href=&quot;#Optimization&quot; class=&quot;headerlink&quot; title=&quot;Optimization&quot;&gt;&lt;/a&gt;Optimization&lt;/h1&gt;&lt;p&gt;一个优化问题包含三个部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优化的参数&lt;/li&gt;
+&lt;li&gt;损失函数&lt;/li&gt;
+&lt;li&gt;约束（可选）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;优化问题实际上就是寻找参数来使得在约束的范围内损失函数最小。&lt;br&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="AI+X Blending" scheme="http://cyx0706.github.io/tags/AI-X-Blending/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>aix</title>
+    <link href="http://cyx0706.github.io/2021/03/02/pde/"/>
+    <id>http://cyx0706.github.io/2021/03/02/pde/</id>
+    <published>2021-03-02T03:16:16.000Z</published>
+    <updated>2021-03-04T09:44:31.075Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;偏微分方程&quot;&gt;&lt;a href=&quot;#偏微分方程&quot; class=&quot;headerlink&quot; title=&quot;偏微分方程&quot;&gt;&lt;/a&gt;偏微分方程&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;del&gt;学的时候记得笔记都是英语的加上又懒得翻译就只好拖到了现在&lt;/del&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;General&quot;&gt;&lt;a href=&quot;#General&quot; class=&quot;headerlink&quot; title=&quot;General&quot;&gt;&lt;/a&gt;General&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;偏微分方程（PDE, partial differential equation）的解是一个关于时间和空间的方程 $u(x, t)$，我们用 u 代表在特定时间和空间的函数值。</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="AI+X Blending" scheme="http://cyx0706.github.io/tags/AI-X-Blending/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>aix</title>
+    <link href="http://cyx0706.github.io/2021/01/28/ode/"/>
+    <id>http://cyx0706.github.io/2021/01/28/ode/</id>
+    <published>2021-01-28T14:21:04.000Z</published>
+    <updated>2021-02-23T11:23:53.920Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;正式开课了，这里仅是我的学习记录。&lt;br&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="AI+X Blending" scheme="http://cyx0706.github.io/tags/AI-X-Blending/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>bird-identify</title>
+    <link href="http://cyx0706.github.io/2020/12/31/bird-identify/"/>
+    <id>http://cyx0706.github.io/2020/12/31/bird-identify/</id>
+    <published>2020-12-31T11:37:00.000Z</published>
+    <updated>2021-07-07T00:35:20.362Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;软件工程炼丹心得与体会&quot;&gt;&lt;a href=&quot;#软件工程炼丹心得与体会&quot; class=&quot;headerlink&quot; title=&quot;软件工程炼丹心得与体会&quot;&gt;&lt;/a&gt;软件工程炼丹心得与体会&lt;/h1&gt;&lt;p&gt;&lt;del&gt;其实就是深度学习入门吧&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;大三上软工项目：鸟类识别与分享平台，项目传送门&lt;a href=&quot;https://github.com/OUC-iBird&quot;&gt;iBird&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;在充分了解了深度学习（指前两周看了老师发的视频）后开始尝试构建鸟类识别模型，这篇博客用于记录自己在学习中的一点点收获。&lt;/p&gt;
+&lt;p&gt;ps:基础太差了，感觉好多时候都是在瞎炼。&lt;br&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="Deep Learning" scheme="http://cyx0706.github.io/tags/Deep-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pre-learn-of-aix-week-2/3</title>
+    <link href="http://cyx0706.github.io/2020/12/26/pre-learn-of-aix-2/"/>
+    <id>http://cyx0706.github.io/2020/12/26/pre-learn-of-aix-2/</id>
+    <published>2020-12-26T07:45:50.000Z</published>
+    <updated>2021-01-16T03:38:01.212Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Content&quot;&gt;&lt;a href=&quot;#Content&quot; class=&quot;headerlink&quot; title=&quot;Content&quot;&gt;&lt;/a&gt;Content&lt;/h1&gt;&lt;p&gt;In this blog, I’ll combine pre learning 2 and 3.&lt;br&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="AI+X Blending" scheme="http://cyx0706.github.io/tags/AI-X-Blending/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pre-learn-of-aix-week-1</title>
+    <link href="http://cyx0706.github.io/2020/12/18/pre-learn-of-aix-1/"/>
+    <id>http://cyx0706.github.io/2020/12/18/pre-learn-of-aix-1/</id>
+    <published>2020-12-18T00:13:58.000Z</published>
+    <updated>2020-12-26T07:46:26.197Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Introduction&quot;&gt;&lt;a href=&quot;#Introduction&quot; class=&quot;headerlink&quot; title=&quot;Introduction&quot;&gt;&lt;/a&gt;Introduction&lt;/h1&gt;&lt;p&gt;This is the pre-learning record of my ai+x blending courses, there will be 5 weeks before the Base SPOC session starts, and each week, we will get a learning material in order to help us get ready for the upcoming study, here we start the first week’s pre-learning.&lt;br&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="AI+X Blending" scheme="http://cyx0706.github.io/tags/AI-X-Blending/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>summary-of-2020-autumn</title>
+    <link href="http://cyx0706.github.io/2020/12/12/summary-of-2020-autumn/"/>
+    <id>http://cyx0706.github.io/2020/12/12/summary-of-2020-autumn/</id>
+    <published>2020-12-12T12:12:18.000Z</published>
+    <updated>2021-01-16T03:15:09.661Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;封面：恭喜记录的地平线第三季定档2021，狂喜 :laughing:&lt;/p&gt;
+&lt;p&gt;发出来才发现不支持 emoji，回来看看能不能配一下吧&lt;/p&gt;
+&lt;p&gt;2020/12/12 更新，增加了 emoji 支持，&lt;a href=&quot;https://hasaik.com/posts/9b280ea3.html&quot;&gt;参考博客&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.webfx.com/tools/emoji-cheat-sheet/&quot;&gt;markdown emoji&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="essay" scheme="http://cyx0706.github.io/tags/essay/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mini-os-2</title>
+    <link href="http://cyx0706.github.io/2020/11/29/mini-os-2/"/>
+    <id>http://cyx0706.github.io/2020/11/29/mini-os-2/</id>
+    <published>2020-11-29T10:33:13.000Z</published>
+    <updated>2020-12-12T13:20:33.218Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;这是第四章的补充知识&lt;/p&gt;
+&lt;p&gt;尚未完成啊啊啊&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="ComputerOrganization" scheme="http://cyx0706.github.io/categories/ComputerOrganization/"/>
+    
+    
+    <category term="OperatingSystems" scheme="http://cyx0706.github.io/tags/OperatingSystems/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>complain</title>
+    <link href="http://cyx0706.github.io/2020/11/28/complain/"/>
+    <id>http://cyx0706.github.io/2020/11/28/complain/</id>
+    <published>2020-11-28T15:40:26.000Z</published>
+    <updated>2020-11-28T15:44:22.668Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;￥&quot;&gt;&lt;a href=&quot;#￥&quot; class=&quot;headerlink&quot; title=&quot;@#￥@#%@%&quot;&gt;&lt;/a&gt;@#￥@#%@%&lt;/h2&gt;&lt;p&gt;记于2020年11月27日某个很坑的课实验做不出来&lt;/p&gt;
+&lt;p&gt;（28日再看自己写的好羞耻啊）&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>cuda 安装受难记</title>
+    <link href="http://cyx0706.github.io/2020/11/20/cuda-disaster/"/>
+    <id>http://cyx0706.github.io/2020/11/20/cuda-disaster/</id>
+    <published>2020-11-20T01:08:25.000Z</published>
+    <updated>2020-11-22T02:38:59.434Z</updated>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;2020/11/22 更新了解决下载过慢的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;如何无痛安装-cuda-Anaconda-pytroch-环境&quot;&gt;&lt;a href=&quot;#如何无痛安装-cuda-Anaconda-pytroch-环境&quot; class=&quot;headerlink&quot; title=&quot;如何无痛安装 cuda + Anaconda + pytroch 环境&quot;&gt;&lt;/a&gt;如何无痛安装 cuda + Anaconda + pytroch 环境&lt;/h1&gt;&lt;p&gt;!! 重要声明，这仅仅只是我的痛苦安装过程的一个踩坑记录，如果可以帮助你无痛安装，那自然是极好的了。&lt;br&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="http://cyx0706.github.io/categories/AI/"/>
+    
+    
+    <category term="cuda" scheme="http://cyx0706.github.io/tags/cuda/"/>
+    
+  </entry>
+  
+</feed>

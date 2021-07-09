@@ -1,43 +1,27 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Docker入门（不用入土） - Ctwo&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Ctwo&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ctwo&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="了解Docker  概述 Docker官网  啥是Docker:  Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。 Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器"><meta property="og:type" content="blog"><meta property="og:title" content="Docker入门（不用入土）"><meta property="og:url" content="http://cyx0706.github.io/2019/06/05/docker-1/"><meta property="og:site_name" content="Ctwo&#039;s Blog"><meta property="og:description" content="了解Docker  概述 Docker官网  啥是Docker:  Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。 Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/docker-cut.jpg"><meta property="article:published_time" content="2019-06-05T10:53:09.000Z"><meta property="article:modified_time" content="2019-08-04T04:31:17.589Z"><meta property="article:author" content="Ctwo"><meta property="article:tag" content="docker"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/docker-cut.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2019/06/05/docker-1/"},"headline":"Ctwo's Blog","image":["http://cyx0706.github.io/gallery/thumbnails/docker-cut.jpg"],"datePublished":"2019-06-05T10:53:09.000Z","dateModified":"2019-08-04T04:31:17.589Z","author":{"@type":"Person","name":"Ctwo"},"description":"了解Docker  概述 Docker官网  啥是Docker:  Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。 Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器"}</script><link rel="canonical" href="http://cyx0706.github.io/2019/06/05/docker-1/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_1216726_izwtvafdd5o.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2019-06-05T10:53:09.000Z" title="2019-06-05T10:53:09.000Z">2019-06-05</time></span><span class="level-item">Updated&nbsp;<time dateTime="2019-08-04T04:31:17.589Z" title="2019-08-04T04:31:17.589Z">2019-08-04</time></span><span class="level-item"><a class="link-muted" href="/categories/server/">server</a></span></div></div><h1 class="title is-3 is-size-4-mobile">Docker入门（不用入土）</h1><div class="content"><h1>了解Docker</h1>
-<p><img src="/gallery/thumbnails/docker.jpg" alt="Docker"></p>
-<h2 id="概述">概述</h2>
-<p><a target="_blank" rel="noopener" href="https://www.docker.com/">Docker官网</a></p>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Docker入门（不用入土） - Ctwo&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Ctwo&#039;s Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ctwo&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="了解Docker 概述Docker官网  啥是Docker: Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。 Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开"><meta property="og:type" content="blog"><meta property="og:title" content="Docker入门（不用入土）"><meta property="og:url" content="http://cyx0706.github.io/2019/06/05/docker-1/"><meta property="og:site_name" content="Ctwo&#039;s Blog"><meta property="og:description" content="了解Docker 概述Docker官网  啥是Docker: Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。 Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://cyx0706.github.io/gallery/thumbnails/docker-cut.jpg"><meta property="article:published_time" content="2019-06-05T10:53:09.000Z"><meta property="article:modified_time" content="2019-08-04T04:31:17.589Z"><meta property="article:author" content="Ctwo"><meta property="article:tag" content="docker"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/gallery/thumbnails/docker-cut.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://cyx0706.github.io/2019/06/05/docker-1/"},"headline":"Docker入门（不用入土）","image":["http://cyx0706.github.io/gallery/thumbnails/docker-cut.jpg"],"datePublished":"2019-06-05T10:53:09.000Z","dateModified":"2019-08-04T04:31:17.589Z","author":{"@type":"Person","name":"Ctwo"},"publisher":{"@type":"Organization","name":"Ctwo's Blog","logo":{"@type":"ImageObject","url":"http://cyx0706.github.io/img/logo.svg"}},"description":"了解Docker 概述Docker官网  啥是Docker: Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。 Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开"}</script><link rel="canonical" href="http://cyx0706.github.io/2019/06/05/docker-1/"><link rel="alternate" href="/atom.xml" title="Ctwo&#039;s Blog" type="application/atom+xml"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2019-06-05T10:53:09.000Z" title="2019-06-05T10:53:09.000Z">2019-06-05</time></span><span class="level-item">Updated&nbsp;<time dateTime="2019-08-04T04:31:17.589Z" title="2019-08-04T04:31:17.589Z">2019-08-04</time></span><span class="level-item"><a class="link-muted" href="/categories/server/">server</a></span></div></div><h1 class="title is-3 is-size-4-mobile">Docker入门（不用入土）</h1><div class="content"><h1 id="了解Docker"><a href="#了解Docker" class="headerlink" title="了解Docker"></a>了解Docker</h1><p><img src="/gallery/thumbnails/docker.jpg" alt="Docker"></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a target="_blank" rel="noopener" href="https://www.docker.com/">Docker官网</a></p>
 <ul>
-<li>啥是Docker:
-<ul>
+<li>啥是Docker:<ul>
 <li>Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。</li>
 <li>Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。</li>
 <li>容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。</li>
 <li>Docker 从 17.03 版本之后分为 CE（Community Edition: 社区版） 和 EE（Enterprise Edition: 企业版），我们用社区版就可以了。</li>
 </ul>
 </li>
-<li>Docker的优点有啥:
-<ul>
-<li>Docker容器虚拟化，意味着：<br>
-1.环境隔离：<br>
-通过cgroups和namespace进行实现资源的隔离，实现一个机器运行多个容器互不影响。<br>
-2.更快速的交付部署：<br>
-利用Docker，开发人员可以使用镜像快速构建一套标准的开发环境；开发完成后，测试运维人员可以直接使用相同的环境部署代码。Docker可以快速创建和删除容器，节省大量部署时间。<br>
-3.资源利用高效：<br>
-Docker容器的运行不需要额外的虚拟化管理程序的支持，它是内核级的虚拟化，可以实现更高的性能。<br>
-4.移迁移扩展：<br>
-docker的容器几乎可以在任意的平台下运行。</li>
+<li>Docker的优点有啥:<ul>
+<li>Docker容器虚拟化，意味着：<br>  1.环境隔离：<br>  通过cgroups和namespace进行实现资源的隔离，实现一个机器运行多个容器互不影响。<br>  2.更快速的交付部署：<br>  利用Docker，开发人员可以使用镜像快速构建一套标准的开发环境；开发完成后，测试运维人员可以直接使用相同的环境部署代码。Docker可以快速创建和删除容器，节省大量部署时间。<br>  3.资源利用高效：<br>  Docker容器的运行不需要额外的虚拟化管理程序的支持，它是内核级的虚拟化，可以实现更高的性能。<br>  4.移迁移扩展：<br>  docker的容器几乎可以在任意的平台下运行。</li>
 </ul>
 </li>
-<li>虽然现在看的云里雾里，但随着我们的后续学习，会对这些优势有一点程度上的理解</li>
-</ul>
-<a id="more"></a> 
-<h2 id="安装Docker">安装Docker</h2>
-<ul>
+<li>虽然现在看的云里雾里，但随着我们的后续学习，会对这些优势有一点程度上的理解<a id="more"></a> 
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2></li>
 <li>略，详见网上的各种教程</li>
 <li>笔者的docker安装在centos7服务端</li>
 </ul>
-<h2 id="虚拟化与Docker">虚拟化与Docker</h2>
-<p><img src="https://i.loli.net/2019/06/05/5cf7bdc20f00779117.png" alt="虚拟化与Docker"><br>
-Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理和创建Docker容器。</p>
+<h2 id="虚拟化与Docker"><a href="#虚拟化与Docker" class="headerlink" title="虚拟化与Docker"></a>虚拟化与Docker</h2><p><img src="https://i.loli.net/2019/06/05/5cf7bdc20f00779117.png" alt="虚拟化与Docker"><br>Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理和创建Docker容器。</p>
 <p>Docker 容器通过 Docker 镜像来创建。</p>
 <p>容器与镜像的关系类似于面向对象编程中的对象与类。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -68,173 +52,63 @@ Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理�
 </tr>
 </tbody>
 </table>
-<h1>使用Docker</h1>
-<h2 id="镜像操作">镜像操作</h2>
-<p>1.获取镜像</p>
+</div>
+<h1 id="使用Docker"><a href="#使用Docker" class="headerlink" title="使用Docker"></a>使用Docker</h1><h2 id="镜像操作"><a href="#镜像操作" class="headerlink" title="镜像操作"></a>镜像操作</h2><p>1.获取镜像</p>
 <p><strong>docker pull&lt;域名&gt; / &lt;namespace&gt; / &lt;repo&gt;;&lt;tag&gt;</strong></p>
-<p>镜像是Docker运行容器的前提<br>
-用户可以从网络上下载镜像，若不指定tag，则会默认选择lastest的标签，即下载最新版（和git pull；git tag有点相似）<br>
-默认从docker官方下载，不需指定命名空间</p>
+<p>镜像是Docker运行容器的前提<br>用户可以从网络上下载镜像，若不指定tag，则会默认选择lastest的标签，即下载最新版（和git pull；git tag有点相似）<br>默认从docker官方下载，不需指定命名空间</p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker pull ubuntu<br>
-Using default tag: latest<br>
-latest: Pulling from library/ubuntu<br>
-6abc03819f3e: Pull complete<br>
-05731e63f211: Pull complete<br>
-0bd67c50d6be: Pull complete<br>
-Digest:sha256:f08638ec7ddc90065187e7eabdfac3c9<br>
-6e5ff0f6b2f1762cf31a4f49b53000a5<br>
-Status: Downloaded newer image for ubuntu:latest</p>
+<p>[root@VM_0_4_centos docker]# docker pull ubuntu<br>Using default tag: latest<br>latest: Pulling from library/ubuntu<br>6abc03819f3e: Pull complete<br>05731e63f211: Pull complete<br>0bd67c50d6be: Pull complete<br>Digest:sha256:f08638ec7ddc90065187e7eabdfac3c9<br>6e5ff0f6b2f1762cf31a4f49b53000a5<br>Status: Downloaded newer image for ubuntu:latest</p>
 </blockquote>
 <p>2.查看镜像列表</p>
 <p><strong>docker images</strong></p>
-<p>列出本地主机上的已有镜像<br>
-表格信息含义为：来自于哪个仓库，镜像标签信息，镜像id（唯一），创建时间，大小</p>
+<p>列出本地主机上的已有镜像<br>表格信息含义为：来自于哪个仓库，镜像标签信息，镜像id（唯一），创建时间，大小</p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker images<br>
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>
-ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>
-hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
+<p>[root@VM_0_4_centos docker]# docker images<br>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
 </blockquote>
 <p>3.查看镜像信息</p>
 <p><strong>docker inspect&lt;image_id&gt;</strong></p>
 <p>返回json格式的信息，如果我们只看一项，使用-f指定</p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker inspect fce289e99eb9<br>
-[<br>
-{<br>
-“Id”: “sha256:fce289e99eb9bca977dae136fbe2a82b6b7d<br>
-4c372474c9235adc1741675f587e”,<br>
-“RepoTags”: [<br>
-“hello-world:latest”<br>
-],<br>
-“RepoDigests”: [<br>
-“hello-world@sha256:0e11c388b664df8a27a901dce21eb89f1<br>
-1d8292f7fca1b3e3c4321bf7897bffe”<br>
-],<br>
-“Parent”: “”,<br>
-…<br>
-[root@VM_0_4_centos docker]# docker inspect -f{{.Id}} fce289e99eb9<br>
-sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4<br>
-c372474c9235adc1741675f587e</p>
+<p>[root@VM_0_4_centos docker]# docker inspect fce289e99eb9<br>[<br>   {<br>       “Id”: “sha256:fce289e99eb9bca977dae136fbe2a82b6b7d<br>       4c372474c9235adc1741675f587e”,<br>       “RepoTags”: [<br>           “hello-world:latest”<br>       ],<br>       “RepoDigests”: [<br>           “hello-world@sha256:0e11c388b664df8a27a901dce21eb89f1<br>           1d8292f7fca1b3e3c4321bf7897bffe”<br>       ],<br>       “Parent”: “”,<br>……<br>[root@VM_0_4_centos docker]# docker inspect -f{{.Id}} fce289e99eb9<br>sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4<br>c372474c9235adc1741675f587e</p>
 </blockquote>
 <p>注意我们指定时用的是**{{.xx}}**， 点不要漏了</p>
-<p>4.查找镜像<br>
-<strong>docker search &lt;image_name&gt;</strong><br>
-可以搜索远端仓库中的共享镜像，默认搜索Docker hub官方仓库的镜像</p>
+<p>4.查找镜像<br><strong>docker search &lt;image_name&gt;</strong><br>可以搜索远端仓库中的共享镜像，默认搜索Docker hub官方仓库的镜像</p>
 <p>5.删除镜像</p>
 <p><strong>docker rmi &lt;image&gt;; &lt;tag&gt;</strong></p>
-<p>img可以指定为标签或id<br>
-当一个镜像有多个标签时，只是删除其中的一个指定标签，不影响镜像文件<br>
-当只有一个tag时，删tag就是删镜像本身<br>
-当有该镜像的容器存在时，镜像文件无法被删除</p>
+<p>img可以指定为标签或id<br>当一个镜像有多个标签时，只是删除其中的一个指定标签，不影响镜像文件<br>当只有一个tag时，删tag就是删镜像本身<br>当有该镜像的容器存在时，镜像文件无法被删除</p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker tag fce289e99eb9 cyx:hello-world<br>
-[root@VM_0_4_centos docker]# docker images<br>
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>
-ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>
-cyx                 hello-world         fce289e99eb9        5 months ago        1.84kB<br>
-hello-world         latest              fce289e99eb9        5 months ago        1.84kB<br>
-[root@VM_0_4_centos docker]# docker rmi cyx:hello-world<br>
-Untagged: cyx:hello-world<br>
-[root@VM_0_4_centos docker]# docker images<br>
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>
-ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>
-hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
+<p>[root@VM_0_4_centos docker]# docker tag fce289e99eb9 cyx:hello-world<br>[root@VM_0_4_centos docker]# docker images<br>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>cyx                 hello-world         fce289e99eb9        5 months ago        1.84kB<br>hello-world         latest              fce289e99eb9        5 months ago        1.84kB<br>[root@VM_0_4_centos docker]# docker rmi cyx:hello-world<br>Untagged: cyx:hello-world<br>[root@VM_0_4_centos docker]# docker images<br>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
 </blockquote>
 <p>试图删除hello-world</p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker rmi hello-world<br>
-Error response from daemon: conflict: unable to remove repository reference “hello-world” (must force) - container 16aafe3a6ff9 is using its referenced image fce289e99eb9</p>
+<p>[root@VM_0_4_centos docker]# docker rmi hello-world<br>Error response from daemon: conflict: unable to remove repository reference “hello-world” (must force) - container 16aafe3a6ff9 is using its referenced image fce289e99eb9</p>
 </blockquote>
 <p>错误，仍有容器在运行这个镜像，不建议-f，会让你的容器找不到镜像，导致混乱</p>
-<p>6.创建镜像<br>
-<strong>docker commit &lt;options&gt; &lt;container_id&gt; &lt;repository:tag&gt;</strong><br>
--a, --auther:作者信息<br>
--m, --message:提交信息<br>
--p, --pause=true: 提交时暂停容器运行<br>
-（炒鸡像git）</p>
+<p>6.创建镜像<br><strong>docker commit &lt;options&gt; &lt;container_id&gt; &lt;repository:tag&gt;</strong><br>-a, —auther:作者信息<br>-m, —message:提交信息<br>-p, —pause=true: 提交时暂停容器运行<br>（炒鸡像git）</p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker run -ti ubuntu bash<br>
-root@8da371140128:/# touch test.txt<br>
-root@8da371140128:/# vi test.txt<br>
-bash: vi: command not found<br>
-root@8da371140128:/# echo</p>
-<p>root@8da371140128:/# echo “test” &gt; test.txt<br>
-root@8da371140128:/# cat test.txt<br>
-test<br>
-root@8da371140128:/# ls<br>
-bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  test.txt  tmp  usr  var<br>
-root@8da371140128:/# exit<br>
-exit<br>
-运行Ubuntu，-ti把容器内标准绑定到终端并运行bash，发现这个操作系统里很多命令都没有，只保留了很少系统运行的参数</p>
+<p>[root@VM_0_4_centos docker]# docker run -ti ubuntu bash<br>root@8da371140128:/# touch test.txt<br>root@8da371140128:/# vi test.txt<br>bash: vi: command not found<br>root@8da371140128:/# echo</p>
+<p>root@8da371140128:/# echo “test” &gt; test.txt<br>root@8da371140128:/# cat test.txt<br>test<br>root@8da371140128:/# ls<br>bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  test.txt  tmp  usr  var<br>root@8da371140128:/# exit<br>exit<br>运行Ubuntu，-ti把容器内标准绑定到终端并运行bash，发现这个操作系统里很多命令都没有，只保留了很少系统运行的参数</p>
+<p>[root@VM_0_4_centos docker]# docker commit -a”cyx” -m “add test.txt” 8da371140128 cyx/test<br>sha256:036f85781fd0c78066f957d3fe809d8c48<br>19f9cad5979d832a8f130e6cbb8c74<br>[root@VM_0_4_centos docker]# docker images<br>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>cyx/test            latest              036f85781fd0        4 seconds ago       69.9MB<br>ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
 </blockquote>
-<blockquote>
-<p>[root@VM_0_4_centos docker]# docker commit -a&quot;cyx&quot; -m “add test.txt” 8da371140128 cyx/test<br>
-sha256:036f85781fd0c78066f957d3fe809d8c48<br>
-19f9cad5979d832a8f130e6cbb8c74<br>
-[root@VM_0_4_centos docker]# docker images<br>
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>
-cyx/test            latest              036f85781fd0        4 seconds ago       69.9MB<br>
-ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>
-hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
-</blockquote>
-<p>7.迁出镜像<br>
-<strong>docker save -o &lt;image&gt;.tar&lt;image&gt;:&lt;tag&gt;</strong></p>
-<p>-o为设置存储压缩后的文件名称<br>
-image可以为标签或id</p>
-<p>8.载入镜像<br>
-<strong>docker load --input&lt;image&gt;.tar 或 docker load &lt; &lt;image&gt;.tar</strong><br>
-会导入镜像的相关数据信息，包括标签</p>
+<p>7.迁出镜像<br><strong>docker save -o &lt;image&gt;.tar&lt;image&gt;:&lt;tag&gt;</strong></p>
+<p>-o为设置存储压缩后的文件名称<br>image可以为标签或id</p>
+<p>8.载入镜像<br><strong>docker load —input&lt;image&gt;.tar 或 docker load &lt; &lt;image&gt;.tar</strong><br>会导入镜像的相关数据信息，包括标签</p>
 <p>9.上传镜像</p>
-<p><strong>docker push &lt;域名&gt;/&lt;namespace&gt;/&lt;repo&gt;:&lt;tag&gt;</strong><br>
-可能会需要登陆<br>
-使用<strong>docker login</strong></p>
+<p><strong>docker push &lt;域名&gt;/&lt;namespace&gt;/&lt;repo&gt;:&lt;tag&gt;</strong><br>可能会需要登陆<br>使用<strong>docker login</strong></p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker save -o test.tar 036f85781fd0<br>
-[root@VM_0_4_centos docker]# docker rmi 036f85781fd0<br>
-Untagged: cyx/test:latest<br>
-Deleted: sha256:036f85781fd0c78066f957d3fe8<br>
-09d8c4819f9cad5979d832a8f130e6cbb8c74<br>
-Deleted: sha256:8978e7051b78201de4a5fff1b3<br>
-e1a45ef22947123424c471ac3c701b8653f005<br>
-[root@VM_0_4_centos docker]# docker load &lt; test.tar<br>
-bb370513b24b: Loading layer [==================================================&gt;]  3.584kB/3.584kB<br>
-Loaded image ID: sha256:036f85781fd0c78066f957d3fe809d8c4819f9<br>
-cad5979d832a8f130e6cbb8c74<br>
-[root@VM_0_4_centos docker]# docker images<br>
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>
-&lt;none&gt;              &lt;none&gt;              036f85781fd0        10 minutes ago      69.9MB<br>
-ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>
-hello-world         latest              fce289e99eb9        5 months ago        1.84kB<br>
-[root@VM_0_4_centos docker]# docker tag 036f85781fd0 “cyx/test”<br>
-[root@VM_0_4_centos docker]# docker images<br>
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>
-cyx/test            latest              036f85781fd0        11 minutes ago      69.9MB<br>
-ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>
-hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
+<p>[root@VM_0_4_centos docker]# docker save -o test.tar 036f85781fd0<br>[root@VM_0_4_centos docker]# docker rmi 036f85781fd0<br>Untagged: cyx/test:latest<br>Deleted: sha256:036f85781fd0c78066f957d3fe8<br>09d8c4819f9cad5979d832a8f130e6cbb8c74<br>Deleted: sha256:8978e7051b78201de4a5fff1b3<br>e1a45ef22947123424c471ac3c701b8653f005<br>[root@VM_0_4_centos docker]# docker load &lt; test.tar<br>bb370513b24b: Loading layer [==================================================&gt;]  3.584kB/3.584kB<br>Loaded image ID: sha256:036f85781fd0c78066f957d3fe809d8c4819f9<br>cad5979d832a8f130e6cbb8c74<br>[root@VM_0_4_centos docker]# docker images<br>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>&lt;none&gt;              &lt;none&gt;              036f85781fd0        10 minutes ago      69.9MB<br>ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>hello-world         latest              fce289e99eb9        5 months ago        1.84kB<br>[root@VM_0_4_centos docker]# docker tag 036f85781fd0 “cyx/test”<br>[root@VM_0_4_centos docker]# docker images<br>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE<br>cyx/test            latest              036f85781fd0        11 minutes ago      69.9MB<br>ubuntu              latest              7698f282e524        2 weeks ago         69.9MB<br>hello-world         latest              fce289e99eb9        5 months ago        1.84kB</p>
 </blockquote>
 <p>导入是没有设定库和tag，这时我们重新命名一下就好</p>
 <blockquote>
-<p>[root@VM_0_4_centos docker]# docker tag 036f85781fd0 “cyxfree/test”<br>
-[root@VM_0_4_centos docker]# docker push cyxfree/test<br>
-The push refers to repository [<a target="_blank" rel="noopener" href="http://docker.io/cyxfree/test">docker.io/cyxfree/test</a>]<br>
-bb370513b24b: Pushed<br>
-8d267010480f: Pushed<br>
-270f934787ed: Pushed<br>
-02571d034293: Pushed<br>
-latest: digest: sha256:92bcfc7a5946eccc845c88491ca<br>
-250b6957e099872af320e1ae4de3941ab004b<br>
-size: 1150</p>
+<p>[root@VM_0_4_centos docker]# docker tag 036f85781fd0 “cyxfree/test”<br>[root@VM_0_4_centos docker]# docker push cyxfree/test<br>The push refers to repository [docker.io/cyxfree/test]<br>bb370513b24b: Pushed<br>8d267010480f: Pushed<br>270f934787ed: Pushed<br>02571d034293: Pushed<br>latest: digest: sha256:92bcfc7a5946eccc845c88491ca<br>250b6957e099872af320e1ae4de3941ab004b<br>size: 1150</p>
 </blockquote>
-<p>注意，push后面跟的cyxfree/test是你的仓库名，如果没有这个远程仓库，则会创建一个<br>
-正常情况下为push (username)/(repository):tagname, 默认是最新的</p>
+<p>注意，push后面跟的cyxfree/test是你的仓库名，如果没有这个远程仓库，则会创建一个<br>正常情况下为push (username)/(repository):tagname, 默认是最新的</p>
 <p>PS:</p>
 <ul>
 <li>makedown &lt; 需要转义为&amp;lt 再加个；</li>
 <li>hexo 有个bug “}}”不在代码块要添加你的内容， 不然会出错（是解释成模板了吗，不懂）</li>
 </ul>
-</div><div class="article-licensing box"><div class="licensing-title"><p>Docker入门（不用入土）</p><p><a href="http://cyx0706.github.io/2019/06/05/docker-1/">http://cyx0706.github.io/2019/06/05/docker-1/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Ctwo</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2019-06-05</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2019-08-04</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/docker/">docker</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2019/07/09/Python-base-addition/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Python-base-general</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2019/05/28/start-up/"><span class="level-item">Start Up Today</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+</div><div class="article-licensing box"><div class="licensing-title"><p>Docker入门（不用入土）</p><p><a href="http://cyx0706.github.io/2019/06/05/docker-1/">http://cyx0706.github.io/2019/06/05/docker-1/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Ctwo</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2019-06-05</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2019-08-04</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/docker/">docker</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2019/07/09/Python-base-addition/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Python-base-general</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2019/05/28/start-up/"><span class="level-item">Start Up Today</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
             id: "db7dbb2afb8fd29854def349f4b5df84",
             repo: "cyx0706.github.io",
             owner: "cyx0706",
@@ -250,7 +124,7 @@ size: 1150</p>
             enableHotKey: true,
             language: "zh-CN",
         })
-        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">1</span><span class="level-item">了解Docker</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#概述"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">概述</span></span></a></li><li><a class="level is-mobile" href="#安装Docker"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">安装Docker</span></span></a></li><li><a class="level is-mobile" href="#虚拟化与Docker"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">虚拟化与Docker</span></span></a></li></ul></li><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">2</span><span class="level-item">使用Docker</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#镜像操作"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">镜像操作</span></span></a></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 Ctwo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+        gitalk.render('comment-container')</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#了解Docker"><span class="level-left"><span class="level-item">1</span><span class="level-item">了解Docker</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#概述"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">概述</span></span></a></li><li><a class="level is-mobile" href="#安装Docker"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">安装Docker</span></span></a></li><li><a class="level is-mobile" href="#虚拟化与Docker"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">虚拟化与Docker</span></span></a></li></ul></li><li><a class="level is-mobile" href="#使用Docker"><span class="level-left"><span class="level-item">2</span><span class="level-item">使用Docker</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#镜像操作"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">镜像操作</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Ctwo&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 Ctwo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
